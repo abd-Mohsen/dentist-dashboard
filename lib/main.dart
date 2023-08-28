@@ -1,3 +1,5 @@
+import 'package:dentist_dashboard/layout.dart';
+import 'package:dentist_dashboard/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 
@@ -13,7 +15,9 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Dashboard',
-      home: Placeholder(),
+      theme: MyThemes.myDarkMode,
+      darkTheme: MyThemes.myDarkMode,
+      home: Layout(),
     );
   }
 }

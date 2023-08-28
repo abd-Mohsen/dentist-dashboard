@@ -26,3 +26,14 @@ dev_dependencies:
 flutter:
 
   uses-material-design: true
+
+  assets:
+    - assets/images/
+
+  fonts:
+    - family: arabic
+      fonts:
+        - asset: assets/fonts/NotoKufiArabic-VariableFont_wght.ttf
+    - family: english
+      fonts:
+        - asset: assets/fonts/NotoSans-Regular.ttf
