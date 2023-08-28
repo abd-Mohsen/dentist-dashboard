@@ -14,7 +14,7 @@ class LargeScreen extends StatelessWidget {
           child: Container(
             color: cs.primary,
             child: ListView(
-              padding: EdgeInsets.all(8),
+              padding: const EdgeInsets.all(8),
               children: [
                 ListTile(
                   mouseCursor: MouseCursor.defer,
