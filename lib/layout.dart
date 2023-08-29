@@ -1,7 +1,7 @@
+import 'package:dentist_dashboard/controllers/side_menu_controller.dart';
 import 'package:dentist_dashboard/services/responsiveness.dart';
 import 'package:dentist_dashboard/views/components/large_screen.dart';
 import 'package:dentist_dashboard/views/components/small_screen.dart';
-import 'package:dentist_dashboard/views/components/top_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -13,11 +13,18 @@ class Layout extends StatelessWidget {
   Widget build(BuildContext context) {
     ColorScheme cs = Theme.of(context).colorScheme;
     TextTheme tt = Theme.of(context).textTheme;
+    SideMenuController mC = Get.put(SideMenuController());
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
         backgroundColor: cs.surface,
-        title: Visibility(child: Text("dashboard", style: tt.titleLarge!.copyWith(color: cs.onSurface))),
+        title: Visibility(
+          visible: !ResponsiveWidget.isSmall(context),
+          child: Text(
+            "dashboard",
+            style: tt.headlineMedium!.copyWith(color: cs.onSurface),
+          ),
+        ),
         actions: [
           Row(
             children: [
@@ -30,13 +37,13 @@ class Layout extends StatelessWidget {
                   color: cs.onSurface,
                 ),
               ),
-              IconButton(
-                onPressed: () {
-                  //
-                },
-                icon: Tooltip(
-                  message: "notifications".tr,
-                  child: Badge(
+              Tooltip(
+                message: "notifications".tr,
+                child: IconButton(
+                  onPressed: () {
+                    //todo: popup menu & new switch statement
+                  },
+                  icon: Badge(
                     child: Icon(
                       Icons.notifications,
                       color: cs.onSurface,
@@ -45,18 +52,24 @@ class Layout extends StatelessWidget {
                   ),
                 ),
               ),
-              VerticalDivider(
-                thickness: 2,
-                color: cs.onSurface.withOpacity(0.3),
-                width: 30,
-                indent: 15,
-                endIndent: 15,
+              Visibility(
+                visible: !ResponsiveWidget.isSmall(context),
+                child: VerticalDivider(
+                  thickness: 2,
+                  color: cs.onSurface.withOpacity(0.3),
+                  width: 30,
+                  indent: 15,
+                  endIndent: 15,
+                ),
               ),
-              Text(
-                "abd Mohsen", //todo: handle the case when name is long (without using sized box)
-                overflow: TextOverflow.ellipsis,
-                maxLines: 1,
-                style: tt.titleSmall!.copyWith(color: cs.onSurface.withOpacity(0.5)),
+              Visibility(
+                visible: !ResponsiveWidget.isSmall(context),
+                child: Text(
+                  "abd Mohsen",
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                  style: tt.titleSmall!.copyWith(color: cs.onSurface.withOpacity(0.5)),
+                ),
               ),
               const SizedBox(width: 16),
               CircleAvatar(
@@ -104,10 +117,44 @@ class Layout extends StatelessWidget {
               ),
       ),
       drawer: Drawer(
-        child: Container(
-          color: Colors.black,
-          height: 50,
-          width: 50,
+        backgroundColor: cs.primary,
+        //surfaceTintColor: Colors.black,
+        child: Column(
+          children: [
+            Text(
+              "dashboard",
+              style: tt.headlineMedium!.copyWith(color: cs.onSurface),
+            ),
+            GetBuilder<SideMenuController>(
+              builder: (con) => Expanded(
+                child: ListView.builder(
+                  padding: EdgeInsets.zero,
+                  itemCount: con.sideMenuItems.length,
+                  itemBuilder: (context, i) => Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 4),
+                    child: ListTile(
+                      onTap: () {
+                        con.toggleActiveItem(con.sideMenuItems[i]);
+                      },
+                      title: Text(
+                        con.sideMenuItems[i].title,
+                        style: con.sideMenuItems[i].isSelected
+                            ? tt.titleMedium!.copyWith(color: cs.onPrimary, fontWeight: FontWeight.bold)
+                            : tt.titleSmall!.copyWith(color: cs.onPrimary),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      leading: Icon(
+                        con.sideMenuItems[i].icon,
+                        size: con.sideMenuItems[i].isSelected ? 30 : 20,
+                        color: cs.onPrimary.withOpacity(0.8),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
       body: const ResponsiveWidget(largeWidget: LargeScreen(), smallWidget: SmallScreen()),

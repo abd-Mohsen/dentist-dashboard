@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Dashboard',
-      theme: MyThemes.myDarkMode,
+      theme: MyThemes.myLightMode,
       darkTheme: MyThemes.myDarkMode,
       home: Layout(),
     );
