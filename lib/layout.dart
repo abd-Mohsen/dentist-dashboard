@@ -1,9 +1,13 @@
 import 'package:dentist_dashboard/controllers/side_menu_controller.dart';
+import 'package:dentist_dashboard/controllers/theme_controller.dart';
 import 'package:dentist_dashboard/services/responsiveness.dart';
 import 'package:dentist_dashboard/views/components/large_screen.dart';
 import 'package:dentist_dashboard/views/components/small_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_switch/flutter_switch.dart';
 import 'package:get/get.dart';
+
+import 'controllers/locale_controller.dart';
 
 class Layout extends StatelessWidget {
   Layout({super.key});
@@ -13,11 +17,13 @@ class Layout extends StatelessWidget {
   Widget build(BuildContext context) {
     ColorScheme cs = Theme.of(context).colorScheme;
     TextTheme tt = Theme.of(context).textTheme;
+    LocaleController lC = LocaleController();
     SideMenuController mC = Get.put(SideMenuController());
     return Scaffold(
       appBar: AppBar(
-        elevation: 0,
-        backgroundColor: cs.surface,
+        elevation: Get.isDarkMode ? 0 : 3,
+        shadowColor: Colors.grey,
+        backgroundColor: ResponsiveWidget.isSmall(context) ? cs.primary : cs.surface,
         title: Visibility(
           visible: !ResponsiveWidget.isSmall(context),
           child: Text(
@@ -28,29 +34,90 @@ class Layout extends StatelessWidget {
         actions: [
           Row(
             children: [
-              IconButton(
-                onPressed: () {
-                  //
-                },
+              PopupMenuButton(
+                shape: RoundedRectangleBorder(
+                  //side: const BorderSide(width: 0.5),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                tooltip: "settings".tr,
                 icon: Icon(
                   Icons.settings,
                   color: cs.onSurface,
+                  //semanticLabel: "notifications",
                 ),
-              ),
-              Tooltip(
-                message: "notifications".tr,
-                child: IconButton(
-                  onPressed: () {
-                    //todo: popup menu & new switch statement
-                  },
-                  icon: Badge(
-                    child: Icon(
-                      Icons.notifications,
-                      color: cs.onSurface,
-                      //semanticLabel: "notifications",
+                position: PopupMenuPosition.under,
+                itemBuilder: (context) => [
+                  PopupMenuItem(
+                    child: ListTile(
+                      title: Text(
+                        "dark theme".tr,
+                        style: tt.labelLarge!.copyWith(color: cs.onBackground),
+                      ),
+                      leading: Icon(
+                        Icons.dark_mode_outlined,
+                        color: cs.onBackground,
+                      ),
+                      trailing: GetBuilder<ThemeController>(
+                        init: ThemeController(),
+                        builder: (con) => Switch(
+                          value: con.switchValue,
+                          onChanged: (bool value) {
+                            con.updateTheme(value);
+                          },
+                        ),
+                      ),
                     ),
                   ),
+                  PopupMenuItem(
+                    child: ListTile(
+                      leading: Icon(
+                        Icons.language,
+                        color: cs.onBackground,
+                      ),
+                      title: DropdownButton(
+                        elevation: 50,
+                        iconEnabledColor: cs.onBackground,
+                        dropdownColor: Get.isDarkMode ? cs.surface : Colors.grey.shade200,
+                        hint: Text(
+                          lC.getCurrentLanguageLabel(),
+                          style: tt.labelLarge!.copyWith(color: cs.onSurface),
+                        ),
+                        //button label is updating cuz whole app is rebuilt after changing locale
+                        items: [
+                          DropdownMenuItem(
+                            value: "ar",
+                            child: Text("Arabic ".tr),
+                          ),
+                          DropdownMenuItem(
+                            value: "en",
+                            child: Text("English ".tr),
+                          ),
+                        ],
+                        onChanged: (val) {
+                          lC.updateLocale(val!);
+                        },
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              PopupMenuButton(
+                shape: RoundedRectangleBorder(
+                  //side: const BorderSide(width: 0.5),
+                  borderRadius: BorderRadius.circular(10),
                 ),
+                tooltip: "notifications".tr,
+                icon: Icon(
+                  Icons.notifications,
+                  color: cs.onSurface,
+                  //semanticLabel: "notifications",
+                ),
+                position: PopupMenuPosition.under,
+                itemBuilder: (context) => [
+                  PopupMenuItem(
+                    child: ListTile(),
+                  ),
+                ],
               ),
               Visibility(
                 visible: !ResponsiveWidget.isSmall(context),
@@ -79,6 +146,7 @@ class Layout extends StatelessWidget {
                   onPressed: () {
                     //
                   },
+                  tooltip: "profile".tr,
                   icon: Icon(
                     Icons.person,
                     color: cs.onSecondary,
@@ -119,11 +187,15 @@ class Layout extends StatelessWidget {
       drawer: Drawer(
         backgroundColor: cs.primary,
         //surfaceTintColor: Colors.black,
+        width: 220,
         child: Column(
           children: [
-            Text(
-              "dashboard",
-              style: tt.headlineMedium!.copyWith(color: cs.onSurface),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 12),
+              child: Text(
+                "dashboard",
+                style: tt.headlineMedium!.copyWith(color: cs.onSurface),
+              ),
             ),
             GetBuilder<SideMenuController>(
               builder: (con) => Expanded(

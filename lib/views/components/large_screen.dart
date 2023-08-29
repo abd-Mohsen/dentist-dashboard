@@ -13,7 +13,7 @@ class LargeScreen extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-          flex: 1,
+          flex: 18,
           child: Container(
             color: cs.primary,
             child: GetBuilder<SideMenuController>(
@@ -39,6 +39,7 @@ class LargeScreen extends StatelessWidget {
                       size: con.sideMenuItems[i].isSelected ? 30 : 20,
                       color: cs.onPrimary.withOpacity(0.8),
                     ),
+                    //tileColor: con.sideMenuItems[i].isSelected ? cs.error : Colors.transparent,
                   ),
                 ),
               ),
@@ -46,7 +47,7 @@ class LargeScreen extends StatelessWidget {
           ),
         ),
         Expanded(
-          flex: 4,
+          flex: 82,
           child: Container(color: cs.background),
         ),
       ],
