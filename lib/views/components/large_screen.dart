@@ -1,4 +1,5 @@
 import 'package:dentist_dashboard/controllers/side_menu_controller.dart';
+import 'package:dentist_dashboard/views/components/side_menu_card.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -13,41 +14,39 @@ class LargeScreen extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-          flex: 18,
-          child: Container(
+          flex: 1,
+          child: Material(
             color: cs.primary,
             child: GetBuilder<SideMenuController>(
               builder: (con) => ListView.builder(
                 padding: const EdgeInsets.only(top: 8),
                 itemCount: con.sideMenuItems.length,
-                itemBuilder: (context, i) => Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 4),
-                  child: ListTile(
-                    onTap: () {
-                      con.toggleActiveItem(con.sideMenuItems[i]);
-                    },
-                    title: Text(
-                      con.sideMenuItems[i].title,
-                      style: con.sideMenuItems[i].isSelected
-                          ? tt.titleMedium!.copyWith(color: cs.onPrimary, fontWeight: FontWeight.bold)
-                          : tt.titleSmall!.copyWith(color: cs.onPrimary),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    leading: Icon(
-                      con.sideMenuItems[i].icon,
-                      size: con.sideMenuItems[i].isSelected ? 30 : 20,
-                      color: cs.onPrimary.withOpacity(0.8),
-                    ),
-                    //tileColor: con.sideMenuItems[i].isSelected ? cs.error : Colors.transparent,
+                itemBuilder: (context, i) => SideMenuCard(
+                  onTap: () {
+                    con.toggleActiveItem(con.sideMenuItems[i]);
+                  },
+                  title: Text(
+                    con.sideMenuItems[i].title,
+                    style:
+                        // con.sideMenuItems[i].isSelected
+                        //     ? tt.titleMedium!.copyWith(color: cs.onPrimary, fontWeight: FontWeight.bold) :
+                        tt.titleMedium!.copyWith(color: cs.onPrimary),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
+                  icon: Icon(
+                    con.sideMenuItems[i].icon,
+                    size: 25,
+                    color: cs.onPrimary.withOpacity(0.8),
+                  ),
+                  isSelected: con.sideMenuItems[i].isSelected,
                 ),
               ),
             ),
           ),
         ),
         Expanded(
-          flex: 82,
+          flex: 5,
           child: Container(color: cs.background),
         ),
       ],

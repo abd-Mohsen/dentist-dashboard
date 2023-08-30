@@ -51,11 +51,11 @@ class Layout extends StatelessWidget {
                     child: ListTile(
                       title: Text(
                         "dark theme".tr,
-                        style: tt.labelLarge!.copyWith(color: cs.onBackground),
+                        style: tt.labelLarge!.copyWith(color: Colors.black),
                       ),
-                      leading: Icon(
+                      leading: const Icon(
                         Icons.dark_mode_outlined,
-                        color: cs.onBackground,
+                        color: Colors.black,
                       ),
                       trailing: GetBuilder<ThemeController>(
                         init: ThemeController(),
@@ -70,17 +70,17 @@ class Layout extends StatelessWidget {
                   ),
                   PopupMenuItem(
                     child: ListTile(
-                      leading: Icon(
+                      leading: const Icon(
                         Icons.language,
-                        color: cs.onBackground,
+                        color: Colors.black,
                       ),
                       title: DropdownButton(
                         elevation: 50,
-                        iconEnabledColor: cs.onBackground,
+                        iconEnabledColor: Colors.black,
                         dropdownColor: Get.isDarkMode ? cs.surface : Colors.grey.shade200,
                         hint: Text(
                           lC.getCurrentLanguageLabel(),
-                          style: tt.labelLarge!.copyWith(color: cs.onSurface),
+                          style: tt.labelLarge!.copyWith(color: Colors.black),
                         ),
                         //button label is updating cuz whole app is rebuilt after changing locale
                         items: [
@@ -107,10 +107,12 @@ class Layout extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 tooltip: "notifications".tr,
-                icon: Icon(
-                  Icons.notifications,
-                  color: cs.onSurface,
-                  //semanticLabel: "notifications",
+                icon: Badge(
+                  child: Icon(
+                    Icons.notifications,
+                    color: cs.onSurface,
+                    //semanticLabel: "notifications",
+                  ),
                 ),
                 position: PopupMenuPosition.under,
                 itemBuilder: (context) => [
@@ -142,15 +144,23 @@ class Layout extends StatelessWidget {
               CircleAvatar(
                 radius: 20,
                 backgroundColor: cs.secondary,
-                child: IconButton(
-                  onPressed: () {
-                    //
-                  },
+                child: PopupMenuButton(
+                  shape: RoundedRectangleBorder(
+                    //side: const BorderSide(width: 0.5),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                   tooltip: "profile".tr,
                   icon: Icon(
                     Icons.person,
-                    color: cs.onSecondary,
+                    color: cs.onSurface,
+                    //semanticLabel: "notifications",
                   ),
+                  position: PopupMenuPosition.under,
+                  itemBuilder: (context) => [
+                    PopupMenuItem(
+                      child: ListTile(),
+                    ),
+                  ],
                 ),
               ),
               const SizedBox(width: 16),
@@ -172,29 +182,36 @@ class Layout extends StatelessWidget {
                   );
                 },
               )
-            : Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 12),
-                    child: Icon(
-                      Icons.shopping_cart,
-                      color: cs.onSurface,
-                    ),
-                  )
-                ],
+            : Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Icon(
+                  Icons.shopping_cart,
+                  color: cs.onSurface,
+                ),
               ),
       ),
       drawer: Drawer(
         backgroundColor: cs.primary,
         //surfaceTintColor: Colors.black,
-        width: 220,
+        width: 230,
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 12),
-              child: Text(
-                "dashboard",
-                style: tt.headlineMedium!.copyWith(color: cs.onSurface),
+              padding: const EdgeInsets.symmetric(vertical: 36),
+              child: Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Icon(
+                      Icons.shopping_cart,
+                      color: cs.onSurface,
+                    ),
+                  ),
+                  Text(
+                    "dashboard",
+                    style: tt.titleLarge!.copyWith(color: cs.onSurface),
+                  ),
+                ],
               ),
             ),
             GetBuilder<SideMenuController>(
