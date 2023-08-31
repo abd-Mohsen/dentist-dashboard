@@ -5,12 +5,12 @@ import 'package:flutter/material.dart';
 
 class SideMenuController extends GetxController {
   final List<MenuModel> sideMenuItems = [
-    MenuModel(title: "Home".tr, icon: Icons.home_filled, isSelected: true, isHovered: false),
-    MenuModel(title: "layout products".tr, icon: Icons.phone_android, isSelected: false, isHovered: false),
-    MenuModel(title: "Manage products".tr, icon: Icons.manage_search, isSelected: false, isHovered: false),
-    MenuModel(title: "Manage users".tr, icon: Icons.manage_accounts, isSelected: false, isHovered: false),
-    MenuModel(title: "Manage orders".tr, icon: Icons.checklist, isSelected: false, isHovered: false),
-    MenuModel(title: "Analytics".tr, icon: Icons.analytics, isSelected: false, isHovered: false),
+    MenuModel(title: "Home".tr, icon: Icons.home_filled, isSelected: true, route: 'home'),
+    //MenuModel(title: "layout products".tr, icon: Icons.phone_android, isSelected: false, isHovered: false),
+    MenuModel(title: "Manage products".tr, icon: Icons.manage_search, isSelected: false, route: "products"),
+    MenuModel(title: "Manage users".tr, icon: Icons.manage_accounts, isSelected: false, route: "users"),
+    MenuModel(title: "Manage orders".tr, icon: Icons.checklist, isSelected: false, route: "orders"),
+    MenuModel(title: "Analytics".tr, icon: Icons.analytics, isSelected: false, route: "analytics"),
     //MenuModel(title: "Analytics".tr, icon: Icons.analytics, isSelected: false, isHovered: false),
   ];
 
@@ -22,11 +22,11 @@ class SideMenuController extends GetxController {
     update();
   }
 
-  void onHover(MenuModel item) {
-    for (MenuModel model in sideMenuItems) {
-      model.isHovered = false;
-    }
-    item.isHovered = true;
-    update();
-  }
+  // void onHover(MenuModel item) {
+  //   for (MenuModel model in sideMenuItems) {
+  //     model.isHovered = false;
+  //   }
+  //   item.isHovered = true;
+  //   update();
+  // }
 }

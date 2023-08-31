@@ -25,7 +25,7 @@ class LoginView extends StatelessWidget {
           //onSignup: _signupUser,
           hideForgotPasswordButton: true,
           onSubmitAnimationCompleted: () {
-            Get.off(Layout());
+            Get.offNamed('/dashboard');
           },
           onRecoverPassword: (String s) {
             return null;
@@ -56,7 +56,7 @@ class LoginView extends StatelessWidget {
                       const SizedBox(height: 20),
                       Text(
                         "Dashboard",
-                        style: tt.displayLarge,
+                        style: tt.displayLarge!.copyWith(color: cs.background),
                       ),
                     ],
                   ),

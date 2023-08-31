@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
 class MenuModel {
-  String title;
-  IconData icon;
+  final String title;
+  final IconData icon;
   bool isSelected;
-  bool isHovered;
+  final String route;
+  //bool isHovered;
 
-  MenuModel({required this.title, required this.icon, required this.isSelected, required this.isHovered});
+  MenuModel({required this.title, required this.icon, required this.isSelected, required this.route});
 }
