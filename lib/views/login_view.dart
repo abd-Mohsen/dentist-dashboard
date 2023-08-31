@@ -2,6 +2,7 @@ import 'package:dentist_dashboard/layout.dart';
 import 'package:dentist_dashboard/services/responsiveness.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 class LoginView extends StatelessWidget {
@@ -49,18 +50,24 @@ class LoginView extends StatelessWidget {
               child: Material(
                 color: cs.primary,
                 child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.shopping_cart, size: 150, color: cs.background),
-                      const SizedBox(height: 20),
-                      Text(
-                        "Dashboard",
-                        style: tt.displayLarge!.copyWith(color: cs.background),
-                      ),
-                    ],
+                    // child: Column(
+                    //   mainAxisAlignment: MainAxisAlignment.center,
+                    //   children: [
+                    //     Icon(Icons.shopping_cart, size: 150, color: cs.background),
+                    //     const SizedBox(height: 20),
+                    //     Text(
+                    //       "Dashboard",
+                    //       style: tt.displayLarge!.copyWith(color: cs.background),
+                    //     ),
+                    //   ],
+                    // ),
+                    child: SizedBox(
+                  height: 100,
+                  width: 120,
+                  child: SvgPicture.asset(
+                    'assets/images/logo_black.svg',
                   ),
-                ),
+                )),
               ),
             ),
             Expanded(
