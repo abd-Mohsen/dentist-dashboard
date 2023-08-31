@@ -1,5 +1,6 @@
 import 'package:dentist_dashboard/layout.dart';
 import 'package:dentist_dashboard/themes.dart';
+import 'package:dentist_dashboard/views/login_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'controllers/locale_controller.dart';
@@ -23,7 +24,7 @@ class MyApp extends StatelessWidget {
       theme: MyThemes.myLightMode,
       darkTheme: MyThemes.myDarkMode,
       themeMode: t.getThemeMode(),
-      home: Layout(),
+      home: const LoginView(),
     );
   }
 }

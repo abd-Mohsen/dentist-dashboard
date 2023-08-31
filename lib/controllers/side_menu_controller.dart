@@ -11,7 +11,7 @@ class SideMenuController extends GetxController {
     MenuModel(title: "Manage users".tr, icon: Icons.manage_accounts, isSelected: false, isHovered: false),
     MenuModel(title: "Manage orders".tr, icon: Icons.checklist, isSelected: false, isHovered: false),
     MenuModel(title: "Analytics".tr, icon: Icons.analytics, isSelected: false, isHovered: false),
-    MenuModel(title: "Analytics".tr, icon: Icons.analytics, isSelected: false, isHovered: false),
+    //MenuModel(title: "Analytics".tr, icon: Icons.analytics, isSelected: false, isHovered: false),
   ];
 
   void toggleActiveItem(MenuModel item) {

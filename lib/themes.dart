@@ -206,7 +206,7 @@ class MyThemes {
   );
 
   static ThemeData myLightMode = ThemeData.light().copyWith(
-    colorScheme: const ColorScheme(
+    colorScheme: ColorScheme(
       brightness: Brightness.light,
       primary: Color(0xff02979D),
       onPrimary: Colors.white,
@@ -216,7 +216,7 @@ class MyThemes {
       onError: Colors.white70,
       background: Colors.white,
       onBackground: Colors.black,
-      surface: Colors.white,
+      surface: Colors.grey[300]!,
       onSurface: Colors.black,
     ),
     textTheme: const TextTheme(

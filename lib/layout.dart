@@ -4,7 +4,6 @@ import 'package:dentist_dashboard/services/responsiveness.dart';
 import 'package:dentist_dashboard/views/components/large_screen.dart';
 import 'package:dentist_dashboard/views/components/small_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_switch/flutter_switch.dart';
 import 'package:get/get.dart';
 
 import 'controllers/locale_controller.dart';
@@ -21,14 +20,14 @@ class Layout extends StatelessWidget {
     SideMenuController mC = Get.put(SideMenuController());
     return Scaffold(
       appBar: AppBar(
-        elevation: Get.isDarkMode ? 0 : 3,
+        elevation: Get.isDarkMode ? 0 : 2,
         shadowColor: Colors.grey,
         backgroundColor: ResponsiveWidget.isSmall(context) ? cs.primary : cs.surface,
         title: Visibility(
           visible: !ResponsiveWidget.isSmall(context),
           child: Text(
             "dashboard",
-            style: tt.headlineMedium!.copyWith(color: cs.onSurface),
+            style: tt.headlineSmall!.copyWith(color: cs.onSurface),
           ),
         ),
         actions: [
