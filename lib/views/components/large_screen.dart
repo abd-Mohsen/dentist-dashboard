@@ -24,6 +24,9 @@ class LargeScreen extends StatelessWidget {
                 itemBuilder: (context, i) => SideMenuCard(
                   onTap: () {
                     con.toggleActiveItem(con.sideMenuItems[i]);
+                    print(Get.currentRoute.contains("${con.sideMenuItems[i].route}"));
+                    print(con.sideMenuItems[i].route);
+                    print(Get.currentRoute);
                   },
                   title: Text(
                     con.sideMenuItems[i].title,
@@ -39,9 +42,8 @@ class LargeScreen extends StatelessWidget {
                     size: 25,
                     color: cs.onPrimary.withOpacity(0.8),
                   ),
-                  isSelected: con.sideMenuItems[i].isSelected &&
-                      (Get.currentRoute == "dashboard/${con.sideMenuItems[i]}" ||
-                          Get.currentRoute.startsWith("dashboard/${con.sideMenuItems[i]}")),
+                  isSelected:
+                      con.sideMenuItems[i].isSelected && Get.currentRoute.contains("${con.sideMenuItems[i].route}"),
                 ),
               ),
             ),

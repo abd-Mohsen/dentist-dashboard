@@ -39,11 +39,11 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/', page: () => RedirectPage()),
         GetPage(name: '/login', page: () => const LoginView()),
         GetPage(name: '/dashboard', page: () => Layout()),
-        GetPage(name: '/dashboard/$kHomeViewRoute', page: () => HomeView()),
-        GetPage(name: '/dashboard/$kProductsViewRoute', page: () => ProductsView()),
-        GetPage(name: '/dashboard/$kUsersViewRoute', page: () => UsersView()),
-        GetPage(name: '/dashboard/$kOrdersViewRoute', page: () => OrdersView()),
-        GetPage(name: '/dashboard/$kAnalyticsViewRoute', page: () => AnalyticsView()),
+        GetPage(name: '/home', page: () => HomeView()),
+        GetPage(name: '/products', page: () => ProductsView()),
+        GetPage(name: '/users', page: () => UsersView()),
+        GetPage(name: '/orders', page: () => OrdersView()),
+        GetPage(name: '/analytics', page: () => AnalyticsView()),
       ],
     );
   }

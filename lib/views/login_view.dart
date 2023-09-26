@@ -26,7 +26,7 @@ class LoginView extends StatelessWidget {
           //onSignup: _signupUser,
           hideForgotPasswordButton: true,
           onSubmitAnimationCompleted: () {
-            Get.offNamed('/dashboard');
+            Get.offAllNamed('/dashboard');
           },
           onRecoverPassword: (String s) {
             return null;
@@ -50,24 +50,19 @@ class LoginView extends StatelessWidget {
               child: Material(
                 color: cs.primary,
                 child: Center(
-                    // child: Column(
-                    //   mainAxisAlignment: MainAxisAlignment.center,
-                    //   children: [
-                    //     Icon(Icons.shopping_cart, size: 150, color: cs.background),
-                    //     const SizedBox(height: 20),
-                    //     Text(
-                    //       "Dashboard",
-                    //       style: tt.displayLarge!.copyWith(color: cs.background),
-                    //     ),
-                    //   ],
-                    // ),
-                    child: SizedBox(
-                  height: 100,
-                  width: 120,
-                  child: SvgPicture.asset(
-                    'assets/images/logo_black.svg',
-                  ),
-                )),
+                  // child: Column(
+                  //   mainAxisAlignment: MainAxisAlignment.center,
+                  //   children: [
+                  //     Icon(Icons.shopping_cart, size: 150, color: cs.background),
+                  //     const SizedBox(height: 20),
+                  //     Text(
+                  //       "Dashboard",
+                  //       style: tt.displayLarge!.copyWith(color: cs.background),
+                  //     ),
+                  //   ],
+                  // ),
+                  child: Image.asset(Get.isDarkMode ? "assets/images/logo_black.png" : "assets/images/logo_white.png"),
+                ),
               ),
             ),
             Expanded(

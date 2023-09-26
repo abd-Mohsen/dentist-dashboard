@@ -186,8 +186,11 @@ class Layout extends StatelessWidget {
                 child: Icon(
                   Icons.shopping_cart,
                   color: cs.onSurface,
+                )
+                // Image.asset(
+                //   Get.isDarkMode ? "assets/images/logo_white_low_res.png" : "assets/images/logo_black_low_res.png",
+                // ),
                 ),
-              ),
       ),
       drawer: Drawer(
         backgroundColor: cs.primary,
