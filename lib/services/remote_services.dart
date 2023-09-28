@@ -1,6 +1,10 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:js' as js;
-import 'package:universal_html/html.dart';
+import 'package:dentist_dashboard/models/brand_model.dart';
+import 'package:dentist_dashboard/models/product_model.dart';
+import 'package:path/path.dart';
+import 'package:universal_html/html.dart' as html;
 import 'package:http/http.dart' as http;
 
 import '../models/user_model.dart';
@@ -8,7 +12,7 @@ import '../models/user_model.dart';
 class RemoteServices {
   static const String _hostIP = "http://10.0.2.2:8000/api";
   static http.Client client = http.Client();
-  static String get token => window.localStorage["token"] ?? "no token ";
+  static String get token => html.window.localStorage["token"] ?? "no token";
 
   /// auth requests
 
@@ -175,7 +179,31 @@ class RemoteServices {
 
   /// profile requests
 
-  // upload profile pic
+  static Future<bool> uploadProfileImage(File? imageFile) async {
+    var request = http.MultipartRequest("POST", Uri.parse("$_hostIP/upload-profile-image"));
+    request.headers['Authorization'] = "Bearer $token";
+    request.headers['Accept'] = 'application/json';
+    var stream = http.ByteStream(imageFile!.openRead());
+    var length = await imageFile.length();
+    var multipartFile = http.MultipartFile(
+      'image',
+      stream,
+      length,
+      filename: basename(imageFile.path),
+    );
+
+    request.files.add(multipartFile);
+
+    var response = await request.send();
+    var responseBody = await response.stream.bytesToString();
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return true;
+    } else {
+      print('error massage: $responseBody');
+      return false;
+    }
+  }
 
   static Future<UserModel?> fetchCurrentUser() async {
     var response = await client.get(
@@ -233,6 +261,163 @@ class RemoteServices {
       },
     );
     if (response.statusCode == 200 || response.statusCode == 201) {
+      return true;
+    } else if (response.statusCode == 401 || response.statusCode == 403) {
+      return false;
+    } else {
+      js.context.callMethod('alert', [jsonDecode(response.body)["message"]]);
+      return false;
+    }
+  }
+  //todo: add delete account
+
+  /// brand requests
+
+  static Future<List<BrandModel>?> fetchAllBrands() async {
+    var response = await client.get(
+      Uri.parse("$_hostIP/brands"),
+      headers: {
+        'Content-Type': 'application/json',
+        "Accept": 'application/json',
+        "Authorization": "Bearer $token",
+      },
+    );
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return brandModelFromJson(response.body);
+    } else if (response.statusCode == 401 || response.statusCode == 403) {
+      return null;
+    } else {
+      js.context.callMethod('alert', [jsonDecode(response.body)["message"]]);
+      return null;
+    }
+  }
+
+  static Future<BrandModel?> fetchBrand(int id) async {
+    var response = await client.get(
+      Uri.parse("$_hostIP/brands/$id"),
+      headers: {
+        'Content-Type': 'application/json',
+        "Accept": 'application/json',
+        "Authorization": "Bearer $token",
+      },
+    );
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return BrandModel.fromJson(jsonDecode(response.body));
+    } else if (response.statusCode == 401 || response.statusCode == 403) {
+      return null;
+    } else {
+      js.context.callMethod('alert', [jsonDecode(response.body)["message"]]);
+      return null;
+    }
+  }
+
+  static Future<List<BrandModel>?> searchBrands(String query) async {
+    var response = await client.get(
+      Uri.parse("$_hostIP/brands/search/$query"),
+      headers: {
+        'Content-Type': 'application/json',
+        "Accept": 'application/json',
+        "Authorization": "Bearer $token",
+      },
+    );
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return brandModelFromJson(response.body);
+    } else if (response.statusCode == 401 || response.statusCode == 403) {
+      return null;
+    } else {
+      js.context.callMethod('alert', [jsonDecode(response.body)["message"]]);
+      return null;
+    }
+  }
+
+  static Future<List<ProductModel>?> fetchProductsFromBrand(int id) async {
+    var response = await client.get(
+      Uri.parse("$_hostIP/brand-products/$id"),
+      headers: {
+        'Content-Type': 'application/json',
+        "Accept": 'application/json',
+        "Authorization": "Bearer $token",
+      },
+    );
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return productModelFromJson(response.body);
+    } else if (response.statusCode == 401 || response.statusCode == 403) {
+      return null;
+    } else {
+      js.context.callMethod('alert', [jsonDecode(response.body)["message"]]);
+      return null;
+    }
+  }
+
+  static Future<bool> createBrand(File? imageFile, String brandTitle) async {
+    var request = http.MultipartRequest("POST", Uri.parse("$_hostIP/brands"));
+    request.headers['Authorization'] = "Bearer $token";
+    request.headers['Accept'] = 'application/json';
+    var stream = http.ByteStream(imageFile!.openRead());
+    var length = await imageFile.length();
+    var multipartFile = http.MultipartFile(
+      'image',
+      stream,
+      length,
+      filename: basename(imageFile.path),
+    );
+    request.fields.addAll({
+      'title': brandTitle,
+    });
+    request.files.add(multipartFile);
+
+    var response = await request.send();
+    var responseBody = await response.stream.bytesToString();
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return true;
+    } else {
+      js.context.callMethod('alert', [jsonDecode(responseBody)]);
+      print('error message: $responseBody');
+      return false;
+    }
+  }
+
+  static Future<bool> updateBrand(File? imageFile, String brandTitle) async {
+    // todo: check what happens when null is sent
+    var request = http.MultipartRequest("PATCH", Uri.parse("$_hostIP/brands"));
+    request.headers['Authorization'] = "Bearer $token";
+    request.headers['Accept'] = 'application/json';
+    var stream = http.ByteStream(imageFile!.openRead());
+    var length = await imageFile.length();
+    var multipartFile = http.MultipartFile(
+      'image',
+      stream,
+      length,
+      filename: basename(imageFile.path),
+    );
+    request.fields.addAll({
+      'title': brandTitle,
+    });
+    request.files.add(multipartFile);
+
+    var response = await request.send();
+    var responseBody = await response.stream.bytesToString();
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return true;
+    } else {
+      js.context.callMethod('alert', [jsonDecode(responseBody)]);
+      print('error message: $responseBody');
+      return false;
+    }
+  }
+
+  static Future<bool> deleteBrand(int id) async {
+    var response = await client.delete(
+      Uri.parse('$_hostIP/brands'),
+      headers: {
+        'Content-Type': 'application/json',
+        "Accept": 'application/json',
+        "Authorization": "Bearer $token",
+      },
+    );
+    if (response.statusCode == 204) {
       return true;
     } else if (response.statusCode == 401 || response.statusCode == 403) {
       return false;
