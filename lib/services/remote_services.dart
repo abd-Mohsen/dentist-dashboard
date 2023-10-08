@@ -56,6 +56,7 @@ class RemoteServices {
       headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
     );
     if (response.statusCode == 200 || response.statusCode == 201) {
+      print(response.body);
       return jsonDecode(response.body)["access_token"];
     } else {
       js.context.callMethod('alert', [jsonDecode(response.body)["message"]]);
@@ -269,7 +270,26 @@ class RemoteServices {
       return false;
     }
   }
+
   //todo: add delete account
+  static Future<bool> deleteUser(int id) async {
+    var response = await client.delete(
+      Uri.parse('$_hostIP/users'),
+      headers: {
+        'Content-Type': 'application/json',
+        "Accept": 'application/json',
+        "Authorization": "Bearer $token",
+      },
+    );
+    if (response.statusCode == 204) {
+      return true;
+    } else if (response.statusCode == 401 || response.statusCode == 403) {
+      return false;
+    } else {
+      js.context.callMethod('alert', [jsonDecode(response.body)["message"]]);
+      return false;
+    }
+  }
 
   /// brand requests
 
@@ -424,6 +444,145 @@ class RemoteServices {
     } else {
       js.context.callMethod('alert', [jsonDecode(response.body)["message"]]);
       return false;
+    }
+  }
+
+  /// products requests
+
+  //todo: products rows
+  //todo: product body
+  // static Future<bool> createProduct(List<File?> imageFile, String brandTitle) async {
+  //   var request = http.MultipartRequest("POST", Uri.parse("$_hostIP/products"));
+  //   request.headers['Authorization'] = "Bearer $token";
+  //   request.headers['Accept'] = 'application/json';
+  //   var stream = http.ByteStream(imageFile!.openRead());
+  //   var length = await imageFile.length();
+  //   var multipartFile = http.MultipartFile(
+  //     'image',
+  //     stream,
+  //     length,
+  //     filename: basename(imageFile.path),
+  //   );
+  //   request.fields.addAll({
+  //     'title': brandTitle,
+  //   });
+  //   request.files.add(multipartFile);
+  //
+  //   var response = await request.send();
+  //   var responseBody = await response.stream.bytesToString();
+  //
+  //   if (response.statusCode == 200 || response.statusCode == 201) {
+  //     return true;
+  //   } else {
+  //     js.context.callMethod('alert', [jsonDecode(responseBody)]);
+  //     print('error message: $responseBody');
+  //     return false;
+  //   }
+  // }
+  //
+  // static Future<bool> updateProduct(List<File?> imageFile, String brandTitle) async {
+  //   // todo: check what happens when null is sent
+  //   var request = http.MultipartRequest("PATCH", Uri.parse("$_hostIP/products"));
+  //   request.headers['Authorization'] = "Bearer $token";
+  //   request.headers['Accept'] = 'application/json';
+  //   var stream = http.ByteStream(imageFile!.openRead());
+  //   var length = await imageFile.length();
+  //   var multipartFile = http.MultipartFile(
+  //     'image',
+  //     stream,
+  //     length,
+  //     filename: basename(imageFile.path),
+  //   );
+  //   request.fields.addAll({
+  //     'title': brandTitle,
+  //   });
+  //   request.files.add(multipartFile);
+  //
+  //   var response = await request.send();
+  //   var responseBody = await response.stream.bytesToString();
+  //
+  //   if (response.statusCode == 200 || response.statusCode == 201) {
+  //     return true;
+  //   } else {
+  //     js.context.callMethod('alert', [jsonDecode(responseBody)]);
+  //     print('error message: $responseBody');
+  //     return false;
+  //   }
+  // }
+
+  static Future<List<ProductModel>?> fetchAllProducts() async {
+    var response = await client.get(
+      Uri.parse("$_hostIP/products"),
+      headers: {
+        'Content-Type': 'application/json',
+        "Accept": 'application/json',
+        "Authorization": "Bearer $token",
+      },
+    );
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return productModelFromJson(response.body);
+    } else if (response.statusCode == 401 || response.statusCode == 403) {
+      return null;
+    } else {
+      js.context.callMethod('alert', [jsonDecode(response.body)["message"]]);
+      return null;
+    }
+  }
+
+  static Future<ProductModel?> fetchProduct(int id) async {
+    var response = await client.get(
+      Uri.parse("$_hostIP/products/$id"),
+      headers: {
+        'Content-Type': 'application/json',
+        "Accept": 'application/json',
+        "Authorization": "Bearer $token",
+      },
+    );
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return ProductModel.fromJson(jsonDecode(response.body));
+    } else if (response.statusCode == 401 || response.statusCode == 403) {
+      return null;
+    } else {
+      js.context.callMethod('alert', [jsonDecode(response.body)["message"]]);
+      return null;
+    }
+  }
+
+  static Future<bool> deleteProduct(int id) async {
+    var response = await client.delete(
+      Uri.parse('$_hostIP/products'),
+      headers: {
+        'Content-Type': 'application/json',
+        "Accept": 'application/json',
+        "Authorization": "Bearer $token",
+      },
+    );
+    if (response.statusCode == 204) {
+      return true;
+    } else if (response.statusCode == 401 || response.statusCode == 403) {
+      return false;
+    } else {
+      js.context.callMethod('alert', [jsonDecode(response.body)["message"]]);
+      return false;
+    }
+  }
+
+  static Future<List<ProductModel>?> searchProducts(String query) async {
+    var response = await client.get(
+      Uri.parse("$_hostIP/products/search/$query"),
+      headers: {
+        'Content-Type': 'application/json',
+        "Accept": 'application/json',
+        "Authorization": "Bearer $token",
+      },
+    );
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return productModelFromJson(response.body);
+    } else if (response.statusCode == 401 || response.statusCode == 403) {
+      return null;
+    } else {
+      js.context.callMethod('alert', [jsonDecode(response.body)["message"]]);
+      return null;
     }
   }
 }

@@ -19,6 +19,7 @@ class Layout extends StatelessWidget {
     LocaleController lC = LocaleController();
     SideMenuController mC = Get.put(SideMenuController());
     return Scaffold(
+      backgroundColor: cs.background,
       appBar: AppBar(
         elevation: Get.isDarkMode ? 0 : 2,
         shadowColor: Colors.grey,

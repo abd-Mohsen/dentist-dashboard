@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
       theme: MyThemes.myLightMode,
       darkTheme: MyThemes.myDarkMode,
       themeMode: t.getThemeMode(),
-      home: const LoginView(),
+      //home: const RedirectPage(),
       initialRoute: '/',
       getPages: [
         GetPage(name: '/', page: () => RedirectPage()),

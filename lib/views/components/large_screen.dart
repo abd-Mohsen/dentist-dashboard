@@ -22,36 +22,38 @@ class LargeScreen extends StatelessWidget {
                 padding: const EdgeInsets.only(top: 8),
                 itemCount: con.sideMenuItems.length,
                 itemBuilder: (context, i) => SideMenuCard(
-                  onTap: () {
-                    con.toggleActiveItem(con.sideMenuItems[i]);
-                    print(Get.currentRoute.contains("${con.sideMenuItems[i].route}"));
-                    print(con.sideMenuItems[i].route);
-                    print(Get.currentRoute);
-                  },
-                  title: Text(
-                    con.sideMenuItems[i].title,
-                    style:
-                        // con.sideMenuItems[i].isSelected
-                        //     ? tt.titleMedium!.copyWith(color: cs.onPrimary, fontWeight: FontWeight.bold) :
-                        tt.titleMedium!.copyWith(color: cs.onPrimary),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  icon: Icon(
-                    con.sideMenuItems[i].icon,
-                    size: 25,
-                    color: cs.onPrimary.withOpacity(0.8),
-                  ),
-                  isSelected:
-                      con.sideMenuItems[i].isSelected && Get.currentRoute.contains("${con.sideMenuItems[i].route}"),
-                ),
+                    onTap: () {
+                      con.toggleActiveItem(con.sideMenuItems[i]);
+                      // print(Get.currentRoute.contains("${con.sideMenuItems[i].route}"));
+                      // print(con.sideMenuItems[i].route);
+                      // print(Get.currentRoute);
+                    },
+                    title: Text(
+                      con.sideMenuItems[i].title,
+                      style:
+                          // con.sideMenuItems[i].isSelected
+                          //     ? tt.titleMedium!.copyWith(color: cs.onPrimary, fontWeight: FontWeight.bold) :
+                          tt.titleMedium!.copyWith(color: cs.onPrimary),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    icon: Icon(
+                      con.sideMenuItems[i].icon,
+                      size: 25,
+                      color: cs.onPrimary.withOpacity(0.8),
+                    ),
+                    isSelected: con.sideMenuItems[i].isSelected
+                    //&& Get.currentRoute.contains("${con.sideMenuItems[i].route}"),
+                    ),
               ),
             ),
           ),
         ),
         Expanded(
           flex: 5,
-          child: Container(color: cs.background),
+          child: GetBuilder<SideMenuController>(
+            builder: (con) => con.selectedTab,
+          ),
         ),
       ],
     );
