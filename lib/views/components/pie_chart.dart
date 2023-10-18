@@ -14,8 +14,8 @@ class PieChartSampleState extends State {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 350,
-      height: 350,
+      width: 300,
+      height: 300,
       child: PieChart(
         PieChartData(
           pieTouchData: PieTouchData(
@@ -74,7 +74,7 @@ class PieChartSampleState extends State {
             );
           case 1:
             return PieChartSectionData(
-              color: Colors.grey,
+              color: Colors.brown,
               value: 30,
               title: '30%',
               radius: radius,
@@ -93,7 +93,7 @@ class PieChartSampleState extends State {
             );
           case 2:
             return PieChartSectionData(
-              color: Colors.purple,
+              color: Colors.blue,
               value: 60,
               title: '60%',
               radius: radius,

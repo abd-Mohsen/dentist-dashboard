@@ -1,4 +1,5 @@
 import 'package:dentist_dashboard/services/responsiveness.dart';
+import 'package:dentist_dashboard/views/components/chart_container.dart';
 import 'package:dentist_dashboard/views/components/info_card.dart';
 import 'package:dentist_dashboard/views/components/pie_chart.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -66,32 +67,133 @@ class HomeView extends StatelessWidget {
     return ListView(
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 40),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: ResponsiveWidget.isMed(context) ? med() : large(),
           ),
         ),
+
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 24, vertical: 40),
+          padding: EdgeInsets.symmetric(horizontal: 24),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Container(
-                decoration: BoxDecoration(
-                  color: cs.surface,
-                ),
-                child: Column(
+              ChartContainer(
+                chart: PieChartSample(),
+                title: "users roles",
+                subTitle: "for more details about users check '"
+                    "manage users' tab.",
+                legends: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        "users roles" + ":",
-                        style: tt.headlineSmall!.copyWith(color: cs.onBackground),
+                      padding: const EdgeInsets.all(4.0),
+                      child: Row(
+                        children: [
+                          CircleAvatar(
+                            backgroundColor: Colors.red,
+                            radius: 7,
+                          ),
+                          SizedBox(width: 8),
+                          Text(
+                            "admins",
+                            style: tt.labelLarge!.copyWith(color: cs.onSurface),
+                          )
+                        ],
                       ),
                     ),
-                    PieChartSample(),
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Row(
+                        children: [
+                          CircleAvatar(
+                            backgroundColor: Colors.blue,
+                            radius: 7,
+                          ),
+                          SizedBox(width: 8),
+                          Text(
+                            "dentists",
+                            style: tt.labelLarge!.copyWith(color: cs.onSurface),
+                          )
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Row(
+                        children: [
+                          CircleAvatar(
+                            backgroundColor: Colors.brown,
+                            radius: 7,
+                          ),
+                          SizedBox(width: 8),
+                          Text(
+                            "suppliers",
+                            style: tt.labelLarge!.copyWith(color: cs.onSurface),
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              ChartContainer(
+                chart: PieChartSample(),
+                title: "users roles",
+                subTitle: "for more details about users check '"
+                    "manage users' tab.",
+                legends: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Row(
+                        children: [
+                          CircleAvatar(
+                            backgroundColor: Colors.red,
+                            radius: 7,
+                          ),
+                          SizedBox(width: 8),
+                          Text(
+                            "admins",
+                            style: tt.labelLarge!.copyWith(color: cs.onSurface),
+                          )
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Row(
+                        children: [
+                          CircleAvatar(
+                            backgroundColor: Colors.blue,
+                            radius: 7,
+                          ),
+                          SizedBox(width: 8),
+                          Text(
+                            "dentists",
+                            style: tt.labelLarge!.copyWith(color: cs.onSurface),
+                          )
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Row(
+                        children: [
+                          CircleAvatar(
+                            backgroundColor: Colors.brown,
+                            radius: 7,
+                          ),
+                          SizedBox(width: 8),
+                          Text(
+                            "suppliers",
+                            style: tt.labelLarge!.copyWith(color: cs.onSurface),
+                          )
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
