@@ -1,4 +1,5 @@
 import 'package:dentist_dashboard/services/responsiveness.dart';
+import 'package:dentist_dashboard/views/components/bar_chart.dart';
 import 'package:dentist_dashboard/views/components/chart_container.dart';
 import 'package:dentist_dashboard/views/components/info_card.dart';
 import 'package:dentist_dashboard/views/components/pie_chart.dart';
@@ -79,122 +80,128 @@ class HomeView extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              ChartContainer(
-                chart: PieChartSample(),
-                title: "users roles",
-                subTitle: "for more details about users check '"
-                    "manage users' tab.",
-                legends: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: Row(
-                        children: [
-                          CircleAvatar(
-                            backgroundColor: Colors.red,
-                            radius: 7,
-                          ),
-                          SizedBox(width: 8),
-                          Text(
-                            "admins",
-                            style: tt.labelLarge!.copyWith(color: cs.onSurface),
-                          )
-                        ],
+              Expanded(
+                flex: 60,
+                child: ChartContainer(
+                  chart: BarChartSample(),
+                  title: "users roles",
+                  subTitle: "for more details about users check '"
+                      "manage users' tab.",
+                  legends: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Row(
+                          children: [
+                            CircleAvatar(
+                              backgroundColor: Colors.red,
+                              radius: 7,
+                            ),
+                            SizedBox(width: 8),
+                            Text(
+                              "admins",
+                              style: tt.labelLarge!.copyWith(color: cs.onSurface),
+                            )
+                          ],
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: Row(
-                        children: [
-                          CircleAvatar(
-                            backgroundColor: Colors.blue,
-                            radius: 7,
-                          ),
-                          SizedBox(width: 8),
-                          Text(
-                            "dentists",
-                            style: tt.labelLarge!.copyWith(color: cs.onSurface),
-                          )
-                        ],
+                      Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Row(
+                          children: [
+                            CircleAvatar(
+                              backgroundColor: Colors.blue,
+                              radius: 7,
+                            ),
+                            SizedBox(width: 8),
+                            Text(
+                              "dentists",
+                              style: tt.labelLarge!.copyWith(color: cs.onSurface),
+                            )
+                          ],
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: Row(
-                        children: [
-                          CircleAvatar(
-                            backgroundColor: Colors.brown,
-                            radius: 7,
-                          ),
-                          SizedBox(width: 8),
-                          Text(
-                            "suppliers",
-                            style: tt.labelLarge!.copyWith(color: cs.onSurface),
-                          )
-                        ],
+                      Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Row(
+                          children: [
+                            CircleAvatar(
+                              backgroundColor: Colors.brown,
+                              radius: 7,
+                            ),
+                            SizedBox(width: 8),
+                            Text(
+                              "suppliers",
+                              style: tt.labelLarge!.copyWith(color: cs.onSurface),
+                            )
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-              ChartContainer(
-                chart: PieChartSample(),
-                title: "users roles",
-                subTitle: "for more details about users check '"
-                    "manage users' tab.",
-                legends: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: Row(
-                        children: [
-                          CircleAvatar(
-                            backgroundColor: Colors.red,
-                            radius: 7,
-                          ),
-                          SizedBox(width: 8),
-                          Text(
-                            "admins",
-                            style: tt.labelLarge!.copyWith(color: cs.onSurface),
-                          )
-                        ],
+              Expanded(
+                flex: 40,
+                child: ChartContainer(
+                  chart: PieChartSample(),
+                  title: "users roles",
+                  subTitle: "for more details about users check '"
+                      "manage users' tab.",
+                  legends: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Row(
+                          children: [
+                            CircleAvatar(
+                              backgroundColor: Colors.red,
+                              radius: 7,
+                            ),
+                            SizedBox(width: 8),
+                            Text(
+                              "admins",
+                              style: tt.labelLarge!.copyWith(color: cs.onSurface),
+                            )
+                          ],
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: Row(
-                        children: [
-                          CircleAvatar(
-                            backgroundColor: Colors.blue,
-                            radius: 7,
-                          ),
-                          SizedBox(width: 8),
-                          Text(
-                            "dentists",
-                            style: tt.labelLarge!.copyWith(color: cs.onSurface),
-                          )
-                        ],
+                      Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Row(
+                          children: [
+                            CircleAvatar(
+                              backgroundColor: Colors.blue,
+                              radius: 7,
+                            ),
+                            SizedBox(width: 8),
+                            Text(
+                              "dentists",
+                              style: tt.labelLarge!.copyWith(color: cs.onSurface),
+                            )
+                          ],
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: Row(
-                        children: [
-                          CircleAvatar(
-                            backgroundColor: Colors.brown,
-                            radius: 7,
-                          ),
-                          SizedBox(width: 8),
-                          Text(
-                            "suppliers",
-                            style: tt.labelLarge!.copyWith(color: cs.onSurface),
-                          )
-                        ],
+                      Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Row(
+                          children: [
+                            CircleAvatar(
+                              backgroundColor: Colors.brown,
+                              radius: 7,
+                            ),
+                            SizedBox(width: 8),
+                            Text(
+                              "suppliers",
+                              style: tt.labelLarge!.copyWith(color: cs.onSurface),
+                            )
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ],

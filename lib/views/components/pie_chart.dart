@@ -14,7 +14,7 @@ class PieChartSampleState extends State {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 300,
+      //width: 300,
       height: 300,
       child: PieChart(
         PieChartData(
