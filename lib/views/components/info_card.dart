@@ -32,7 +32,7 @@ class InfoCard extends StatelessWidget {
         ),
         borderRadius: BorderRadius.circular(5),
       ),
-      margin: const EdgeInsets.all(8.0),
+      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
