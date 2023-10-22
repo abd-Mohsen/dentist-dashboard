@@ -10,7 +10,7 @@ import 'package:http/http.dart' as http;
 import '../models/user_model.dart';
 
 class RemoteServices {
-  static const String _hostIP = "http://10.0.2.2:8000/api";
+  static const String _hostIP = "http://127.0.0.1:8000/api";
   static http.Client client = http.Client();
   static String get token => html.window.localStorage["token"] ?? "no token";
 
@@ -59,7 +59,7 @@ class RemoteServices {
       print(response.body);
       return jsonDecode(response.body)["access_token"];
     } else {
-      js.context.callMethod('alert', [jsonDecode(response.body)["message"]]);
+      //js.context.callMethod('alert', [jsonDecode(response.body)["message"]]);
       return null;
     }
   }
@@ -215,6 +215,7 @@ class RemoteServices {
         "Authorization": "Bearer $token",
       },
     );
+    //print(response.body);
     if (response.statusCode == 200 || response.statusCode == 201) {
       return UserModel.fromJson(jsonDecode(response.body));
     } else if (response.statusCode == 401 || response.statusCode == 403) {

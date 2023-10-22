@@ -17,7 +17,7 @@ class LoginView extends StatelessWidget {
 
     Widget login() => FlutterLogin(
           title: 'Welcome Admin',
-          onLogin: lC.authUser,
+          onLogin: lC.login,
           //onSignup: _signupUser,
           hideForgotPasswordButton: true,
           onSubmitAnimationCompleted: () {
@@ -40,34 +40,34 @@ class LoginView extends StatelessWidget {
 
     return Scaffold(
       body: ResponsiveWidget(
-          largeWidget: Row(
-            children: [
-              Expanded(
-                child: Material(
-                  color: cs.primary,
-                  child: Center(
-                    // child: Column(
-                    //   mainAxisAlignment: MainAxisAlignment.center,
-                    //   children: [
-                    //     Icon(Icons.shopping_cart, size: 150, color: cs.background),
-                    //     const SizedBox(height: 20),
-                    //     Text(
-                    //       "Dashboard",
-                    //       style: tt.displayLarge!.copyWith(color: cs.background),
-                    //     ),
-                    //   ],
-                    // ),
-                    child:
-                        Image.asset(Get.isDarkMode ? "assets/images/logo_black.png" : "assets/images/logo_white.png"),
-                  ),
+        largeWidget: Row(
+          children: [
+            Expanded(
+              child: Material(
+                color: cs.primary,
+                child: Center(
+                  // child: Column(
+                  //   mainAxisAlignment: MainAxisAlignment.center,
+                  //   children: [
+                  //     Icon(Icons.shopping_cart, size: 150, color: cs.background),
+                  //     const SizedBox(height: 20),
+                  //     Text(
+                  //       "Dashboard",
+                  //       style: tt.displayLarge!.copyWith(color: cs.background),
+                  //     ),
+                  //   ],
+                  // ),
+                  child: Image.asset(Get.isDarkMode ? "assets/images/logo_black.png" : "assets/images/logo_white.png"),
                 ),
               ),
-              Expanded(
-                child: login(),
-              )
-            ],
-          ),
-          smallWidget: login()),
+            ),
+            Expanded(
+              child: login(),
+            )
+          ],
+        ),
+        smallWidget: login(),
+      ),
     );
   }
 }

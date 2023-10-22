@@ -8,3 +8,5 @@ const String kProductsViewRoute = "products";
 const String kUsersViewRoute = "users";
 const String kOrdersViewRoute = "orders";
 const String kAnalyticsViewRoute = "analytics";
+
+Duration kTimeOutDuration = const Duration(seconds: 15);

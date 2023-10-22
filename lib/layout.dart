@@ -1,3 +1,4 @@
+import 'package:dentist_dashboard/controllers/home_controller.dart';
 import 'package:dentist_dashboard/controllers/side_menu_controller.dart';
 import 'package:dentist_dashboard/controllers/theme_controller.dart';
 import 'package:dentist_dashboard/services/responsiveness.dart';
@@ -9,8 +10,8 @@ import 'package:get/get.dart';
 import 'controllers/locale_controller.dart';
 
 class Layout extends StatelessWidget {
-  Layout({super.key});
-  final GlobalKey<ScaffoldState>? scaffoldKey = GlobalKey();
+  const Layout({super.key});
+  //final GlobalKey<ScaffoldState>? scaffoldKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +19,7 @@ class Layout extends StatelessWidget {
     TextTheme tt = Theme.of(context).textTheme;
     LocaleController lC = LocaleController();
     SideMenuController mC = Get.put(SideMenuController());
+    HomeController hC = Get.put(HomeController());
     return Scaffold(
       backgroundColor: cs.background,
       appBar: AppBar(
@@ -32,128 +34,88 @@ class Layout extends StatelessWidget {
           ),
         ),
         actions: [
-          Row(
-            children: [
-              PopupMenuButton(
-                shape: RoundedRectangleBorder(
-                  //side: const BorderSide(width: 0.5),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                tooltip: "settings".tr,
-                icon: Icon(
-                  Icons.settings,
-                  color: cs.onSurface,
-                  //semanticLabel: "notifications",
-                ),
-                position: PopupMenuPosition.under,
-                itemBuilder: (context) => [
-                  PopupMenuItem(
-                    child: ListTile(
-                      title: Text(
-                        "dark theme".tr,
-                        style: tt.labelLarge!.copyWith(color: Colors.black),
-                      ),
-                      leading: const Icon(
-                        Icons.dark_mode_outlined,
-                        color: Colors.black,
-                      ),
-                      trailing: GetBuilder<ThemeController>(
-                        init: ThemeController(),
-                        builder: (con) => Switch(
-                          value: con.switchValue,
-                          onChanged: (bool value) {
-                            con.updateTheme(value);
-                          },
-                        ),
-                      ),
-                    ),
-                  ),
-                  PopupMenuItem(
-                    child: ListTile(
-                      leading: const Icon(
-                        Icons.language,
-                        color: Colors.black,
-                      ),
-                      title: DropdownButton(
-                        elevation: 50,
-                        iconEnabledColor: Colors.black,
-                        dropdownColor: Get.isDarkMode ? cs.surface : Colors.grey.shade200,
-                        hint: Text(
-                          lC.getCurrentLanguageLabel(),
-                          style: tt.labelLarge!.copyWith(color: Colors.black),
-                        ),
-                        //button label is updating cuz whole app is rebuilt after changing locale
-                        items: [
-                          DropdownMenuItem(
-                            value: "ar",
-                            child: Text("Arabic ".tr),
-                          ),
-                          DropdownMenuItem(
-                            value: "en",
-                            child: Text("English ".tr),
-                          ),
-                        ],
-                        onChanged: (val) {
-                          lC.updateLocale(val!);
-                        },
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              PopupMenuButton(
-                shape: RoundedRectangleBorder(
-                  //side: const BorderSide(width: 0.5),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                tooltip: "notifications".tr,
-                icon: Badge(
-                  child: Icon(
-                    Icons.notifications,
-                    color: cs.onSurface,
-                    //semanticLabel: "notifications",
-                  ),
-                ),
-                position: PopupMenuPosition.under,
-                itemBuilder: (context) => [
-                  PopupMenuItem(
-                    child: ListTile(),
-                  ),
-                ],
-              ),
-              Visibility(
-                visible: !ResponsiveWidget.isSmall(context),
-                child: VerticalDivider(
-                  thickness: 2,
-                  color: cs.onSurface.withOpacity(0.3),
-                  width: 30,
-                  indent: 15,
-                  endIndent: 15,
-                ),
-              ),
-              Visibility(
-                visible: !ResponsiveWidget.isSmall(context),
-                child: Text(
-                  "abd Mohsen",
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                  style: tt.titleSmall!.copyWith(color: cs.onSurface.withOpacity(0.5)),
-                ),
-              ),
-              const SizedBox(width: 16),
-              CircleAvatar(
-                radius: 20,
-                backgroundColor: cs.secondary,
-                child: PopupMenuButton(
+          GetBuilder<HomeController>(builder: (con) {
+            return Row(
+              children: [
+                PopupMenuButton(
                   shape: RoundedRectangleBorder(
                     //side: const BorderSide(width: 0.5),
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  tooltip: "profile".tr,
+                  tooltip: "settings".tr,
                   icon: Icon(
-                    Icons.person,
+                    Icons.settings,
                     color: cs.onSurface,
                     //semanticLabel: "notifications",
+                  ),
+                  position: PopupMenuPosition.under,
+                  itemBuilder: (context) => [
+                    PopupMenuItem(
+                      child: ListTile(
+                        title: Text(
+                          "dark theme".tr,
+                          style: tt.labelLarge!.copyWith(color: Colors.black),
+                        ),
+                        leading: const Icon(
+                          Icons.dark_mode_outlined,
+                          color: Colors.black,
+                        ),
+                        trailing: GetBuilder<ThemeController>(
+                          init: ThemeController(),
+                          builder: (con) => Switch(
+                            value: con.switchValue,
+                            onChanged: (bool value) {
+                              con.updateTheme(value);
+                            },
+                          ),
+                        ),
+                      ),
+                    ),
+                    PopupMenuItem(
+                      child: ListTile(
+                        leading: const Icon(
+                          Icons.language,
+                          color: Colors.black,
+                        ),
+                        title: DropdownButton(
+                          elevation: 50,
+                          iconEnabledColor: Colors.black,
+                          dropdownColor: Get.isDarkMode ? cs.surface : Colors.grey.shade200,
+                          hint: Text(
+                            lC.getCurrentLanguageLabel(),
+                            style: tt.labelLarge!.copyWith(color: Colors.black),
+                          ),
+                          //button label is updating cuz whole app is rebuilt after changing locale
+                          items: [
+                            DropdownMenuItem(
+                              value: "ar",
+                              child: Text("Arabic ".tr),
+                            ),
+                            DropdownMenuItem(
+                              value: "en",
+                              child: Text("English ".tr),
+                            ),
+                          ],
+                          onChanged: (val) {
+                            lC.updateLocale(val!);
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                PopupMenuButton(
+                  shape: RoundedRectangleBorder(
+                    //side: const BorderSide(width: 0.5),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  tooltip: "notifications".tr,
+                  icon: Badge(
+                    child: Icon(
+                      Icons.notifications,
+                      color: cs.onSurface,
+                      //semanticLabel: "notifications",
+                    ),
                   ),
                   position: PopupMenuPosition.under,
                   itemBuilder: (context) => [
@@ -162,10 +124,54 @@ class Layout extends StatelessWidget {
                     ),
                   ],
                 ),
-              ),
-              const SizedBox(width: 16),
-            ],
-          ),
+                Visibility(
+                  visible: !ResponsiveWidget.isSmall(context),
+                  child: VerticalDivider(
+                    thickness: 2,
+                    color: cs.onSurface.withOpacity(0.3),
+                    width: 30,
+                    indent: 15,
+                    endIndent: 15,
+                  ),
+                ),
+                Visibility(
+                  visible: !ResponsiveWidget.isSmall(context),
+                  child: con.loadingProfile //todo: maybe not fetched
+                      ? CircularProgressIndicator()
+                      : Text(
+                          con.currentUser.name,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                          style: tt.titleSmall!.copyWith(color: cs.onSurface.withOpacity(0.5)),
+                        ),
+                ),
+                const SizedBox(width: 16),
+                CircleAvatar(
+                  radius: 20,
+                  backgroundColor: cs.secondary,
+                  child: PopupMenuButton(
+                    shape: RoundedRectangleBorder(
+                      //side: const BorderSide(width: 0.5),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    tooltip: "profile".tr,
+                    icon: Icon(
+                      Icons.person,
+                      color: cs.onSurface,
+                      //semanticLabel: "notifications",
+                    ),
+                    position: PopupMenuPosition.under,
+                    itemBuilder: (context) => [
+                      PopupMenuItem(
+                        child: ListTile(),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(width: 16),
+              ],
+            );
+          }),
         ],
         leading: ResponsiveWidget.isSmall(context)
             ? Builder(

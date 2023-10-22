@@ -58,7 +58,7 @@ class InfoCard extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12.0),
-            child: Icon(cardIcon, size: 50),
+            child: Icon(cardIcon, size: 42),
           ),
         ],
       ),

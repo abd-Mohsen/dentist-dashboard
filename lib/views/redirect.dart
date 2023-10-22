@@ -12,7 +12,7 @@ class RedirectPage extends StatelessWidget {
     // Redirect to the dashboard page or any other default page
     // based on your authentication status or other logic
     final isAuthenticated = window.localStorage["token"] != null;
-    //return isAuthenticated ? Layout() : LoginView();
-    return Layout();
+    return isAuthenticated ? const Layout() : const LoginView();
+    //return Layout();
   }
 }
