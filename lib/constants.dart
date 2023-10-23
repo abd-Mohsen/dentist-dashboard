@@ -9,4 +9,6 @@ const String kUsersViewRoute = "users";
 const String kOrdersViewRoute = "orders";
 const String kAnalyticsViewRoute = "analytics";
 
+const String kHostIP = "http://127.0.0.1:8000";
+
 Duration kTimeOutDuration = const Duration(seconds: 15);

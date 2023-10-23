@@ -570,13 +570,14 @@ class RemoteServices {
 
   static Future<List<ProductModel>?> searchProducts(String query) async {
     var response = await client.get(
-      Uri.parse("$_hostIP/products/search/$query"),
+      Uri.parse("$_hostIP/products/search/$query"), //todo: user cant type slash in beginning of query or empty query
       headers: {
         'Content-Type': 'application/json',
         "Accept": 'application/json',
         "Authorization": "Bearer $token",
       },
     );
+    print(response.body);
     if (response.statusCode == 200 || response.statusCode == 201) {
       return productModelFromJson(response.body);
     } else if (response.statusCode == 401 || response.statusCode == 403) {

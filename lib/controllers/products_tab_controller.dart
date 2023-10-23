@@ -1,5 +1,6 @@
 import 'package:dentist_dashboard/models/brand_model.dart';
 import 'package:dentist_dashboard/models/product_model.dart';
+import 'package:dentist_dashboard/services/remote_services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
@@ -41,7 +42,9 @@ class ProductsTabController extends GetxController {
 
   Future search() async {
     _searchResult.clear();
-    _searchResult.addAll([]);
+    if (searchController.text.trim() != "") {
+      _searchResult.addAll((await RemoteServices.searchProducts(searchController.text))!);
+    }
     update();
   }
 }

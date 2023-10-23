@@ -9,7 +9,7 @@ class UserModel {
   final String name;
   final String email;
   final String phone;
-  final String image;
+  final String? image;
   final String role;
   final bool isVerified;
 

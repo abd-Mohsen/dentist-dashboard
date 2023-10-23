@@ -1,3 +1,4 @@
+import 'package:dentist_dashboard/constants.dart';
 import 'package:dentist_dashboard/controllers/products_tab_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -60,24 +61,30 @@ class ProductsView extends StatelessWidget {
                     child: Scrollbar(
                       controller: suggestionsScrollController,
                       thumbVisibility: true,
-                      child: ListView.builder(
-                        controller: suggestionsScrollController,
-                        itemCount: 4, // Replace with the actual number of suggestions
-                        itemBuilder: (context, i) => Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: InkWell(
-                            onTap: () {},
-                            child: ListTile(
-                              title: Text(
-                                "a product",
-                                style: tt.titleMedium!.copyWith(color: cs.onSurface),
+                      child: con.searchResult.isEmpty
+                          ? Center(child: Text("no result"))
+                          : ListView.builder(
+                              controller: suggestionsScrollController,
+                              itemCount: con.searchResult.length, // Replace with the actual number of suggestions
+                              itemBuilder: (context, i) => Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: InkWell(
+                                  onTap: () {},
+                                  child: ListTile(
+                                    title: Text(
+                                      con.searchResult[i].title,
+                                      style: tt.titleMedium!.copyWith(color: cs.onSurface),
+                                    ),
+                                    leading: Image.network(
+                                      "$kHostIP/${con.searchResult[i].images[0].path}",
+                                    ),
+                                    onTap: () {
+                                      print("$kHostIP/${con.searchResult[i].images[0].path}");
+                                    },
+                                  ),
+                                ),
                               ),
-                              leading: Image.network(
-                                  "https://static.vecteezy.com/system/resources/previews/000/223/713/original/vector-realistic-dentist-tools-and-tooth-healthcare-equipment-set.jpg"),
                             ),
-                          ),
-                        ),
-                      ),
                     ),
                   ),
               ],

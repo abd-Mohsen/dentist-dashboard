@@ -134,17 +134,18 @@ class Layout extends StatelessWidget {
                     endIndent: 15,
                   ),
                 ),
-                Visibility(
-                  visible: !ResponsiveWidget.isSmall(context),
-                  child: con.loadingProfile //todo: maybe not fetched
-                      ? CircularProgressIndicator()
-                      : Text(
-                          con.currentUser.name,
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
-                          style: tt.titleSmall!.copyWith(color: cs.onSurface.withOpacity(0.5)),
-                        ),
-                ),
+                if (con.fetchedProfile) // if i do it in visibility the whole appbar crashes
+                  Visibility(
+                    visible: !ResponsiveWidget.isSmall(context),
+                    child: con.loadingProfile
+                        ? CircularProgressIndicator()
+                        : Text(
+                            con.currentUser.name,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                            style: tt.titleSmall!.copyWith(color: cs.onSurface.withOpacity(0.5)),
+                          ),
+                  ),
                 const SizedBox(width: 16),
                 CircleAvatar(
                   radius: 20,
@@ -152,7 +153,7 @@ class Layout extends StatelessWidget {
                   child: PopupMenuButton(
                     shape: RoundedRectangleBorder(
                       //side: const BorderSide(width: 0.5),
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(7),
                     ),
                     tooltip: "profile".tr,
                     icon: Icon(
@@ -163,7 +164,60 @@ class Layout extends StatelessWidget {
                     position: PopupMenuPosition.under,
                     itemBuilder: (context) => [
                       PopupMenuItem(
-                        child: ListTile(),
+                        enabled: false,
+                        child: Column(
+                          children: [
+                            ListTile(
+                              leading: CircleAvatar(
+                                radius: 25,
+                                backgroundColor: cs.onSecondary,
+                              ),
+                              title: Text(
+                                con.currentUser.name,
+                                style: tt.labelLarge!.copyWith(color: cs.onSurface),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              subtitle: Text(
+                                con.currentUser.email,
+                                style: tt.labelMedium!.copyWith(color: cs.onSurface.withOpacity(0.6)),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            Divider(color: cs.onSurface),
+                          ],
+                        ),
+                      ),
+                      PopupMenuItem(
+                        child: ListTile(
+                          leading: Icon(
+                            Icons.edit,
+                            color: cs.onSurface,
+                            size: 20,
+                          ),
+                          title: Text(
+                            "edit profile",
+                            style: tt.labelSmall!.copyWith(color: cs.onSurface),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ),
+                      PopupMenuItem(
+                        child: ListTile(
+                          leading: Icon(
+                            Icons.logout_sharp,
+                            color: cs.error,
+                            size: 20,
+                          ),
+                          title: Text(
+                            "Sign out",
+                            style: tt.labelSmall!.copyWith(color: cs.onSurface),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
                       ),
                     ],
                   ),

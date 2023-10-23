@@ -24,7 +24,7 @@ class HomeController extends GetxController {
   }
 
   bool _fetchedProfile = false;
-  bool get fetchedProfile => _loadingProfile;
+  bool get fetchedProfile => _fetchedProfile;
 
   void toggleFetched(bool val) {
     _fetchedProfile = val;
