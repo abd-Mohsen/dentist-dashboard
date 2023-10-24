@@ -5,6 +5,6 @@ class PhoneView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(child: Text('phone'));
+    return const Center(child: Text('phone'));
   }
 }

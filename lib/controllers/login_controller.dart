@@ -9,7 +9,7 @@ import 'package:get/get.dart';
 class LoginController extends GetxController {
   Future<String?>? login(LoginData data) {
     try {
-      return RemoteServices.login(data.name, data.password).timeout(Duration(seconds: 15)).then((String? token) {
+      return RemoteServices.login(data.name, data.password).timeout(const Duration(seconds: 15)).then((String? token) {
         if (token == null) return 'wrong credentials'.tr;
         html.window.localStorage["token"] = token;
         return null;

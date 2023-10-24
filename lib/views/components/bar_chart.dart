@@ -2,7 +2,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 class BarChartSample extends StatefulWidget {
-  BarChartSample({super.key});
+  const BarChartSample({super.key});
 
   final Color color = Colors.black;
 

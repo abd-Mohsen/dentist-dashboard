@@ -1,4 +1,3 @@
-import 'package:dentist_dashboard/constants.dart';
 import 'package:dentist_dashboard/controllers/navigation_controller.dart';
 import 'package:dentist_dashboard/layout.dart';
 import 'package:dentist_dashboard/themes.dart';
@@ -9,12 +8,14 @@ import 'package:dentist_dashboard/views/orders_tabs/orders_view.dart';
 import 'package:dentist_dashboard/views/product_tabs/products_view.dart';
 import 'package:dentist_dashboard/views/redirect.dart';
 import 'package:dentist_dashboard/views/users_tabs/users_view.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'controllers/locale_controller.dart';
 import 'controllers/theme_controller.dart';
 
 void main() {
+  //debugDefaultTargetPlatformOverride = TargetPlatform.fuchsia;
   runApp(const MyApp());
 }
 
@@ -36,14 +37,14 @@ class MyApp extends StatelessWidget {
       //home: const RedirectPage(),
       initialRoute: '/',
       getPages: [
-        GetPage(name: '/', page: () => RedirectPage()),
+        GetPage(name: '/', page: () => const RedirectPage()),
         GetPage(name: '/login', page: () => const LoginView()),
-        GetPage(name: '/dashboard', page: () => Layout()),
-        GetPage(name: '/home', page: () => HomeView()),
-        GetPage(name: '/products', page: () => ProductsView()),
-        GetPage(name: '/users', page: () => UsersView()),
-        GetPage(name: '/orders', page: () => OrdersView()),
-        GetPage(name: '/analytics', page: () => AnalyticsView()),
+        GetPage(name: '/dashboard', page: () => const Layout()),
+        GetPage(name: '/home', page: () => const HomeView()),
+        GetPage(name: '/products', page: () => const ProductsView()),
+        GetPage(name: '/users', page: () => const UsersView()),
+        GetPage(name: '/orders', page: () => const OrdersView()),
+        GetPage(name: '/analytics', page: () => const AnalyticsView()),
       ],
     );
   }

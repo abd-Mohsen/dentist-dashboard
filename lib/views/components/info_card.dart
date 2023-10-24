@@ -28,7 +28,7 @@ class InfoCard extends StatelessWidget {
           colors: [cardColor, cs.surface],
           begin: begin,
           end: end,
-          stops: [0.5, 1],
+          stops: const [0.5, 1],
         ),
         borderRadius: BorderRadius.circular(5),
       ),

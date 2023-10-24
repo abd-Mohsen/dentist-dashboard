@@ -5,6 +5,6 @@ class OrdersView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(child: Text('orders'));
+    return const Center(child: Text('orders'));
   }
 }

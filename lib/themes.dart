@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 ///custom themes
 
@@ -208,7 +207,7 @@ class MyThemes {
   static ThemeData myLightMode = ThemeData.light().copyWith(
     colorScheme: ColorScheme(
       brightness: Brightness.light,
-      primary: Color(0xff02979D),
+      primary: const Color(0xff02979D),
       onPrimary: Colors.white,
       secondary: Colors.white,
       onSecondary: Colors.black,

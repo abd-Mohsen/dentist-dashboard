@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:js' as js;
+import 'package:universal_html/html.dart' as html;
 import 'package:dentist_dashboard/constants.dart';
 import 'package:dentist_dashboard/models/user_model.dart';
 import 'package:dentist_dashboard/services/remote_services.dart';
@@ -42,6 +43,19 @@ class HomeController extends GetxController {
       print(e.toString());
     } finally {
       toggleLoading(false);
+    }
+  }
+
+  Future<void> signOut() async {
+    try {
+      if (await RemoteServices.logout().timeout(kTimeOutDuration)) {
+        html.window.localStorage.remove("token");
+        Get.offAllNamed("/login");
+      }
+    } on TimeoutException {
+      js.context.callMethod('alert', ['request timed out']);
+    } catch (e) {
+      print("${e.toString()}================");
     }
   }
 }

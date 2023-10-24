@@ -1,9 +1,7 @@
 import 'package:dentist_dashboard/controllers/login_controller.dart';
-import 'package:dentist_dashboard/layout.dart';
 import 'package:dentist_dashboard/services/responsiveness.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 class LoginView extends StatelessWidget {

@@ -5,6 +5,6 @@ class AnalyticsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(child: Text('analytics'));
+    return const Center(child: Text('analytics'));
   }
 }

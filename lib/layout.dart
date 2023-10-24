@@ -119,7 +119,7 @@ class Layout extends StatelessWidget {
                   ),
                   position: PopupMenuPosition.under,
                   itemBuilder: (context) => [
-                    PopupMenuItem(
+                    const PopupMenuItem(
                       child: ListTile(),
                     ),
                   ],
@@ -138,7 +138,7 @@ class Layout extends StatelessWidget {
                   Visibility(
                     visible: !ResponsiveWidget.isSmall(context),
                     child: con.loadingProfile
-                        ? CircularProgressIndicator()
+                        ? const CircularProgressIndicator()
                         : Text(
                             con.currentUser.name,
                             overflow: TextOverflow.ellipsis,
@@ -198,7 +198,7 @@ class Layout extends StatelessWidget {
                           ),
                           title: Text(
                             "edit profile",
-                            style: tt.labelSmall!.copyWith(color: cs.onSurface),
+                            style: tt.labelLarge!.copyWith(color: cs.onSurface),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -213,11 +213,14 @@ class Layout extends StatelessWidget {
                           ),
                           title: Text(
                             "Sign out",
-                            style: tt.labelSmall!.copyWith(color: cs.onSurface),
+                            style: tt.labelLarge!.copyWith(color: cs.onSurface),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
+                        onTap: () {
+                          con.signOut();
+                        },
                       ),
                     ],
                   ),

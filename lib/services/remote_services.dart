@@ -65,12 +65,13 @@ class RemoteServices {
   }
 
   static Future<bool> logout() async {
-    var response = await client.post(
+    var response = await client.get(
       Uri.parse("$_hostIP/logout"),
-      body: jsonEncode({
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
         "Authorization": "Bearer $token",
-      }),
-      headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
+      },
     );
     if (response.statusCode == 200) {
       return true;
@@ -569,8 +570,9 @@ class RemoteServices {
   }
 
   static Future<List<ProductModel>?> searchProducts(String query) async {
+    String encodedQuery = Uri.encodeFull(query.replaceAll('/', '%2F')); //todo: do the same for (.)
     var response = await client.get(
-      Uri.parse("$_hostIP/products/search/$query"), //todo: user cant type slash in beginning of query or empty query
+      Uri.parse("$_hostIP/products/search/$encodedQuery"),
       headers: {
         'Content-Type': 'application/json',
         "Accept": 'application/json',
