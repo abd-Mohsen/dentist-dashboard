@@ -21,4 +21,26 @@ class LoginController extends GetxController {
     }
     return null;
   }
+
+  Future<String?>? signup(SignupData data) {
+    try {
+      return RemoteServices.register(
+        data.name!,
+        data.password!,
+        data.password!,
+        data.additionalSignupData!["username"]!,
+        data.additionalSignupData!["phone"]!,
+        data.additionalSignupData!["secret"]!,
+      ).timeout(const Duration(seconds: 15)).then((String? token) {
+        if (token == null) return 'invalid input'.tr;
+        html.window.localStorage["token"] = token;
+        return null;
+      });
+    } on TimeoutException {
+      js.context.callMethod('alert', ['request timed out']);
+    } catch (e) {
+      //
+    }
+    return null;
+  }
 }

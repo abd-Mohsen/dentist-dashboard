@@ -6,8 +6,8 @@ import 'package:dentist_dashboard/views/components/my_search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class ProductsView extends StatelessWidget {
-  const ProductsView({super.key});
+class ProductsTab extends StatelessWidget {
+  const ProductsTab({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class ProductsView extends StatelessWidget {
               padding: const EdgeInsets.only(top: 72.0),
               child: ListView(
                 children: [
-                  InfoCard(cardColor: cs.surface, title: "add product", value: "", cardIcon: Icons.add),
+                  Container(),
                 ],
               ),
             ),

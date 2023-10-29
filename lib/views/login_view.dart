@@ -16,8 +16,41 @@ class LoginView extends StatelessWidget {
     Widget login() => FlutterLogin(
           title: 'Welcome Admin',
           onLogin: lC.login,
-          //onSignup: _signupUser,
-          hideForgotPasswordButton: true,
+          onSignup: lC.signup,
+          additionalSignupFields: [
+            UserFormField(
+              keyName: "username",
+              displayName: "user name",
+              icon: Icon(Icons.person),
+              fieldValidator: (String? s) {
+                if (s == null || s == " ") return "cannot be empty";
+                if (s.length < 4) return "must be greater than 3 characters";
+                if (s.length > 50) return "must be less than 50 characters";
+                return null;
+              },
+            ),
+            UserFormField(
+              keyName: "phone",
+              displayName: "phone",
+              icon: Icon(Icons.phone_android),
+              fieldValidator: (String? s) {
+                if (s == null || s == " ") return "cannot be empty";
+                if (s.length < 4) return "must be greater than 3 characters";
+                if (s.length > 10) return "must be less than 10 characters";
+                return null;
+              },
+            ),
+            UserFormField(
+              keyName: "secret",
+              displayName: "secret key",
+              icon: Icon(Icons.key),
+              fieldValidator: (String? s) {
+                if (s == null || s == " ") return "cannot be empty";
+                return null;
+              },
+            ),
+          ],
+          //hideForgotPasswordButton: true,
           onSubmitAnimationCompleted: () {
             Get.offAllNamed('/dashboard');
           },

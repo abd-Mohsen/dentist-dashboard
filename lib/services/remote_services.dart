@@ -36,6 +36,7 @@ class RemoteServices {
       }),
       headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
     );
+    print(response.body);
     if (response.statusCode == 200 || response.statusCode == 201) {
       return jsonDecode(response.body)["access_token"];
     } else {
@@ -56,8 +57,13 @@ class RemoteServices {
       headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
     );
     if (response.statusCode == 200 || response.statusCode == 201) {
-      print(response.body);
-      return jsonDecode(response.body)["access_token"];
+      String accessToken = jsonDecode(response.body)["access_token"];
+      if (jsonDecode(response.body)["role"] != "admin") {
+        js.context.callMethod('alert', ["dashboard is only for admins"]);
+        //todo: log user out (revoke token)
+        return null;
+      }
+      return accessToken;
     } else {
       //js.context.callMethod('alert', [jsonDecode(response.body)["message"]]);
       return null;

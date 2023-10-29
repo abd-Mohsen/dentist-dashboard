@@ -5,7 +5,7 @@ import 'package:dentist_dashboard/views/analytics_tabs/analytics_view.dart';
 import 'package:dentist_dashboard/views/home_tabs/home_view.dart';
 import 'package:dentist_dashboard/views/login_view.dart';
 import 'package:dentist_dashboard/views/orders_tabs/orders_view.dart';
-import 'package:dentist_dashboard/views/product_tabs/products_view.dart';
+import 'package:dentist_dashboard/views/product_tabs/products_tab.dart';
 import 'package:dentist_dashboard/views/redirect.dart';
 import 'package:dentist_dashboard/views/users_tabs/users_view.dart';
 import 'package:flutter/foundation.dart';
@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/login', page: () => const LoginView()),
         GetPage(name: '/dashboard', page: () => const Layout()),
         GetPage(name: '/home', page: () => const HomeView()),
-        GetPage(name: '/products', page: () => const ProductsView()),
+        GetPage(name: '/products', page: () => const ProductsTab()),
         GetPage(name: '/users', page: () => const UsersView()),
         GetPage(name: '/orders', page: () => const OrdersView()),
         GetPage(name: '/analytics', page: () => const AnalyticsView()),
