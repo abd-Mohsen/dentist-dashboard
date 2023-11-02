@@ -5,8 +5,8 @@ import 'package:dentist_dashboard/views/components/info_card.dart';
 import 'package:dentist_dashboard/views/components/pie_chart.dart';
 import 'package:flutter/material.dart';
 
-class HomeView extends StatelessWidget {
-  const HomeView({super.key});
+class HomeTab extends StatelessWidget {
+  const HomeTab({super.key});
 
   @override
   Widget build(BuildContext context) {
