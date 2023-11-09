@@ -24,6 +24,7 @@ class ProductsTabController extends GetxController {
   //todo: make a request every one second or so, not on every query change
   Future search() async {
     _searchResult.clear();
+    await Future.delayed(Duration(milliseconds: 500));
     if (searchController.text.trim() != "") {
       _searchResult.addAll((await RemoteServices.searchProducts(searchController.text))!);
     }

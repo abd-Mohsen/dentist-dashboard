@@ -1,7 +1,7 @@
 import 'package:dentist_dashboard/controllers/navigation_controller.dart';
 import 'package:dentist_dashboard/layout.dart';
 import 'package:dentist_dashboard/themes.dart';
-import 'package:dentist_dashboard/views/analytics_tabs/analytics_view.dart';
+import 'package:dentist_dashboard/views/analytics/analytics_view.dart';
 import 'package:dentist_dashboard/views/home/home_tab.dart';
 import 'package:dentist_dashboard/views/login_view.dart';
 import 'package:dentist_dashboard/views/orders/orders_view.dart';

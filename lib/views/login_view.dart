@@ -14,9 +14,12 @@ class LoginView extends StatelessWidget {
     LoginController lC = Get.put(LoginController());
 
     Widget login() => FlutterLogin(
-          title: 'Welcome Admin',
+          //title: 'Welcome Admin',
           onLogin: lC.login,
           onSignup: lC.signup,
+          // logo: Visibility(
+          //     visible: ResponsiveWidget.isSmall(context),
+          //     child: Image.asset(Get.isDarkMode ? "assets/images/logo_black.png" : "assets/images/logo_white.png")),
           additionalSignupFields: [
             UserFormField(
               keyName: "username",

@@ -585,7 +585,7 @@ class RemoteServices {
         "Authorization": "Bearer $token",
       },
     );
-    print(response.body);
+    //print(response.body);
     if (response.statusCode == 200 || response.statusCode == 201) {
       return productModelFromJson(response.body);
     } else if (response.statusCode == 401 || response.statusCode == 403) {

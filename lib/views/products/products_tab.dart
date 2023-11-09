@@ -34,19 +34,23 @@ class ProductsTab extends StatelessWidget {
               left: 0,
               right: 0,
               child: MySearchBar(
-                  textEditingController: con.searchController,
-                  focusNode: con.searchFocusNode,
-                  scrollController: con.suggestionsScrollController,
-                  onTapField: () => con.toggleSearchState(true),
-                  onTapClear: () {
-                    con.searchController.text = "";
-                    con.toggleSearchState(true);
-                  },
-                  onTapOutsideField: (e) => con.toggleSearchState(false),
-                  onQueryChange: (s) => con.search(),
-                  searchResult: con.searchResult,
-                  suggestionsVisible: con.searchEnabled && con.searchController.text != "",
-                  hint: "search for a product by title".tr),
+                textEditingController: con.searchController,
+                focusNode: con.searchFocusNode,
+                scrollController: con.suggestionsScrollController,
+                onTapField: () => con.toggleSearchState(true),
+                onTapClear: () {
+                  con.searchController.text = "";
+                  con.toggleSearchState(true);
+                },
+                onTapOutsideField: (e) async {
+                  await Future.delayed(Duration(milliseconds: 600));
+                  con.toggleSearchState(false);
+                },
+                onQueryChange: (s) => con.search(),
+                searchResult: con.searchResult,
+                suggestionsVisible: con.searchEnabled && con.searchController.text != "",
+                hint: "search for a product by title".tr,
+              ),
             ),
           ],
         ),

@@ -1,5 +1,5 @@
 import 'package:dentist_dashboard/models/side_menu_model.dart';
-import 'package:dentist_dashboard/views/analytics_tabs/analytics_view.dart';
+import 'package:dentist_dashboard/views/analytics/analytics_view.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 
