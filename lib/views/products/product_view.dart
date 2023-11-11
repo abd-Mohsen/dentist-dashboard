@@ -14,7 +14,7 @@ class ProductView extends StatelessWidget {
   final ProductModel product;
   @override
   Widget build(BuildContext context) {
-    ProductController pC = Get.put(ProductController()); //todo: dispose
+    ProductController pC = Get.put(ProductController());
     ColorScheme cs = Theme.of(context).colorScheme;
     TextTheme tt = Theme.of(context).textTheme;
     return WillPopScope(
@@ -29,60 +29,67 @@ class ProductView extends StatelessWidget {
             width: MediaQuery.sizeOf(context).width / 1.3,
             child: Row(
               children: [
+                const SizedBox(width: 18),
                 Expanded(
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 12.0),
-                        child: Column(
-                          //mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            CarouselSlider(
-                              items: [
-                                ...product.images
-                                    .map(
-                                      (image) => CachedNetworkImage(
-                                        imageUrl: "$kHostIP/${Uri.encodeComponent(image.path)}",
-                                        height: 500,
-                                      ),
-                                    )
-                                    .toList(),
-                                // Container(
-                                //   width: 170,
-                                //   height: 170,
-                                //   decoration: BoxDecoration(
-                                //     border: Border.all(
-                                //       color: Colors.grey,
-                                //       width: 1.0,
-                                //     ),
-                                //     borderRadius: BorderRadius.circular(8.0),
-                                //   ),
-                                //   child: const Center(
-                                //     child: Icon(
-                                //       Icons.add_photo_alternate_outlined,
-                                //       size: 40,
-                                //       color: Colors.grey,
-                                //     ),
-                                //   ),
-                                // ),
-                              ],
-                              options: CarouselOptions(
-                                enableInfiniteScroll: false,
-                                //aspectRatio: 4 / 3,
-                                onPageChanged: (i, reason) => con.changeIndex(i),
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            AnimatedSmoothIndicator(
-                              activeIndex: con.imageIndex,
-                              count: product.images.length,
-                              effect: WormEffect(dotHeight: 9, dotWidth: 9, activeDotColor: cs.primary),
-                            )
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 12.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        CarouselSlider(
+                          items: [
+                            ...product.images
+                                .map(
+                                  (image) => CachedNetworkImage(
+                                    imageUrl: "$kHostIP/${Uri.encodeComponent(image.path)}",
+                                    //height: 350,
+                                  ),
+                                )
+                                .toList(),
+                            // Container(
+                            //   width: 170,
+                            //   height: 170,
+                            //   decoration: BoxDecoration(
+                            //     border: Border.all(
+                            //       color: Colors.grey,
+                            //       width: 1.0,
+                            //     ),
+                            //     borderRadius: BorderRadius.circular(8.0),
+                            //   ),
+                            //   child: const Center(
+                            //     child: Icon(
+                            //       Icons.add_photo_alternate_outlined,
+                            //       size: 40,
+                            //       color: Colors.grey,
+                            //     ),
+                            //   ),
+                            // ),
                           ],
+                          options: CarouselOptions(
+                            height: MediaQuery.sizeOf(context).height / 1.5,
+                            //aspectRatio: 16 / 10,
+                            viewportFraction: 1,
+                            enlargeCenterPage: true,
+                            enableInfiniteScroll: false,
+                            onPageChanged: (i, reason) => con.changeIndex(i),
+                          ),
                         ),
-                      ),
-                    ],
+                        SizedBox(height: 12),
+                        AnimatedSmoothIndicator(
+                          activeIndex: con.imageIndex,
+                          count: product.images.length,
+                          effect: WormEffect(dotHeight: 9, dotWidth: 9, activeDotColor: cs.primary),
+                        )
+                      ],
+                    ),
                   ),
+                ),
+                VerticalDivider(
+                  indent: 30,
+                  endIndent: 30,
+                  thickness: 2,
+                  width: 36,
+                  color: cs.onSurface.withOpacity(0.5),
                 ),
                 Expanded(
                   flex: 2,
