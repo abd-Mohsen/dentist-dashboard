@@ -1,12 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:dentist_dashboard/controllers/home_controller.dart';
 import 'package:dentist_dashboard/controllers/product_controller.dart';
 import 'package:dentist_dashboard/models/product_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'dart:io';
 import '../../constants.dart';
 
 class ProductView extends StatelessWidget {
@@ -15,8 +13,82 @@ class ProductView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ProductController pC = Get.put(ProductController());
+    CarouselController sliderController = CarouselController();
     ColorScheme cs = Theme.of(context).colorScheme;
     TextTheme tt = Theme.of(context).textTheme;
+
+    // imageSlider() => Column(
+    //   mainAxisAlignment: MainAxisAlignment.center,
+    //   children: [
+    //     Stack(
+    //       children: [
+    //         CarouselSlider(
+    //           carouselController: sliderController,
+    //           items: [
+    //             ...product.images
+    //                 .map(
+    //                   (image) => CachedNetworkImage(
+    //                 imageUrl: "$kHostIP/${Uri.encodeComponent(image.path)}",
+    //                 //height: 350,
+    //               ),
+    //             )
+    //                 .toList(),
+    //             // Container(
+    //             //   width: 170,
+    //             //   height: 170,
+    //             //   decoration: BoxDecoration(
+    //             //     border: Border.all(
+    //             //       color: Colors.grey,
+    //             //       width: 1.0,
+    //             //     ),
+    //             //     borderRadius: BorderRadius.circular(8.0),
+    //             //   ),
+    //             //   child: const Center(
+    //             //     child: Icon(
+    //             //       Icons.add_photo_alternate_outlined,
+    //             //       size: 40,
+    //             //       color: Colors.grey,
+    //             //     ),
+    //             //   ),
+    //             // ),
+    //           ],
+    //           options: CarouselOptions(
+    //             height: MediaQuery.sizeOf(context).height / 1.5,
+    //             //aspectRatio: 16 / 10,
+    //             viewportFraction: 1,
+    //             enlargeCenterPage: true,
+    //             enableInfiniteScroll: false,
+    //             onPageChanged: (i, reason) => con.changeIndex(i),
+    //           ),
+    //         ),
+    //         Positioned.fill(
+    //           left: -1,
+    //           child: Align(
+    //             alignment: Alignment.centerLeft,
+    //             child: InkWell(
+    //               onTap: () {
+    //                 sliderController.previousPage(
+    //                     duration: Duration(milliseconds: 300), curve: Curves.linear);
+    //               },
+    //               child: Icon(
+    //                 Icons.arrow_back_ios,
+    //                 color: cs.onSurface,
+    //                 size: 40,
+    //               ),
+    //             ),
+    //           ),
+    //         ),
+    //       ],
+    //     ),
+    //     SizedBox(height: 12),
+    //     AnimatedSmoothIndicator(
+    //       activeIndex: con.imageIndex,
+    //       count: product.images.length,
+    //       effect: WormEffect(dotHeight: 9, dotWidth: 9, activeDotColor: cs.primary),
+    //     )
+    //   ],
+    // ),
+
     return WillPopScope(
       onWillPop: () async {
         Get.delete<ProductController>();
@@ -36,43 +108,65 @@ class ProductView extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        CarouselSlider(
-                          items: [
-                            ...product.images
-                                .map(
-                                  (image) => CachedNetworkImage(
-                                    imageUrl: "$kHostIP/${Uri.encodeComponent(image.path)}",
-                                    //height: 350,
+                        Stack(
+                          children: [
+                            CarouselSlider(
+                              carouselController: sliderController,
+                              items: [
+                                ...product.images
+                                    .map(
+                                      (image) => CachedNetworkImage(
+                                        imageUrl: "$kHostIP/${Uri.encodeComponent(image.path)}",
+                                        //height: 350,
+                                      ),
+                                    )
+                                    .toList(),
+                                // Container(
+                                //   width: 170,
+                                //   height: 170,
+                                //   decoration: BoxDecoration(
+                                //     border: Border.all(
+                                //       color: Colors.grey,
+                                //       width: 1.0,
+                                //     ),
+                                //     borderRadius: BorderRadius.circular(8.0),
+                                //   ),
+                                //   child: const Center(
+                                //     child: Icon(
+                                //       Icons.add_photo_alternate_outlined,
+                                //       size: 40,
+                                //       color: Colors.grey,
+                                //     ),
+                                //   ),
+                                // ),
+                              ],
+                              options: CarouselOptions(
+                                height: MediaQuery.sizeOf(context).height / 1.5,
+                                //aspectRatio: 16 / 10,
+                                viewportFraction: 1,
+                                enlargeCenterPage: true,
+                                enableInfiniteScroll: false,
+                                onPageChanged: (i, reason) => con.changeIndex(i),
+                              ),
+                            ),
+                            Positioned.fill(
+                              left: -1,
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: InkWell(
+                                  onTap: () {
+                                    sliderController.previousPage(
+                                        duration: Duration(milliseconds: 300), curve: Curves.linear);
+                                  },
+                                  child: Icon(
+                                    Icons.arrow_back_ios,
+                                    color: cs.onSurface,
+                                    size: 40,
                                   ),
-                                )
-                                .toList(),
-                            // Container(
-                            //   width: 170,
-                            //   height: 170,
-                            //   decoration: BoxDecoration(
-                            //     border: Border.all(
-                            //       color: Colors.grey,
-                            //       width: 1.0,
-                            //     ),
-                            //     borderRadius: BorderRadius.circular(8.0),
-                            //   ),
-                            //   child: const Center(
-                            //     child: Icon(
-                            //       Icons.add_photo_alternate_outlined,
-                            //       size: 40,
-                            //       color: Colors.grey,
-                            //     ),
-                            //   ),
-                            // ),
+                                ),
+                              ),
+                            ),
                           ],
-                          options: CarouselOptions(
-                            height: MediaQuery.sizeOf(context).height / 1.5,
-                            //aspectRatio: 16 / 10,
-                            viewportFraction: 1,
-                            enlargeCenterPage: true,
-                            enableInfiniteScroll: false,
-                            onPageChanged: (i, reason) => con.changeIndex(i),
-                          ),
                         ),
                         SizedBox(height: 12),
                         AnimatedSmoothIndicator(

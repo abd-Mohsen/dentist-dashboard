@@ -8,4 +8,16 @@ class ProductController extends GetxController {
     _imageIndex = i;
     update();
   }
+
+  void toRight(int max) {
+    if (_imageIndex == max) return;
+    _imageIndex++;
+    update();
+  }
+
+  void toLeft() {
+    if (_imageIndex == 0) return;
+    _imageIndex++;
+    update();
+  }
 }
