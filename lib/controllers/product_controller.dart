@@ -20,4 +20,13 @@ class ProductController extends GetxController {
     _imageIndex++;
     update();
   }
+
+  bool _editingMode = false;
+
+  bool get editingMode => _editingMode;
+
+  void toggleEditMode(bool val) {
+    _editingMode = val;
+    update();
+  }
 }

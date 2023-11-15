@@ -5,7 +5,7 @@ class MenuModel {
   final IconData icon;
   bool isSelected;
   final String route;
-  final Widget tab;
+  final int tab;
   //bool isHovered;
 
   MenuModel({

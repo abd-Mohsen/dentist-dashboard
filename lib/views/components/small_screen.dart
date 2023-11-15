@@ -10,7 +10,10 @@ class SmallScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     ColorScheme cs = Theme.of(context).colorScheme;
     return GetBuilder<SideMenuController>(
-      builder: (con) => con.selectedTab,
+      builder: (con) => IndexedStack(
+        index: con.selectedTab,
+        children: con.tabs,
+      ),
     );
   }
 }

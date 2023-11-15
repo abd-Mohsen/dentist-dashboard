@@ -10,30 +10,26 @@ import '../views/users/users_view.dart';
 
 class SideMenuController extends GetxController {
   final List<MenuModel> sideMenuItems = [
-    MenuModel(title: "Home".tr, icon: Icons.home_filled, isSelected: true, route: 'home', tab: const HomeTab()),
+    MenuModel(title: "Home".tr, icon: Icons.home_filled, isSelected: true, route: 'home', tab: 0),
     //MenuModel(title: "layout products".tr, icon: Icons.phone_android, isSelected: false, isHovered: false),
-    MenuModel(
-        title: "Manage products".tr,
-        icon: Icons.manage_search,
-        isSelected: false,
-        route: "products",
-        tab: const ProductsTab()),
+    MenuModel(title: "Manage products".tr, icon: Icons.manage_search, isSelected: false, route: "products", tab: 1),
     //MenuModel(title: "Manage brands".tr, icon: Icons.tag, isSelected: false, route: "products"),
     //MenuModel(title: "Manage categories".tr, icon: Icons.category_rounded, isSelected: false, route: "products"),
-    MenuModel(
-        title: "Manage users".tr,
-        icon: Icons.manage_accounts,
-        isSelected: false,
-        route: "users",
-        tab: const UsersTab()),
-    MenuModel(
-        title: "Manage orders".tr, icon: Icons.checklist, isSelected: false, route: "orders", tab: const OrdersTab()),
-    MenuModel(
-        title: "Analytics".tr, icon: Icons.analytics, isSelected: false, route: "analytics", tab: const AnalyticsTab()),
+    MenuModel(title: "Manage users".tr, icon: Icons.manage_accounts, isSelected: false, route: "users", tab: 2),
+    MenuModel(title: "Manage orders".tr, icon: Icons.checklist, isSelected: false, route: "orders", tab: 3),
+    MenuModel(title: "Analytics".tr, icon: Icons.analytics, isSelected: false, route: "analytics", tab: 4),
   ];
 
-  Widget _selectedTab = const HomeTab();
-  Widget get selectedTab => _selectedTab;
+  List<Widget> tabs = [
+    HomeTab(),
+    ProductsTab(),
+    UsersTab(),
+    OrdersTab(),
+    AnalyticsTab(),
+  ];
+
+  int _selectedTab = 0;
+  int get selectedTab => _selectedTab;
 
   void toggleActiveItem(MenuModel item) {
     for (MenuModel model in sideMenuItems) {

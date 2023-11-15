@@ -52,7 +52,10 @@ class LargeScreen extends StatelessWidget {
         Expanded(
           flex: 5,
           child: GetBuilder<SideMenuController>(
-            builder: (con) => con.selectedTab,
+            builder: (con) => IndexedStack(
+              index: con.selectedTab,
+              children: con.tabs,
+            ),
           ),
         ),
       ],

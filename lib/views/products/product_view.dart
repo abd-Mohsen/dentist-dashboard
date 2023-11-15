@@ -55,7 +55,9 @@ class ProductView extends StatelessWidget {
                       // ),
                     ],
                     options: CarouselOptions(
-                      height: MediaQuery.sizeOf(context).height / 1.5,
+                      height: ResponsiveWidget.isSmall(context)
+                          ? MediaQuery.sizeOf(context).height / 2
+                          : MediaQuery.sizeOf(context).height / 1.5,
                       //aspectRatio: 16 / 10,
                       viewportFraction: 1,
                       enlargeCenterPage: true,
@@ -110,11 +112,36 @@ class ProductView extends StatelessWidget {
             ),
           ],
         );
-    contents() => Column();
+    List<Widget> contents = [
+      Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: TextFormField(
+          enabled: false,
+          initialValue: product.title,
+          decoration: InputDecoration(
+            prefixIcon: Padding(
+              padding: EdgeInsets.only(right: 12, left: 8),
+              child: Icon(Icons.title),
+            ),
+            errorBorder: const OutlineInputBorder(),
+            // labelText: "title",
+            // labelStyle: tt.bodyLarge,
+            // label: Text(
+            //   "title",
+            //   style: tt.bodyLarge,
+            // ),
+            // floatingLabelBehavior: FloatingLabelBehavior.always,
+            disabledBorder: null,
+          ),
+          style: tt.titleMedium,
+        ),
+      )
+    ];
 
     return WillPopScope(
       onWillPop: () async {
         Get.delete<ProductController>();
+        //pC.dispose();
         return true;
       },
       child: Dialog(
@@ -126,7 +153,10 @@ class ProductView extends StatelessWidget {
                 ? ListView(
                     children: [
                       topBar(),
-                      imageSlider(),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: imageSlider(),
+                      ),
                       Divider(
                         indent: 15,
                         endIndent: 15,
@@ -134,6 +164,7 @@ class ProductView extends StatelessWidget {
                         //width: 36,
                         color: cs.onSurface.withOpacity(0.5),
                       ),
+                      ...contents,
                     ],
                   )
                 : Row(
@@ -155,7 +186,9 @@ class ProductView extends StatelessWidget {
                           children: [
                             topBar(),
                             Expanded(
-                              child: contents(),
+                              child: ListView(
+                                children: contents,
+                              ),
                             ),
                           ],
                         ),
