@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 class ProductController extends GetxController {
@@ -17,16 +18,16 @@ class ProductController extends GetxController {
 
   void toLeft() {
     if (_imageIndex == 0) return;
-    _imageIndex++;
+    _imageIndex--;
     update();
   }
 
   bool _editingMode = false;
-
   bool get editingMode => _editingMode;
-
   void toggleEditMode(bool val) {
     _editingMode = val;
     update();
   }
+
+  GlobalKey<FormState> productFormKey = GlobalKey<FormState>();
 }

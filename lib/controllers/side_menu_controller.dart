@@ -1,5 +1,6 @@
 import 'package:dentist_dashboard/models/side_menu_model.dart';
 import 'package:dentist_dashboard/views/analytics/analytics_view.dart';
+import 'package:dentist_dashboard/views/brands/brands_tab.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 
@@ -13,11 +14,11 @@ class SideMenuController extends GetxController {
     MenuModel(title: "Home".tr, icon: Icons.home_filled, isSelected: true, route: 'home', tab: 0),
     //MenuModel(title: "layout products".tr, icon: Icons.phone_android, isSelected: false, isHovered: false),
     MenuModel(title: "Manage products".tr, icon: Icons.manage_search, isSelected: false, route: "products", tab: 1),
-    //MenuModel(title: "Manage brands".tr, icon: Icons.tag, isSelected: false, route: "products"),
     //MenuModel(title: "Manage categories".tr, icon: Icons.category_rounded, isSelected: false, route: "products"),
     MenuModel(title: "Manage users".tr, icon: Icons.manage_accounts, isSelected: false, route: "users", tab: 2),
     MenuModel(title: "Manage orders".tr, icon: Icons.checklist, isSelected: false, route: "orders", tab: 3),
     MenuModel(title: "Analytics".tr, icon: Icons.analytics, isSelected: false, route: "analytics", tab: 4),
+    MenuModel(title: "Manage brands".tr, icon: Icons.tag, isSelected: false, route: "products", tab: 5),
   ];
 
   List<Widget> tabs = [
@@ -26,6 +27,7 @@ class SideMenuController extends GetxController {
     UsersTab(),
     OrdersTab(),
     AnalyticsTab(),
+    BrandsTab(),
   ];
 
   int _selectedTab = 0;

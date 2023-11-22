@@ -1,13 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dentist_dashboard/constants.dart';
+import 'package:dentist_dashboard/controllers/brands_tab_controller.dart';
 import 'package:dentist_dashboard/controllers/products_tab_controller.dart';
 import 'package:dentist_dashboard/views/components/info_card.dart';
 import 'package:dentist_dashboard/views/components/my_search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class ProductsTab extends StatelessWidget {
-  const ProductsTab({super.key});
+class BrandsTab extends StatelessWidget {
+  const BrandsTab({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,8 +17,8 @@ class ProductsTab extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-      child: GetBuilder<ProductsTabController>(
-        init: ProductsTabController(),
+      child: GetBuilder<BrandsTabController>(
+        init: BrandsTabController(),
         builder: (con) => Stack(
           children: [
             Padding(
@@ -49,8 +50,8 @@ class ProductsTab extends StatelessWidget {
                 onQueryChange: (s) => con.search(),
                 searchResult: con.searchResult,
                 suggestionsVisible: con.searchEnabled && con.searchController.text != "",
-                hint: "search for a product by title".tr,
-                type: 'product',
+                hint: "search for a brand by title".tr,
+                type: 'brand',
               ),
             ),
           ],
