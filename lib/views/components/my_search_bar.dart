@@ -1,6 +1,6 @@
 import 'package:dentist_dashboard/controllers/brand_controller.dart';
 import 'package:dentist_dashboard/views/brands/brand_view.dart';
-import 'package:dentist_dashboard/views/components/product_search_card.dart';
+import 'package:dentist_dashboard/views/components/search_card.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

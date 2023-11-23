@@ -37,22 +37,48 @@ class BrandView extends StatelessWidget {
             ),
           ],
         );
+    image() => GetBuilder<BrandController>(
+          builder: (con) => Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Stack(
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(15),
+                  child: con.isNewImgSelected
+                      ? Image.memory(con.newImg)
+                      : CachedNetworkImage(
+                          imageUrl: "$kHostIP/${Uri.encodeComponent(brand.image)}",
+                        ),
+                ),
+                Visibility(
+                  visible: con.editingMode,
+                  child: Positioned(
+                    bottom: 0,
+                    right: 0,
+                    child: InkWell(
+                      onTap: () {
+                        con.pickImage();
+                      },
+                      child: CircleAvatar(
+                        backgroundColor: cs.primary,
+                        child: Icon(
+                          Icons.edit,
+                          color: cs.onPrimary,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
     List<Widget> contents = [
       GetBuilder<BrandController>(
         builder: (con) => Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
-              CustomField(
-                controller: bC.title,
-                title: "title",
-                enabled: con.editingMode,
-              ),
-              CustomField(
-                controller: bC.title,
-                title: "title",
-                enabled: con.editingMode,
-              ),
               CustomField(
                 controller: bC.title,
                 title: "title",
@@ -170,12 +196,7 @@ class BrandView extends StatelessWidget {
                   ? ListView(
                       children: [
                         topBar(),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: CachedNetworkImage(
-                            imageUrl: "$kHostIP/${Uri.encodeComponent(brand.image)}",
-                          ),
-                        ),
+                        image(),
                         Divider(
                           indent: 15,
                           endIndent: 15,
@@ -191,9 +212,7 @@ class BrandView extends StatelessWidget {
                       children: [
                         const SizedBox(width: 18),
                         Expanded(
-                          child: CachedNetworkImage(
-                            imageUrl: "$kHostIP/${Uri.encodeComponent(brand.image)}",
-                          ),
+                          child: image(),
                         ),
                         VerticalDivider(
                           indent: 30,
