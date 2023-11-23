@@ -53,7 +53,7 @@ class MySearchBar extends StatelessWidget {
       }
       if (type == "brand") {
         return () {
-          Get.put(BrandController());
+          Get.put(BrandController(brand: obj));
           showDialog(
             context: context,
             barrierDismissible: false,

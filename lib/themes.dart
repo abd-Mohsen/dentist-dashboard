@@ -256,7 +256,7 @@ class MyThemes {
         fontFamily: 'arabic',
       ),
       titleLarge: TextStyle(
-        fontSize: 22,
+        fontSize: 20,
         wordSpacing: 28,
         letterSpacing: 0,
         fontFamily: 'arabic',

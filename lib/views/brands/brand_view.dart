@@ -1,13 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dentist_dashboard/controllers/brand_controller.dart';
 import 'package:dentist_dashboard/controllers/product_controller.dart';
 import 'package:dentist_dashboard/models/brand_model.dart';
-import 'package:dentist_dashboard/models/product_model.dart';
 import 'package:dentist_dashboard/services/responsiveness.dart';
+import 'package:dentist_dashboard/views/components/custom_field.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../../constants.dart';
 
 class BrandView extends StatelessWidget {
@@ -15,8 +13,7 @@ class BrandView extends StatelessWidget {
   final BrandModel brand;
   @override
   Widget build(BuildContext context) {
-    ProductController pC = Get.put(ProductController());
-    CarouselController sliderController = CarouselController();
+    BrandController bC = Get.put(BrandController(brand: brand));
     ColorScheme cs = Theme.of(context).colorScheme;
     TextTheme tt = Theme.of(context).textTheme;
 
@@ -27,7 +24,7 @@ class BrandView extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: InkWell(
                 onTap: () {
-                  Get.delete<ProductController>();
+                  Get.delete<BrandController>();
                   //pC.dispose();
                   Get.back();
                 },
@@ -41,34 +38,120 @@ class BrandView extends StatelessWidget {
           ],
         );
     List<Widget> contents = [
-      Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            TextFormField(
-              enabled: false,
-              initialValue: brand.title,
-              decoration: const InputDecoration(
-                prefixIcon: Padding(
-                  padding: EdgeInsets.only(right: 12, left: 8),
-                  child: Icon(Icons.title),
-                ),
-                border: OutlineInputBorder(),
-                // labelText: "title",
-                // labelStyle: tt.bodyLarge,
-                // label: Text(
-                //   "title",
-                //   style: tt.bodyLarge,
-                // ),
-                // floatingLabelBehavior: FloatingLabelBehavior.always,
-                //disabledBorder: null,
+      GetBuilder<BrandController>(
+        builder: (con) => Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              CustomField(
+                controller: bC.title,
+                title: "title",
+                enabled: con.editingMode,
               ),
-              style: tt.titleMedium,
-            ),
-          ],
+              CustomField(
+                controller: bC.title,
+                title: "title",
+                enabled: con.editingMode,
+              ),
+              CustomField(
+                controller: bC.title,
+                title: "title",
+                enabled: con.editingMode,
+              ),
+            ],
+          ),
         ),
       )
     ];
+    bottomBar() => GetBuilder<BrandController>(
+          builder: (con) => Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Visibility(
+                visible: !con.editingMode,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: InkWell(
+                    onTap: () {
+                      con.toggleEditMode(true);
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: cs.primary,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: [
+                            Text("edit".tr, style: tt.titleMedium!.copyWith(color: cs.onPrimary)),
+                            const SizedBox(width: 8),
+                            Icon(Icons.edit, color: cs.onPrimary),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Visibility(
+                visible: con.editingMode,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: InkWell(
+                    onTap: () {
+                      Get.delete<BrandController>();
+                      Get.back();
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.redAccent,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: [
+                            Text("cancel".tr, style: tt.titleMedium!.copyWith(color: cs.onPrimary)),
+                            const SizedBox(width: 8),
+                            Icon(Icons.clear, color: cs.onPrimary),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Visibility(
+                visible: con.editingMode,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: InkWell(
+                    onTap: () {
+                      //todo: send request
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.lightGreenAccent,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: [
+                            Text("ok".tr, style: tt.titleMedium!.copyWith(color: cs.onPrimary)),
+                            const SizedBox(width: 8),
+                            Icon(Icons.check, color: cs.onPrimary),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
 
     return WillPopScope(
       onWillPop: () async {
@@ -101,6 +184,7 @@ class BrandView extends StatelessWidget {
                           color: cs.onSurface.withOpacity(0.5),
                         ),
                         ...contents,
+                        bottomBar(),
                       ],
                     )
                   : Row(
@@ -128,6 +212,7 @@ class BrandView extends StatelessWidget {
                                   children: contents,
                                 ),
                               ),
+                              bottomBar(),
                             ],
                           ),
                         ),
