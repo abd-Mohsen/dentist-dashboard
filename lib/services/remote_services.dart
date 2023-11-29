@@ -1,6 +1,7 @@
 import 'dart:convert';
-import 'dart:io';
+import 'package:universal_io/io.dart';
 import 'dart:js' as js;
+import 'dart:typed_data';
 import 'package:dentist_dashboard/models/brand_model.dart';
 import 'package:dentist_dashboard/models/product_model.dart';
 import 'package:path/path.dart';
@@ -406,23 +407,28 @@ class RemoteServices {
     }
   }
 
-  static Future<bool> updateBrand(File? imageFile, String brandTitle) async {
+  static Future<bool> updateBrand(File? imageFile, String brandTitle, int id) async {
     // todo: check what happens when null is sent
-    var request = http.MultipartRequest("PATCH", Uri.parse("$_hostIP/brands"));
+    var request = http.MultipartRequest("PATCH", Uri.parse("$_hostIP/brands/$id"));
     request.headers['Authorization'] = "Bearer $token";
     request.headers['Accept'] = 'application/json';
-    var stream = http.ByteStream(imageFile!.openRead());
-    var length = await imageFile.length();
-    var multipartFile = http.MultipartFile(
-      'image',
-      stream,
-      length,
-      filename: basename(imageFile.path),
-    );
+    // var stream = http.ByteStream(imageFile!.openRead());
+    // var length = await imageFile.length();
+
     request.fields.addAll({
       'title': brandTitle,
+      //'image': null,
     });
-    request.files.add(multipartFile);
+
+    if (imageFile != null) {
+      var multipartFile = http.MultipartFile(
+        'image',
+        imageFile.readAsBytes().asStream(),
+        imageFile.lengthSync(),
+        filename: basename(imageFile.path),
+      );
+      request.files.add(multipartFile);
+    }
 
     var response = await request.send();
     var responseBody = await response.stream.bytesToString();
@@ -430,8 +436,8 @@ class RemoteServices {
     if (response.statusCode == 200 || response.statusCode == 201) {
       return true;
     } else {
-      js.context.callMethod('alert', [jsonDecode(responseBody)]);
-      print('error message: $responseBody');
+      js.context.callMethod('alert', [jsonDecode(responseBody)['message']]);
+      print('error message: ${jsonDecode(responseBody)}');
       return false;
     }
   }

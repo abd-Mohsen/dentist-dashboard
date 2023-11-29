@@ -39,39 +39,41 @@ class BrandView extends StatelessWidget {
         );
     image() => GetBuilder<BrandController>(
           builder: (con) => Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Stack(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(15),
-                  child: con.isNewImgSelected
-                      ? Image.memory(con.newImg)
-                      : CachedNetworkImage(
-                          imageUrl: "$kHostIP/${Uri.encodeComponent(brand.image)}",
-                        ),
-                ),
-                Visibility(
-                  visible: con.editingMode,
-                  child: Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: InkWell(
-                      onTap: () {
-                        con.pickImage();
-                      },
-                      child: CircleAvatar(
-                        backgroundColor: cs.primary,
-                        child: Icon(
-                          Icons.edit,
-                          color: cs.onPrimary,
+              padding: const EdgeInsets.all(8.0),
+              child: Stack(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(15),
+                    child: con.isNewImgSelected
+                        ? Image.memory(con.newImg)
+                        : CachedNetworkImage(
+                            imageUrl: "$kHostIP/${Uri.encodeComponent(brand.image)}",
+                          ),
+                  ),
+                  Visibility(
+                    visible: con.editingMode,
+                    child: Positioned(
+                      bottom: -5,
+                      right: -5,
+                      child: Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          onTap: () {
+                            con.pickImage();
+                          },
+                          child: CircleAvatar(
+                            backgroundColor: cs.primary,
+                            child: Icon(
+                              Icons.edit,
+                              color: cs.onPrimary,
+                            ),
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
-          ),
+                ],
+              )),
         );
     List<Widget> contents = [
       GetBuilder<BrandController>(
@@ -107,7 +109,7 @@ class BrandView extends StatelessWidget {
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 12),
                         child: Row(
                           children: [
                             Text("edit".tr, style: tt.titleMedium!.copyWith(color: cs.onPrimary)),
@@ -123,7 +125,7 @@ class BrandView extends StatelessWidget {
               Visibility(
                 visible: con.editingMode,
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 12),
                   child: InkWell(
                     onTap: () {
                       Get.delete<BrandController>();
@@ -151,10 +153,10 @@ class BrandView extends StatelessWidget {
               Visibility(
                 visible: con.editingMode,
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 12),
                   child: InkWell(
                     onTap: () {
-                      //todo: send request
+                      con.editBrand();
                     },
                     child: Container(
                       decoration: BoxDecoration(
@@ -186,57 +188,62 @@ class BrandView extends StatelessWidget {
         return true;
       },
       child: Dialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
         child: GetBuilder<BrandController>(
           builder: (con) => Form(
             key: con.brandFormKey,
-            child: Container(
-              height: MediaQuery.sizeOf(context).height / 1.3,
-              width: MediaQuery.sizeOf(context).width / 1.3,
-              child: ResponsiveWidget.isSmall(context)
-                  ? ListView(
-                      children: [
-                        topBar(),
-                        image(),
-                        Divider(
-                          indent: 15,
-                          endIndent: 15,
-                          thickness: 2,
-                          //width: 36,
-                          color: cs.onSurface.withOpacity(0.5),
-                        ),
-                        ...contents,
-                        bottomBar(),
-                      ],
-                    )
-                  : Row(
-                      children: [
-                        const SizedBox(width: 18),
-                        Expanded(
-                          child: image(),
-                        ),
-                        VerticalDivider(
-                          indent: 30,
-                          endIndent: 30,
-                          thickness: 2,
-                          width: 36,
-                          color: cs.onSurface.withOpacity(0.5),
-                        ),
-                        Expanded(
-                          flex: 2,
-                          child: Column(
-                            children: [
-                              topBar(),
-                              Expanded(
-                                child: ListView(
-                                  children: contents,
-                                ),
-                              ),
-                              bottomBar(),
-                            ],
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 12),
+              child: Container(
+                height: MediaQuery.sizeOf(context).height / 1.3,
+                width: MediaQuery.sizeOf(context).width / 1.3,
+                child: ResponsiveWidget.isSmall(context)
+                    ? ListView(
+                        //padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                        children: [
+                          topBar(),
+                          image(),
+                          Divider(
+                            indent: 15,
+                            endIndent: 15,
+                            thickness: 2,
+                            //width: 36,
+                            color: cs.onSurface.withOpacity(0.5),
                           ),
-                        ),
-                      ],
-                    ),
+                          ...contents,
+                          bottomBar(),
+                        ],
+                      )
+                    : Row(
+                        children: [
+                          const SizedBox(width: 18),
+                          Expanded(
+                            child: image(),
+                          ),
+                          VerticalDivider(
+                            indent: 30,
+                            endIndent: 30,
+                            thickness: 2,
+                            width: 36,
+                            color: cs.onSurface.withOpacity(0.5),
+                          ),
+                          Expanded(
+                            flex: 2,
+                            child: Column(
+                              children: [
+                                topBar(),
+                                Expanded(
+                                  child: ListView(
+                                    children: contents,
+                                  ),
+                                ),
+                                bottomBar(),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+              ),
             ),
           ),
         ),
