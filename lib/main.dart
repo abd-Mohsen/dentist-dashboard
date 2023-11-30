@@ -9,12 +9,16 @@ import 'package:dentist_dashboard/views/products/products_tab.dart';
 import 'package:dentist_dashboard/views/redirect.dart';
 import 'package:dentist_dashboard/views/users/users_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'controllers/locale_controller.dart';
 import 'controllers/theme_controller.dart';
 
-void main() {
+void main() async {
   //debugDefaultTargetPlatformOverride = TargetPlatform.fuchsia;
+  WidgetsFlutterBinding.ensureInitialized();
+  await Future.delayed(Duration(milliseconds: 2));
+  FlutterNativeSplash.remove();
   runApp(const MyApp());
 }
 

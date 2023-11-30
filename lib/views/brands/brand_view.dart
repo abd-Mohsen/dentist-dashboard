@@ -59,7 +59,7 @@ class BrandView extends StatelessWidget {
                         color: Colors.transparent,
                         child: InkWell(
                           onTap: () {
-                            con.pickImage();
+                            con.pickFiles();
                           },
                           child: CircleAvatar(
                             backgroundColor: cs.primary,

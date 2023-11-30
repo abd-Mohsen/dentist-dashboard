@@ -1,6 +1,9 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:typed_data';
 import 'dart:js' as js;
+import 'package:file_picker/file_picker.dart';
+import 'package:universal_html/html.dart' as html;
 import 'package:dentist_dashboard/constants.dart';
 import 'package:dentist_dashboard/models/brand_model.dart';
 import 'package:dentist_dashboard/services/remote_services.dart';
@@ -43,12 +46,51 @@ class BrandController extends GetxController {
     }
   }
 
+  startWebFilePicker() async {
+    var uploadInput = html.FileUploadInputElement();
+    uploadInput.multiple = true;
+    uploadInput.draggable = true;
+    uploadInput.click();
+
+    uploadInput.onChange.listen((event) {
+      final files = uploadInput.files;
+      final file = files![0];
+      final reader = html.FileReader();
+
+      reader.onLoadEnd.listen((event) {
+        newImg = const Base64Decoder().convert(reader.result.toString().split(",").last);
+      });
+      reader.readAsDataUrl(file);
+    });
+    isNewImgSelected = true;
+    update();
+  }
+
+  List<PlatformFile>? _paths;
+
+  void pickFiles() async {
+    try {
+      _paths = (await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowMultiple: false,
+        onFileLoading: (FilePickerStatus status) => print(status),
+        allowedExtensions: ['png', 'jpg', 'jpeg'],
+      ))
+          ?.files;
+    } catch (e) {
+      print(e.toString());
+    }
+    newImg = _paths!.first.bytes!;
+    isNewImgSelected = true;
+    update();
+  }
+
   Future<void> editBrand() async {
     bool success = false;
     try {
       print("before");
       success = (await RemoteServices.updateBrand(
-        isNewImgSelected ? File.fromRawPath(newImg) : null,
+        isNewImgSelected ? newImg : null,
         title.text,
         brand.id,
       ).timeout(kTimeOutDuration));
@@ -56,7 +98,7 @@ class BrandController extends GetxController {
     } on TimeoutException {
       js.context.callMethod('alert', ['request timed out'.tr]);
     } catch (e) {
-      print(e.toString());
+      print("catch error" + e.toString());
     } finally {
       if (success) js.context.callMethod('alert', ['updated successfully'.tr]);
     }

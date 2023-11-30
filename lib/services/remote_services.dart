@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:dentist_dashboard/constants.dart';
+import 'package:http_parser/http_parser.dart';
 import 'package:universal_io/io.dart';
 import 'dart:js' as js;
 import 'dart:typed_data';
@@ -7,11 +9,11 @@ import 'package:dentist_dashboard/models/product_model.dart';
 import 'package:path/path.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:http/http.dart' as http;
-
+import 'package:image/image.dart' as image;
 import '../models/user_model.dart';
 
 class RemoteServices {
-  static const String _hostIP = "http://127.0.0.1:8000/api";
+  static const String _hostIP = "$kHostIP/api";
   static http.Client client = http.Client();
   static String get token => html.window.localStorage["token"] ?? "no token";
 
@@ -407,31 +409,41 @@ class RemoteServices {
     }
   }
 
-  static Future<bool> updateBrand(File? imageFile, String brandTitle, int id) async {
-    // todo: check what happens when null is sent
+  static Future<bool> updateBrand(Uint8List? imageFile, String brandTitle, int id) async {
     var request = http.MultipartRequest("PATCH", Uri.parse("$_hostIP/brands/$id"));
-    request.headers['Authorization'] = "Bearer $token";
-    request.headers['Accept'] = 'application/json';
-    // var stream = http.ByteStream(imageFile!.openRead());
-    // var length = await imageFile.length();
+
+    Map<String, String> headers = {
+      'Authorization': "Bearer $token",
+      'Accept': 'Application/Json',
+      'Content-Type': 'application/json; charset=utf-8',
+    };
+
+    request.headers.addAll(headers);
 
     request.fields.addAll({
       'title': brandTitle,
-      //'image': null,
     });
 
     if (imageFile != null) {
+      var stream = http.ByteStream.fromBytes(imageFile);
+
       var multipartFile = http.MultipartFile(
         'image',
-        imageFile.readAsBytes().asStream(),
-        imageFile.lengthSync(),
-        filename: basename(imageFile.path),
+        stream,
+        imageFile.length,
+        filename: 'image.jpg',
+        contentType: MediaType('image', 'jpeg'), // Modify the content type based on your image format
       );
+
       request.files.add(multipartFile);
     }
 
     var response = await request.send();
     var responseBody = await response.stream.bytesToString();
+
+    print(response.headers['content-type']);
+    print(request.fields);
+    print(request.files);
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       return true;
