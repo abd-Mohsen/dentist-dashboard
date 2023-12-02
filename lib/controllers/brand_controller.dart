@@ -46,8 +46,8 @@ class BrandController extends GetxController {
     }
   }
 
-  startWebFilePicker() async {
-    var uploadInput = html.FileUploadInputElement();
+  void startWebFilePicker() async {
+    final uploadInput = html.FileUploadInputElement();
     uploadInput.multiple = true;
     uploadInput.draggable = true;
     uploadInput.click();
@@ -58,12 +58,12 @@ class BrandController extends GetxController {
       final reader = html.FileReader();
 
       reader.onLoadEnd.listen((event) {
-        newImg = const Base64Decoder().convert(reader.result.toString().split(",").last);
+        final newImg = const Base64Decoder().convert(reader.result.toString().split(",").last);
+        //updateBrand(newImg, brandTitle, brandId);
       });
+
       reader.readAsDataUrl(file);
     });
-    isNewImgSelected = true;
-    update();
   }
 
   List<PlatformFile>? _paths;

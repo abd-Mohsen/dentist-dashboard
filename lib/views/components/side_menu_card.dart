@@ -16,7 +16,7 @@ class SideMenuCard extends StatefulWidget {
   });
 
   @override
-  _SideMenuCardState createState() => _SideMenuCardState();
+  State<SideMenuCard> createState() => _SideMenuCardState();
 }
 
 class _SideMenuCardState extends State<SideMenuCard> {
@@ -24,25 +24,18 @@ class _SideMenuCardState extends State<SideMenuCard> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: ResponsiveWidget.isLarge(context)
-          ? const EdgeInsets.symmetric(vertical: 4)
-          : const EdgeInsets.symmetric(vertical: 8),
+    return InkWell(
+      onTap: widget.onTap,
+      onHover: (bool val) {
+        setState(() {
+          isHovered = val;
+        });
+      },
+      mouseCursor: MaterialStateMouseCursor.clickable,
       child: SizedBox(
-        height: ResponsiveWidget.isLarge(context) ? 50 : 65,
-        child: InkWell(
-          onTap: widget.onTap,
-          onHover: (bool val) {
-            setState(() {
-              isHovered = val;
-            });
-          },
-          mouseCursor: MaterialStateMouseCursor.clickable,
-          // child: ListTile(
-          //   title: widget.title,
-          //   leading: widget.icon,
-          //   tileColor: isHovered ? Colors.grey[200]!.withOpacity(0.3) : null,
-          // ),
+        height: ResponsiveWidget.isLarge(context) ? 50 : 90,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 4),
           child: Container(
             color: isHovered ? Colors.grey[200]!.withOpacity(0.3) : null,
             child: ResponsiveWidget.isLarge(context)

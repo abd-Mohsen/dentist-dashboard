@@ -1,3 +1,4 @@
+import 'package:dentist_dashboard/constants.dart';
 import 'package:dentist_dashboard/controllers/home_controller.dart';
 import 'package:dentist_dashboard/controllers/side_menu_controller.dart';
 import 'package:dentist_dashboard/controllers/theme_controller.dart';
@@ -149,6 +150,9 @@ class Layout extends StatelessWidget {
                 const SizedBox(width: 16),
                 CircleAvatar(
                   radius: 20,
+                  foregroundImage: con.fetchedProfile && con.currentUser.image != null
+                      ? NetworkImage("$kHostIP/${con.currentUser.image}")
+                      : null,
                   backgroundColor: cs.secondary,
                   child: PopupMenuButton(
                     shape: RoundedRectangleBorder(
@@ -171,6 +175,9 @@ class Layout extends StatelessWidget {
                               leading: CircleAvatar(
                                 radius: 25,
                                 backgroundColor: cs.onSecondary,
+                                foregroundImage: con.fetchedProfile && con.currentUser.image != null
+                                    ? NetworkImage("$kHostIP/${con.currentUser.image}")
+                                    : null,
                               ),
                               title: Text(
                                 con.currentUser.name,

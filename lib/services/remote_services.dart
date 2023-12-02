@@ -409,13 +409,13 @@ class RemoteServices {
     }
   }
 
-  static Future<bool> updateBrand(Uint8List? imageFile, String brandTitle, int id) async {
+  static Future<bool> updateBrand(Uint8List? imageBytes, String brandTitle, int id) async {
     var request = http.MultipartRequest("PATCH", Uri.parse("$_hostIP/brands/$id"));
 
     Map<String, String> headers = {
       'Authorization': "Bearer $token",
       'Accept': 'Application/Json',
-      'Content-Type': 'application/json; charset=utf-8',
+      //'Content-Type': 'application/json; charset=utf-8',
     };
 
     request.headers.addAll(headers);
@@ -424,15 +424,12 @@ class RemoteServices {
       'title': brandTitle,
     });
 
-    if (imageFile != null) {
-      var stream = http.ByteStream.fromBytes(imageFile);
-
-      var multipartFile = http.MultipartFile(
+    if (imageBytes != null) {
+      var multipartFile = http.MultipartFile.fromBytes(
         'image',
-        stream,
-        imageFile.length,
+        imageBytes,
         filename: 'image.jpg',
-        contentType: MediaType('image', 'jpeg'), // Modify the content type based on your image format
+        contentType: MediaType('application', 'json'), // Modify the content type based on your image format
       );
 
       request.files.add(multipartFile);
