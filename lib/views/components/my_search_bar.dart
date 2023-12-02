@@ -1,4 +1,4 @@
-import 'package:dentist_dashboard/controllers/brand_controller.dart';
+import 'package:dentist_dashboard/controllers/brand/brand_controller.dart';
 import 'package:dentist_dashboard/views/brands/brand_view.dart';
 import 'package:dentist_dashboard/views/components/search_card.dart';
 import 'package:flutter/material.dart';
@@ -62,7 +62,7 @@ class MySearchBar extends StatelessWidget {
         };
       }
       return () {
-        print("not a product or a category or a brand?");
+        print("not a product, category or a brand?");
       };
     }
 

@@ -1,8 +1,6 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:dentist_dashboard/constants.dart';
-import 'package:dentist_dashboard/controllers/brands_tab_controller.dart';
-import 'package:dentist_dashboard/controllers/products_tab_controller.dart';
-import 'package:dentist_dashboard/views/components/info_card.dart';
+import 'package:dentist_dashboard/controllers/brand/add_brand_controller.dart';
+import 'package:dentist_dashboard/controllers/brand/brands_tab_controller.dart';
+import 'package:dentist_dashboard/views/brands/add_brand_view.dart';
 import 'package:dentist_dashboard/views/components/my_search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -23,10 +21,35 @@ class BrandsTab extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.only(top: 72.0),
-              child: ListView(
-                children: [
-                  Container(),
-                ],
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16.0),
+                child: ListView(
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        Get.put(AddBrandController());
+                        showDialog(
+                          context: context,
+                          //barrierDismissible: false,
+                          builder: (context) => const AddBrandView(),
+                        );
+                      },
+                      mouseCursor: MaterialStateMouseCursor.clickable,
+                      child: ListTile(
+                        leading: Icon(
+                          Icons.add,
+                          size: 35,
+                          color: cs.onPrimary,
+                        ),
+                        title: Text(
+                          "add a brand".tr,
+                          style: tt.headlineMedium!.copyWith(color: cs.onPrimary),
+                        ),
+                        tileColor: cs.primary,
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
             Positioned(
@@ -44,7 +67,7 @@ class BrandsTab extends StatelessWidget {
                   con.toggleSearchState(true);
                 },
                 onTapOutsideField: (e) async {
-                  await Future.delayed(Duration(milliseconds: 600));
+                  await Future.delayed(const Duration(milliseconds: 600));
                   con.toggleSearchState(false);
                 },
                 onQueryChange: (s) => con.search(),

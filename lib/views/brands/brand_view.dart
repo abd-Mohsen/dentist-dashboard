@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:dentist_dashboard/controllers/brand_controller.dart';
-import 'package:dentist_dashboard/controllers/product_controller.dart';
+import 'package:dentist_dashboard/controllers/brand/brand_controller.dart';
 import 'package:dentist_dashboard/models/brand_model.dart';
 import 'package:dentist_dashboard/services/responsiveness.dart';
 import 'package:dentist_dashboard/views/components/custom_field.dart';
@@ -85,6 +84,7 @@ class BrandView extends StatelessWidget {
                 controller: bC.title,
                 title: "title",
                 enabled: con.editingMode,
+                // todo: validate title
               ),
             ],
           ),

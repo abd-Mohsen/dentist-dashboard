@@ -9,7 +9,6 @@ import 'package:dentist_dashboard/models/product_model.dart';
 import 'package:path/path.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:http/http.dart' as http;
-import 'package:image/image.dart' as image;
 import '../models/user_model.dart';
 
 class RemoteServices {
@@ -380,21 +379,27 @@ class RemoteServices {
     }
   }
 
-  static Future<bool> createBrand(File? imageFile, String brandTitle) async {
+  static Future<bool> createBrand(Uint8List imageBytes, String brandTitle) async {
     var request = http.MultipartRequest("POST", Uri.parse("$_hostIP/brands"));
-    request.headers['Authorization'] = "Bearer $token";
-    request.headers['Accept'] = 'application/json';
-    var stream = http.ByteStream(imageFile!.openRead());
-    var length = await imageFile.length();
-    var multipartFile = http.MultipartFile(
-      'image',
-      stream,
-      length,
-      filename: basename(imageFile.path),
-    );
+    Map<String, String> headers = {
+      'Authorization': "Bearer $token",
+      'Accept': 'Application/Json',
+      //'Content-Type': 'application/json; charset=utf-8',
+    };
+
+    request.headers.addAll(headers);
+
     request.fields.addAll({
       'title': brandTitle,
     });
+
+    var multipartFile = http.MultipartFile.fromBytes(
+      'image',
+      imageBytes,
+      filename: 'image.jpg',
+      contentType: MediaType('application', 'json'),
+    );
+
     request.files.add(multipartFile);
 
     var response = await request.send();
@@ -403,7 +408,7 @@ class RemoteServices {
     if (response.statusCode == 200 || response.statusCode == 201) {
       return true;
     } else {
-      js.context.callMethod('alert', [jsonDecode(responseBody)]);
+      js.context.callMethod('alert', [jsonDecode(responseBody)['message']]);
       print('error message: $responseBody');
       return false;
     }
@@ -437,10 +442,6 @@ class RemoteServices {
 
     var response = await request.send();
     var responseBody = await response.stream.bytesToString();
-
-    print(response.headers['content-type']);
-    print(request.fields);
-    print(request.files);
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       return true;

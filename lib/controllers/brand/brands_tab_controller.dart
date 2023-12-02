@@ -2,7 +2,7 @@ import 'package:dentist_dashboard/models/brand_model.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 
-import '../services/remote_services.dart';
+import '../../services/remote_services.dart';
 
 class BrandsTabController extends GetxController {
   final List<BrandModel> _searchResult = [];

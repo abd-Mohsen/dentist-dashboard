@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class CustomField extends StatelessWidget {
   const CustomField({
     super.key,
     required this.title,
-    required this.enabled,
+    this.enabled,
+    this.onChanged,
+    this.validator,
     required this.controller,
   });
 
   final String title;
-  final bool enabled;
+  final bool? enabled;
+  final void Function(String)? onChanged;
+  final String? Function(String?)? validator;
   final TextEditingController controller;
 
   @override
@@ -24,7 +29,7 @@ class CustomField extends StatelessWidget {
           Text(" $title ", style: tt.titleLarge!.copyWith(color: cs.onSurface)),
           TextFormField(
             controller: controller,
-            enabled: enabled,
+            enabled: enabled ?? true,
             //initialValue: initVal,
             decoration: InputDecoration(
               prefixIcon: const Padding(
@@ -45,9 +50,36 @@ class CustomField extends StatelessWidget {
               //disabledBorder: null,
             ),
             style: tt.bodyLarge!.copyWith(color: cs.onSurface),
+            onChanged: onChanged ?? (s) {},
+            validator: validator ??
+                (s) {
+                  return null;
+                },
           ),
         ],
       ),
     );
   }
+}
+
+String? validateInput(String val, int min, int max, String type, {String pass = "", String rePass = ""}) {
+  //todo: localize
+  if (val.trim().isEmpty) return "cant be empty";
+
+  if (type == "username") {
+    if (!GetUtils.isUsername(val)) return "not a valid user name";
+  }
+  if (type == "email") {
+    if (!GetUtils.isEmail(val)) return "not a valid email";
+  }
+  if (type == "phone") {
+    if (!GetUtils.isPhoneNumber(val)) return "not a valid phone";
+  }
+  if (val.length < min) return "value cant be smaller than $min";
+
+  if (val.length > max) return "value cant be greater than $max";
+
+  if (pass != rePass) return "passwords don't match".tr;
+
+  return null;
 }

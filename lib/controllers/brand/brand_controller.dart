@@ -10,7 +10,6 @@ import 'package:dentist_dashboard/services/remote_services.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:universal_io/io.dart';
 
 class BrandController extends GetxController {
   bool _editingMode = false;
