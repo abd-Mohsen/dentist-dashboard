@@ -410,7 +410,7 @@ class RemoteServices {
   }
 
   static Future<bool> updateBrand(Uint8List? imageBytes, String brandTitle, int id) async {
-    var request = http.MultipartRequest("PATCH", Uri.parse("$_hostIP/brands/$id"));
+    var request = http.MultipartRequest("POST", Uri.parse("$_hostIP/brands/$id?_method=PATCH"));
 
     Map<String, String> headers = {
       'Authorization': "Bearer $token",
