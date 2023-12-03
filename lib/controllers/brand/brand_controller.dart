@@ -1,9 +1,7 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:typed_data';
 import 'dart:js' as js;
 import 'package:file_picker/file_picker.dart';
-import 'package:universal_html/html.dart' as html;
 import 'package:dentist_dashboard/constants.dart';
 import 'package:dentist_dashboard/models/brand_model.dart';
 import 'package:dentist_dashboard/services/remote_services.dart';
@@ -46,25 +44,25 @@ class BrandController extends GetxController {
     }
   }
 
-  void startWebFilePicker() async {
-    final uploadInput = html.FileUploadInputElement();
-    uploadInput.multiple = true;
-    uploadInput.draggable = true;
-    uploadInput.click();
-
-    uploadInput.onChange.listen((event) {
-      final files = uploadInput.files;
-      final file = files![0];
-      final reader = html.FileReader();
-
-      reader.onLoadEnd.listen((event) {
-        final newImg = const Base64Decoder().convert(reader.result.toString().split(",").last);
-        //updateBrand(newImg, brandTitle, brandId);
-      });
-
-      reader.readAsDataUrl(file);
-    });
-  }
+  // void startWebFilePicker() async {
+  //   final uploadInput = html.FileUploadInputElement();
+  //   uploadInput.multiple = true;
+  //   uploadInput.draggable = true;
+  //   uploadInput.click();
+  //
+  //   uploadInput.onChange.listen((event) {
+  //     final files = uploadInput.files;
+  //     final file = files![0];
+  //     final reader = html.FileReader();
+  //
+  //     reader.onLoadEnd.listen((event) {
+  //       final newImg = const Base64Decoder().convert(reader.result.toString().split(",").last);
+  //       //updateBrand(newImg, brandTitle, brandId);
+  //     });
+  //
+  //     reader.readAsDataUrl(file);
+  //   });
+  // }
 
   List<PlatformFile>? _paths;
 
@@ -104,6 +102,23 @@ class BrandController extends GetxController {
       print("catch error" + e.toString());
     } finally {
       if (success) js.context.callMethod('alert', ['updated successfully'.tr]);
+    }
+  }
+
+  Future<void> deleteBrand() async {
+    bool success = false;
+    try {
+      success = await RemoteServices.deleteBrand(brand.id).timeout(kTimeOutDuration);
+    } on TimeoutException {
+      js.context.callMethod('alert', ['request timed out'.tr]);
+    } catch (e) {
+      print("catch error $e");
+    } finally {
+      if (success) {
+        Get.back();
+        js.context.callMethod('alert', ['deleted successfully'.tr]);
+        Get.delete<BrandController>();
+      }
     }
   }
 }

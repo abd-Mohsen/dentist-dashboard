@@ -454,7 +454,7 @@ class RemoteServices {
 
   static Future<bool> deleteBrand(int id) async {
     var response = await client.delete(
-      Uri.parse('$_hostIP/brands'),
+      Uri.parse('$_hostIP/brands/$id'),
       headers: {
         'Content-Type': 'application/json',
         "Accept": 'application/json',

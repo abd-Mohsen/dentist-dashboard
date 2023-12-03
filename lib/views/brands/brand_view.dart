@@ -36,10 +36,13 @@ class BrandView extends StatelessWidget {
             ),
           ],
         );
+
+    // todo: crop the pic to match the aspect ratio in backend
     image() => GetBuilder<BrandController>(
           builder: (con) => Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Stack(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(15),
@@ -49,26 +52,14 @@ class BrandView extends StatelessWidget {
                             imageUrl: "$kHostIP/${Uri.encodeComponent(brand.image)}",
                           ),
                   ),
+                  const SizedBox(height: 12),
                   Visibility(
                     visible: con.editingMode,
-                    child: Positioned(
-                      bottom: -5,
-                      right: -5,
-                      child: Material(
-                        color: Colors.transparent,
-                        child: InkWell(
-                          onTap: () {
-                            con.pickFiles();
-                          },
-                          child: CircleAvatar(
-                            backgroundColor: cs.primary,
-                            child: Icon(
-                              Icons.edit,
-                              color: cs.onPrimary,
-                            ),
-                          ),
-                        ),
-                      ),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        con.pickImage();
+                      },
+                      child: Text("choose another".tr),
                     ),
                   ),
                 ],
@@ -91,6 +82,7 @@ class BrandView extends StatelessWidget {
                   return validateInput(s!, 4, 100, "title");
                 },
               ),
+              // todo: get all products from this brand
             ],
           ),
         ),
@@ -100,6 +92,42 @@ class BrandView extends StatelessWidget {
           builder: (con) => Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
+              Visibility(
+                visible: !con.editingMode,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: InkWell(
+                    onTap: () {
+                      Get.defaultDialog(
+                        title: 'warning'.tr,
+                        middleText: 'do you wanna delete this brand?'.tr,
+                        textConfirm: 'yes',
+                        textCancel: 'no',
+                        onConfirm: () {
+                          con.deleteBrand();
+                          Get.back();
+                        },
+                      );
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 12),
+                        child: Row(
+                          children: [
+                            Text("delete".tr, style: tt.titleMedium!.copyWith(color: cs.onPrimary)),
+                            const SizedBox(width: 8),
+                            Icon(Icons.delete, color: cs.onPrimary),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
               Visibility(
                 visible: !con.editingMode,
                 child: Padding(

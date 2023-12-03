@@ -56,7 +56,7 @@ class AddBrandView extends StatelessWidget {
                     child: InkWell(
                       onTap: () {
                         con.pickImage();
-                      },
+                      }, // todo: crop the pic to match the aspect ratio in backend
                       child: DottedBorder(
                         color: cs.onSurface.withOpacity(0.6),
                         strokeWidth: 3,
