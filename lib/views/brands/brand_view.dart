@@ -84,7 +84,12 @@ class BrandView extends StatelessWidget {
                 controller: bC.title,
                 title: "title",
                 enabled: con.editingMode,
-                // todo: validate title
+                onChanged: (s) {
+                  if (con.buttonPressed) con.brandFormKey.currentState!.validate();
+                },
+                validator: (s) {
+                  return validateInput(s!, 4, 100, "title");
+                },
               ),
             ],
           ),

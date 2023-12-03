@@ -32,6 +32,7 @@ class BrandController extends GetxController {
   final TextEditingController title = TextEditingController();
 
   GlobalKey<FormState> brandFormKey = GlobalKey<FormState>();
+  bool buttonPressed = false;
 
   Uint8List newImg = Uint8List(8);
   bool isNewImgSelected = false;
@@ -85,7 +86,10 @@ class BrandController extends GetxController {
   }
 
   Future<void> editBrand() async {
+    buttonPressed = true;
     bool success = false;
+    bool valid = brandFormKey.currentState!.validate();
+    if (!valid) return;
     try {
       print("before");
       success = (await RemoteServices.updateBrand(
