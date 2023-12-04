@@ -7,7 +7,7 @@ import 'package:dentist_dashboard/views/login_view.dart';
 import 'package:dentist_dashboard/views/orders/orders_view.dart';
 import 'package:dentist_dashboard/views/products/products_tab.dart';
 import 'package:dentist_dashboard/views/redirect.dart';
-import 'package:dentist_dashboard/views/users/users_view.dart';
+import 'package:dentist_dashboard/views/users/users_tab.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';

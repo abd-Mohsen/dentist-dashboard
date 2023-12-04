@@ -61,8 +61,18 @@ class MySearchBar extends StatelessWidget {
           );
         };
       }
+      if (type == "user") {
+        return () {
+          //Get.put(BrandController(brand: obj));
+          // showDialog(
+          //   context: context,
+          //   barrierDismissible: false,
+          //   builder: (context) => BrandView(brand: obj),
+          // );
+        };
+      }
       return () {
-        print("not a product, category or a brand?");
+        print("not a product, a user,a category or a brand?");
       };
     }
 
@@ -70,7 +80,7 @@ class MySearchBar extends StatelessWidget {
       if (type == "product") {
         return obj.images[0].path;
       }
-      if (type == "brand" || type == "category") {
+      if (type == "brand" || type == "category" || type == "user") {
         return obj.image;
       }
       return "wtf";

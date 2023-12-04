@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import '../views/home/home_tab.dart';
 import '../views/orders/orders_view.dart';
 import '../views/products/products_tab.dart';
-import '../views/users/users_view.dart';
+import '../views/users/users_tab.dart';
 
 class SideMenuController extends GetxController {
   final List<MenuModel> sideMenuItems = [
