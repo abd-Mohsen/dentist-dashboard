@@ -9,9 +9,11 @@ class CustomField extends StatelessWidget {
     this.onChanged,
     this.validator,
     required this.controller,
+    this.hint,
   });
 
   final String title;
+  final String? hint;
   final bool? enabled;
   final void Function(String)? onChanged;
   final String? Function(String?)? validator;
@@ -32,6 +34,7 @@ class CustomField extends StatelessWidget {
             enabled: enabled ?? true,
             //initialValue: initVal,
             decoration: InputDecoration(
+              hintText: hint,
               prefixIcon: const Padding(
                 padding: EdgeInsets.only(right: 12, left: 8),
                 child: Icon(Icons.title, size: 30),

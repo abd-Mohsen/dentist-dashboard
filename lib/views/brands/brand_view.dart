@@ -38,13 +38,15 @@ class BrandView extends StatelessWidget {
         );
 
     // todo: crop the pic to match the aspect ratio in backend
+    // todo: long photos are overflowing
     image() => GetBuilder<BrandController>(
           builder: (con) => Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ClipRRect(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: ClipRRect(
                     borderRadius: BorderRadius.circular(15),
                     child: con.isNewImgSelected
                         ? Image.memory(con.newImg)
@@ -52,9 +54,12 @@ class BrandView extends StatelessWidget {
                             imageUrl: "$kHostIP/${Uri.encodeComponent(brand.image)}",
                           ),
                   ),
-                  const SizedBox(height: 12),
-                  Visibility(
-                    visible: con.editingMode,
+                ),
+                const SizedBox(height: 12),
+                Visibility(
+                  visible: con.editingMode,
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 8.0),
                     child: ElevatedButton(
                       onPressed: () {
                         con.pickImage();
@@ -62,8 +67,10 @@ class BrandView extends StatelessWidget {
                       child: Text("choose another".tr),
                     ),
                   ),
-                ],
-              )),
+                ),
+              ],
+            ),
+          ),
         );
     List<Widget> contents = [
       GetBuilder<BrandController>(
@@ -227,7 +234,7 @@ class BrandView extends StatelessWidget {
             key: con.brandFormKey,
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 12),
-              child: Container(
+              child: SizedBox(
                 height: MediaQuery.sizeOf(context).height / 1.3,
                 width: MediaQuery.sizeOf(context).width / 1.3,
                 child: ResponsiveWidget.isSmall(context)

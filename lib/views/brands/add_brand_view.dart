@@ -41,7 +41,12 @@ class AddBrandView extends StatelessWidget {
                 ? Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      ClipRRect(borderRadius: BorderRadius.circular(15), child: Image.memory(con.newImg)),
+                      Expanded(
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(15),
+                          child: Image.memory(con.newImg),
+                        ),
+                      ),
                       const SizedBox(height: 12),
                       ElevatedButton(
                         onPressed: () {
@@ -90,7 +95,8 @@ class AddBrandView extends StatelessWidget {
             children: [
               CustomField(
                 controller: aBC.title,
-                title: "title",
+                title: "title".tr,
+                hint: "add a title".tr,
                 onChanged: (s) {
                   if (aBC.buttonPressed) aBC.addBrandFormKey.currentState!.validate();
                 },
