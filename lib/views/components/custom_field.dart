@@ -5,6 +5,8 @@ class CustomField extends StatelessWidget {
   const CustomField({
     super.key,
     required this.title,
+    required this.iconData,
+    this.obscure,
     this.enabled,
     this.onChanged,
     this.validator,
@@ -15,6 +17,8 @@ class CustomField extends StatelessWidget {
   final String title;
   final String? hint;
   final bool? enabled;
+  final bool? obscure;
+  final IconData iconData;
   final void Function(String)? onChanged;
   final String? Function(String?)? validator;
   final TextEditingController controller;
@@ -24,7 +28,7 @@ class CustomField extends StatelessWidget {
     ColorScheme cs = Theme.of(context).colorScheme;
     TextTheme tt = Theme.of(context).textTheme;
     return Padding(
-      padding: const EdgeInsets.only(right: 16, bottom: 24),
+      padding: const EdgeInsets.only(right: 16, bottom: 28),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -32,12 +36,13 @@ class CustomField extends StatelessWidget {
           TextFormField(
             controller: controller,
             enabled: enabled ?? true,
+            obscureText: obscure ?? false,
             //initialValue: initVal,
             decoration: InputDecoration(
               hintText: hint,
-              prefixIcon: const Padding(
-                padding: EdgeInsets.only(right: 12, left: 8),
-                child: Icon(Icons.title, size: 30),
+              prefixIcon: Padding(
+                padding: const EdgeInsets.only(right: 12, left: 8),
+                child: Icon(iconData, size: 30),
               ),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),

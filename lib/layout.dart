@@ -2,9 +2,11 @@ import 'package:dentist_dashboard/constants.dart';
 import 'package:dentist_dashboard/controllers/home_controller.dart';
 import 'package:dentist_dashboard/controllers/side_menu_controller.dart';
 import 'package:dentist_dashboard/controllers/theme_controller.dart';
+import 'package:dentist_dashboard/controllers/user/user_controller.dart';
 import 'package:dentist_dashboard/services/responsiveness.dart';
 import 'package:dentist_dashboard/views/components/large_screen.dart';
 import 'package:dentist_dashboard/views/components/small_screen.dart';
+import 'package:dentist_dashboard/views/users/user_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -197,6 +199,14 @@ class Layout extends StatelessWidget {
                         ),
                       ),
                       PopupMenuItem(
+                        onTap: () {
+                          Get.put(UserController(user: con.currentUser));
+                          showDialog(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (context) => UserView(user: con.currentUser),
+                          );
+                        },
                         child: ListTile(
                           leading: Icon(
                             Icons.edit,

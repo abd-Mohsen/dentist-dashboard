@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dentist_dashboard/controllers/home_controller.dart';
 import 'package:dentist_dashboard/controllers/user/user_controller.dart';
 import 'package:dentist_dashboard/models/user_model.dart';
 import 'package:dentist_dashboard/services/responsiveness.dart';
@@ -13,6 +14,7 @@ class UserView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     UserController uC = Get.put(UserController(user: user));
+    HomeController hC = Get.find();
     ColorScheme cs = Theme.of(context).colorScheme;
     TextTheme tt = Theme.of(context).textTheme;
 
@@ -45,26 +47,48 @@ class UserView extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Expanded(
-                  child: CircleAvatar(
-                      child: con.isNewImgSelected
-                          ? Image.memory(con.newImg)
-                          : user.image != null
-                              ? CachedNetworkImage(
-                                  imageUrl: "$kHostIP/${Uri.encodeComponent(user.image!)}",
-                                )
-                              : Icon(Icons.person, size: 80)),
+                Stack(
+                  children: [
+                    // todo: make the clip always rounded, not oval
+                    SizedBox(
+                      height: 300,
+                      width: 300,
+                      child: ClipOval(
+                          child: con.isNewImgSelected
+                              ? Image.memory(con.newImg, fit: BoxFit.cover)
+                              : user.image != null
+                                  ? CachedNetworkImage(
+                                      imageUrl: "$kHostIP/${Uri.encodeComponent(user.image!)}",
+                                      fit: BoxFit.fitWidth,
+                                    )
+                                  : Icon(Icons.person, size: 80)),
+                    ),
+                    Positioned(
+                      right: 17,
+                      bottom: 17,
+                      child: InkWell(
+                        onTap: () {
+                          con.pickImage();
+                        },
+                        child: CircleAvatar(
+                          backgroundColor: cs.primary,
+                          child: Icon(Icons.edit, color: cs.onPrimary),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 12),
                 Visibility(
-                  visible: con.editingMode,
+                  visible: con.isNewImgSelected,
                   child: Padding(
                     padding: const EdgeInsets.only(bottom: 8.0),
                     child: ElevatedButton(
                       onPressed: () {
-                        con.pickImage();
+                        con.editProfileImage();
+                        hC.refreshCurrentUser();
                       },
-                      child: Text("choose another".tr),
+                      child: Text("update photo".tr),
                     ),
                   ),
                 ),
@@ -72,35 +96,127 @@ class UserView extends StatelessWidget {
             ),
           ),
         );
+
     List<Widget> contents = [
       GetBuilder<UserController>(
         builder: (con) => Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
-            children: [
-              CustomField(
-                controller: uC.name,
-                title: "title",
-                enabled: con.editingMode,
-                onChanged: (s) {
-                  if (con.buttonPressed) con.userFormKey.currentState!.validate();
-                },
-                validator: (s) {
-                  return validateInput(s!, 4, 100, "title");
-                },
-              ),
-              // todo: get all products from this brand
-            ],
+            children: !con.editPassMode
+                ? [
+                    CustomField(
+                      controller: uC.name,
+                      title: "user name",
+                      enabled: con.editingMode,
+                      onChanged: (s) {
+                        if (con.buttonPressed) con.userFormKey.currentState!.validate();
+                      },
+                      iconData: Icons.person_2,
+                      validator: (s) {
+                        return validateInput(s!, 4, 100, "title");
+                      },
+                    ),
+                    CustomField(
+                      controller: uC.phone,
+                      title: "phone",
+                      enabled: con.editingMode,
+                      onChanged: (s) {
+                        if (con.buttonPressed) con.userFormKey.currentState!.validate();
+                      },
+                      iconData: Icons.phone_android,
+                      validator: (s) {
+                        return validateInput(s!, 4, 100, "phone");
+                      },
+                    ),
+                  ]
+                : [
+                    // todo: add 'show password' icon
+                    CustomField(
+                      controller: uC.currPassword,
+                      title: "current password",
+                      onChanged: (s) {
+                        if (con.buttonPressed) con.passwordFormKey.currentState!.validate();
+                      },
+                      hint: "write current password",
+                      obscure: true,
+                      iconData: Icons.lock_open,
+                      validator: (s) {
+                        return validateInput(s!, 8, 100, "password");
+                      },
+                    ),
+                    CustomField(
+                      controller: uC.password,
+                      title: "new password",
+                      onChanged: (s) {
+                        if (con.buttonPressed) con.passwordFormKey.currentState!.validate();
+                      },
+                      obscure: true,
+                      hint: "write a new password",
+                      iconData: Icons.lock,
+                      validator: (s) {
+                        return validateInput(s!, 8, 100, "password");
+                      },
+                    ),
+                    CustomField(
+                      controller: uC.rePassword,
+                      title: "confirm password",
+                      onChanged: (s) {
+                        if (con.buttonPressed) con.passwordFormKey.currentState!.validate();
+                      },
+                      obscure: true,
+                      hint: "rewrite password",
+                      iconData: Icons.lock_reset,
+                      validator: (s) {
+                        return validateInput(
+                          s!,
+                          8,
+                          100,
+                          "password",
+                          pass: con.password.text,
+                          rePass: con.rePassword.text,
+                        );
+                      },
+                    ),
+                  ],
           ),
         ),
       )
     ];
+
+    //todo: fix overflow here
     bottomBar() => GetBuilder<UserController>(
           builder: (con) => Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Visibility(
-                visible: !con.editingMode,
+                visible: !con.editingMode && !con.editPassMode,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: InkWell(
+                    onTap: () {
+                      con.toggleEditPassMode(true);
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: cs.primary,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 12),
+                        child: Row(
+                          children: [
+                            Text("change password".tr, style: tt.titleMedium!.copyWith(color: cs.onPrimary)),
+                            const SizedBox(width: 8),
+                            Icon(Icons.password, color: cs.onPrimary),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Visibility(
+                visible: !con.editingMode && !con.editPassMode,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: InkWell(
@@ -111,7 +227,7 @@ class UserView extends StatelessWidget {
                         textConfirm: 'yes',
                         textCancel: 'no',
                         onConfirm: () {
-                          con.deleteBrand();
+                          con.deleteUser();
                           Get.back();
                         },
                       );
@@ -136,7 +252,7 @@ class UserView extends StatelessWidget {
                 ),
               ),
               Visibility(
-                visible: !con.editingMode,
+                visible: !con.editingMode && !con.editPassMode,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: InkWell(
@@ -196,7 +312,8 @@ class UserView extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 12),
                   child: InkWell(
                     onTap: () {
-                      con.editBrand();
+                      con.editProfile();
+                      hC.refreshCurrentUser();
                     },
                     child: Container(
                       decoration: BoxDecoration(
@@ -208,6 +325,33 @@ class UserView extends StatelessWidget {
                         child: Row(
                           children: [
                             Text("ok".tr, style: tt.titleMedium!.copyWith(color: cs.onPrimary)),
+                            const SizedBox(width: 8),
+                            Icon(Icons.check, color: cs.onPrimary),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Visibility(
+                visible: con.editPassMode,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 12),
+                  child: InkWell(
+                    onTap: () {
+                      con.editPassword();
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.lightGreenAccent,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: [
+                            Text("change password".tr, style: tt.titleMedium!.copyWith(color: cs.onPrimary)),
                             const SizedBox(width: 8),
                             Icon(Icons.check, color: cs.onPrimary),
                           ],
@@ -231,7 +375,7 @@ class UserView extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
         child: GetBuilder<UserController>(
           builder: (con) => Form(
-            key: con.userFormKey,
+            key: con.editPassMode ? con.passwordFormKey : con.userFormKey,
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 12),
               child: SizedBox(
@@ -242,7 +386,10 @@ class UserView extends StatelessWidget {
                         //padding: const EdgeInsets.symmetric(horizontal: 12.0),
                         children: [
                           topBar(),
-                          image(),
+                          Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: image(),
+                          ),
                           Divider(
                             indent: 15,
                             endIndent: 15,
@@ -257,9 +404,7 @@ class UserView extends StatelessWidget {
                     : Row(
                         children: [
                           const SizedBox(width: 18),
-                          Expanded(
-                            child: image(),
-                          ),
+                          image(),
                           VerticalDivider(
                             indent: 30,
                             endIndent: 30,

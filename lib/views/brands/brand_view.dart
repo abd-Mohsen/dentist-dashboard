@@ -79,6 +79,7 @@ class BrandView extends StatelessWidget {
           child: Column(
             children: [
               CustomField(
+                iconData: Icons.label,
                 controller: bC.title,
                 title: "title",
                 enabled: con.editingMode,

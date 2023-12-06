@@ -17,6 +17,13 @@ class UserController extends GetxController {
     update();
   }
 
+  bool _editPassMode = false;
+  bool get editPassMode => _editPassMode;
+  void toggleEditPassMode(bool val) {
+    _editPassMode = val;
+    update();
+  }
+
   final UserModel user;
 
   UserController({required this.user});
@@ -24,12 +31,19 @@ class UserController extends GetxController {
   @override
   void onInit() {
     name.text = user.name;
+    phone.text = user.phone;
     super.onInit();
   }
 
   final TextEditingController name = TextEditingController();
+  final TextEditingController phone = TextEditingController();
+  final TextEditingController password = TextEditingController();
+  final TextEditingController rePassword = TextEditingController();
+  final TextEditingController currPassword = TextEditingController();
 
   GlobalKey<FormState> userFormKey = GlobalKey<FormState>();
+  GlobalKey<FormState> passwordFormKey = GlobalKey<FormState>();
+
   bool buttonPressed = false;
 
   Uint8List newImg = Uint8List(8);
@@ -63,17 +77,16 @@ class UserController extends GetxController {
     update();
   }
 
-  Future<void> editBrand() async {
+  Future<void> editProfile() async {
     buttonPressed = true;
     bool success = false;
     bool valid = userFormKey.currentState!.validate();
     if (!valid) return;
     try {
       print("before");
-      success = (await RemoteServices.updateBrand(
-        isNewImgSelected ? newImg : null,
+      success = (await RemoteServices.editProfile(
         name.text,
-        user.id,
+        phone.text,
       ).timeout(kTimeOutDuration));
       print("after");
     } on TimeoutException {
@@ -85,10 +98,51 @@ class UserController extends GetxController {
     }
   }
 
-  Future<void> deleteBrand() async {
+  Future<void> editPassword() async {
+    buttonPressed = true;
+    bool success = false;
+    bool valid = passwordFormKey.currentState!.validate();
+    if (!valid) return;
+    try {
+      print("before");
+      success = (await RemoteServices.editPassword(
+        password.text,
+        currPassword.text,
+      ).timeout(kTimeOutDuration));
+      print("after");
+    } on TimeoutException {
+      js.context.callMethod('alert', ['request timed out'.tr]);
+    } catch (e) {
+      print("catch error" + e.toString());
+    } finally {
+      if (success) js.context.callMethod('alert', ['updated successfully'.tr]);
+    }
+  }
+
+  Future<void> editProfileImage() async {
+    buttonPressed = true;
     bool success = false;
     try {
-      success = await RemoteServices.deleteBrand(user.id).timeout(kTimeOutDuration);
+      print("before");
+      success = (await RemoteServices.uploadProfileImage(newImg).timeout(kTimeOutDuration));
+      print("after");
+    } on TimeoutException {
+      js.context.callMethod('alert', ['request timed out'.tr]);
+    } catch (e) {
+      print("catch error" + e.toString());
+    } finally {
+      if (success) {
+        js.context.callMethod('alert', ['photo ${'updated successfully'.tr}']);
+        //isNewImgSelected = false;
+        //update();
+      }
+    }
+  }
+
+  Future<void> deleteUser() async {
+    bool success = false;
+    try {
+      //success = await RemoteServices.deleteBrand(user.id).timeout(kTimeOutDuration);
     } on TimeoutException {
       js.context.callMethod('alert', ['request timed out'.tr]);
     } catch (e) {

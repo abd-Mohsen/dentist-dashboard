@@ -189,17 +189,21 @@ class RemoteServices {
 
   /// profile requests
 
-  static Future<bool> uploadProfileImage(File? imageFile) async {
+  static Future<bool> uploadProfileImage(Uint8List imageBytes) async {
     var request = http.MultipartRequest("POST", Uri.parse("$_hostIP/upload-profile-image"));
-    request.headers['Authorization'] = "Bearer $token";
-    request.headers['Accept'] = 'application/json';
-    var stream = http.ByteStream(imageFile!.openRead());
-    var length = await imageFile.length();
-    var multipartFile = http.MultipartFile(
+    Map<String, String> headers = {
+      'Authorization': "Bearer $token",
+      'Accept': 'Application/Json',
+      //'Content-Type': 'application/json; charset=utf-8',
+    };
+
+    request.headers.addAll(headers);
+
+    var multipartFile = http.MultipartFile.fromBytes(
       'image',
-      stream,
-      length,
-      filename: basename(imageFile.path),
+      imageBytes,
+      filename: 'image.jpg',
+      contentType: MediaType('application', 'json'),
     );
 
     request.files.add(multipartFile);
@@ -210,7 +214,8 @@ class RemoteServices {
     if (response.statusCode == 200 || response.statusCode == 201) {
       return true;
     } else {
-      print('error massage: $responseBody');
+      js.context.callMethod('alert', [jsonDecode(responseBody)['message']]);
+      print('error message: $responseBody');
       return false;
     }
   }

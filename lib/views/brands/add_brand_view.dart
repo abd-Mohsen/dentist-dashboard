@@ -94,6 +94,7 @@ class AddBrandView extends StatelessWidget {
           child: Column(
             children: [
               CustomField(
+                iconData: Icons.label,
                 controller: aBC.title,
                 title: "title".tr,
                 hint: "add a title".tr,

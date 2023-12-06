@@ -46,6 +46,13 @@ class HomeController extends GetxController {
     }
   }
 
+  Future<void> refreshCurrentUser() async {
+    await Future.delayed(Duration(milliseconds: 500));
+    toggleFetched(false);
+    toggleLoading(true);
+    getCurrentUser();
+  }
+
   Future<void> signOut() async {
     try {
       if (await RemoteServices.logout().timeout(kTimeOutDuration)) {
