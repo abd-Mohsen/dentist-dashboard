@@ -34,6 +34,7 @@ class AddBrandView extends StatelessWidget {
             ),
           ],
         );
+
     image() => GetBuilder<AddBrandController>(
           builder: (con) => Padding(
             padding: const EdgeInsets.all(8.0),
@@ -41,9 +42,11 @@ class AddBrandView extends StatelessWidget {
                 ? Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Expanded(
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(15),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(15),
+                        child: SizedBox(
+                          height: MediaQuery.sizeOf(context).height / 2,
+                          width: double.infinity,
                           child: Image.memory(con.newImg),
                         ),
                       ),
@@ -66,20 +69,23 @@ class AddBrandView extends StatelessWidget {
                         color: cs.onSurface.withOpacity(0.6),
                         strokeWidth: 3,
                         dashPattern: const [5, 5],
-                        child: Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.add,
-                                size: 50,
-                                color: cs.onSurface,
-                              ),
-                              Text(
-                                'add image'.tr,
-                                style: tt.headlineSmall!.copyWith(color: cs.onSurface),
-                              ),
-                            ],
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 16.0),
+                          child: Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.add,
+                                  size: 50,
+                                  color: cs.onSurface,
+                                ),
+                                Text(
+                                  'add image'.tr,
+                                  style: tt.headlineSmall!.copyWith(color: cs.onSurface),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -87,6 +93,7 @@ class AddBrandView extends StatelessWidget {
                   ),
           ),
         );
+
     List<Widget> contents = [
       GetBuilder<AddBrandController>(
         builder: (con) => Padding(
@@ -110,6 +117,7 @@ class AddBrandView extends StatelessWidget {
         ),
       )
     ];
+
     bottomBar() => GetBuilder<AddBrandController>(
           builder: (con) => Row(
             mainAxisAlignment: MainAxisAlignment.end,

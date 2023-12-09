@@ -38,14 +38,15 @@ class BrandView extends StatelessWidget {
         );
 
     // todo: crop the pic to match the aspect ratio in backend
-    // todo: long photos are overflowing
     image() => GetBuilder<BrandController>(
           builder: (con) => Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Expanded(
+                SizedBox(
+                  height: MediaQuery.sizeOf(context).height / 2,
+                  width: double.infinity,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(15),
                     child: con.isNewImgSelected

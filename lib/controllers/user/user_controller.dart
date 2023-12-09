@@ -122,6 +122,7 @@ class UserController extends GetxController {
   Future<void> editProfileImage() async {
     buttonPressed = true;
     bool success = false;
+    if (!isNewImgSelected) return;
     try {
       print("before");
       success = (await RemoteServices.uploadProfileImage(newImg).timeout(kTimeOutDuration));
@@ -140,7 +141,7 @@ class UserController extends GetxController {
   }
 
   Future<void> deleteUser() async {
-    bool success = false;
+    //bool success = false;
     try {
       //success = await RemoteServices.deleteBrand(user.id).timeout(kTimeOutDuration);
     } on TimeoutException {
@@ -148,11 +149,11 @@ class UserController extends GetxController {
     } catch (e) {
       print("catch error $e");
     } finally {
-      if (success) {
-        Get.back();
-        js.context.callMethod('alert', ['deleted successfully'.tr]);
-        Get.delete<UserController>();
-      }
+      // if (success) {
+      //   Get.back();
+      //   js.context.callMethod('alert', ['deleted successfully'.tr]);
+      //   Get.delete<UserController>();
+      // }
     }
   }
 }

@@ -40,7 +40,6 @@ class UserView extends StatelessWidget {
         );
 
     // todo: crop the pic to match the aspect ratio in backend
-    // todo: long photos are overflowing
     image() => GetBuilder<UserController>(
           builder: (con) => Padding(
             padding: const EdgeInsets.all(8.0),
@@ -61,6 +60,7 @@ class UserView extends StatelessWidget {
                                       imageUrl: "$kHostIP/${Uri.encodeComponent(user.image!)}",
                                       fit: BoxFit.fitWidth,
                                     )
+                                  // todo: fix this (placeholder profile pic)
                                   : Icon(Icons.person, size: 80)),
                     ),
                     Positioned(
@@ -80,15 +80,14 @@ class UserView extends StatelessWidget {
                 ),
                 const SizedBox(height: 12),
                 Visibility(
-                  visible: con.isNewImgSelected,
+                  visible: !con.editingMode && !con.editPassMode,
                   child: Padding(
                     padding: const EdgeInsets.only(bottom: 8.0),
                     child: ElevatedButton(
                       onPressed: () {
-                        con.editProfileImage();
-                        hC.refreshCurrentUser();
+                        con.toggleEditPassMode(true);
                       },
-                      child: Text("update photo".tr),
+                      child: Text("change password".tr),
                     ),
                   ),
                 ),
@@ -113,7 +112,7 @@ class UserView extends StatelessWidget {
                       },
                       iconData: Icons.person_2,
                       validator: (s) {
-                        return validateInput(s!, 4, 100, "title");
+                        return validateInput(s!, 4, 50, "title");
                       },
                     ),
                     CustomField(
@@ -183,38 +182,37 @@ class UserView extends StatelessWidget {
       )
     ];
 
-    //todo: fix overflow here
     bottomBar() => GetBuilder<UserController>(
           builder: (con) => Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              Visibility(
-                visible: !con.editingMode && !con.editPassMode,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: InkWell(
-                    onTap: () {
-                      con.toggleEditPassMode(true);
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: cs.primary,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 12),
-                        child: Row(
-                          children: [
-                            Text("change password".tr, style: tt.titleMedium!.copyWith(color: cs.onPrimary)),
-                            const SizedBox(width: 8),
-                            Icon(Icons.password, color: cs.onPrimary),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+              // Visibility(
+              //   visible: !con.editingMode && !con.editPassMode,
+              //   child: Padding(
+              //     padding: const EdgeInsets.all(8.0),
+              //     child: InkWell(
+              //       onTap: () {
+              //         con.toggleEditPassMode(true);
+              //       },
+              //       child: Container(
+              //         decoration: BoxDecoration(
+              //           color: cs.primary,
+              //           borderRadius: BorderRadius.circular(20),
+              //         ),
+              //         child: Padding(
+              //           padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 12),
+              //           child: Row(
+              //             children: [
+              //               Text("change password".tr, style: tt.titleMedium!.copyWith(color: cs.onPrimary)),
+              //               const SizedBox(width: 8),
+              //               Icon(Icons.password, color: cs.onPrimary),
+              //             ],
+              //           ),
+              //         ),
+              //       ),
+              //     ),
+              //   ),
+              // ),
               Visibility(
                 visible: !con.editingMode && !con.editPassMode,
                 child: Padding(
@@ -313,6 +311,7 @@ class UserView extends StatelessWidget {
                   child: InkWell(
                     onTap: () {
                       con.editProfile();
+                      con.editProfileImage();
                       hC.refreshCurrentUser();
                     },
                     child: Container(
