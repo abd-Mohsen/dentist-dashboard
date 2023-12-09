@@ -1,12 +1,10 @@
 import 'dart:convert';
 import 'package:dentist_dashboard/constants.dart';
 import 'package:http_parser/http_parser.dart';
-import 'package:universal_io/io.dart';
 import 'dart:js' as js;
 import 'dart:typed_data';
 import 'package:dentist_dashboard/models/brand_model.dart';
 import 'package:dentist_dashboard/models/product_model.dart';
-import 'package:path/path.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:http/http.dart' as http;
 import '../models/user_model.dart';
@@ -232,6 +230,25 @@ class RemoteServices {
     //print(response.body);
     if (response.statusCode == 200 || response.statusCode == 201) {
       return UserModel.fromJson(jsonDecode(response.body));
+    } else if (response.statusCode == 401 || response.statusCode == 403) {
+      return null;
+    } else {
+      js.context.callMethod('alert', [jsonDecode(response.body)["message"]]);
+      return null;
+    }
+  }
+
+  static Future<List<UserModel>?> searchUsers(String query) async {
+    var response = await client.get(
+      Uri.parse("$_hostIP/users/search/$query"),
+      headers: {
+        'Content-Type': 'application/json',
+        "Accept": 'application/json',
+        "Authorization": "Bearer $token",
+      },
+    );
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return userModelFromJson(response.body);
     } else if (response.statusCode == 401 || response.statusCode == 403) {
       return null;
     } else {

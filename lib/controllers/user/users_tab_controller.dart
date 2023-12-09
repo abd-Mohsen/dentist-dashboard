@@ -1,12 +1,11 @@
-import 'package:dentist_dashboard/models/brand_model.dart';
-import 'package:dentist_dashboard/models/product_model.dart';
+import 'package:dentist_dashboard/models/user_model.dart';
 import 'package:dentist_dashboard/services/remote_services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 class UsersTabController extends GetxController {
-  final List<ProductModel> _searchResult = [];
-  List<ProductModel> get searchResult => _searchResult;
+  final List<UserModel> _searchResult = [];
+  List<UserModel> get searchResult => _searchResult;
 
   final TextEditingController searchController = TextEditingController();
   final FocusNode searchFocusNode = FocusNode();
@@ -27,7 +26,7 @@ class UsersTabController extends GetxController {
     _searchResult.clear();
     if (searchController.text.trim() != "") {
       _searchResult.clear();
-      //_searchResult.addAll((await RemoteServices.searchProducts(searchController.text))!);
+      _searchResult.addAll((await RemoteServices.searchUsers(searchController.text))!);
     }
     print(_searchResult);
     update();

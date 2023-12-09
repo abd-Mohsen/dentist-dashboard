@@ -11,12 +11,14 @@ import '../../constants.dart';
 class UserView extends StatelessWidget {
   const UserView({super.key, required this.user});
   final UserModel user;
+
   @override
   Widget build(BuildContext context) {
     UserController uC = Get.put(UserController(user: user));
     HomeController hC = Get.find();
     ColorScheme cs = Theme.of(context).colorScheme;
     TextTheme tt = Theme.of(context).textTheme;
+    final bool myProfile = hC.currentUser.id == user.id;
 
     topBar() => Row(
           mainAxisAlignment: MainAxisAlignment.end,
@@ -55,13 +57,13 @@ class UserView extends StatelessWidget {
                       child: ClipOval(
                           child: con.isNewImgSelected
                               ? Image.memory(con.newImg, fit: BoxFit.cover)
-                              : user.image != null
-                                  ? CachedNetworkImage(
-                                      imageUrl: "$kHostIP/${Uri.encodeComponent(user.image!)}",
-                                      fit: BoxFit.fitWidth,
-                                    )
-                                  // todo: fix this (placeholder profile pic)
-                                  : Icon(Icons.person, size: 80)),
+                              : CachedNetworkImage(
+                                  imageUrl:
+                                      "$kHostIP/${Uri.encodeComponent(user.image ?? "storage/profile/default.jpg")}",
+                                  fit: BoxFit.fitWidth,
+                                )
+                          // todo: fix this (placeholder profile pic)
+                          ),
                     ),
                     Positioned(
                       right: 17,
@@ -80,7 +82,7 @@ class UserView extends StatelessWidget {
                 ),
                 const SizedBox(height: 12),
                 Visibility(
-                  visible: !con.editingMode && !con.editPassMode,
+                  visible: myProfile && !con.editingMode && !con.editPassMode,
                   child: Padding(
                     padding: const EdgeInsets.only(bottom: 8.0),
                     child: ElevatedButton(

@@ -1,6 +1,8 @@
 import 'package:dentist_dashboard/controllers/brand/brand_controller.dart';
+import 'package:dentist_dashboard/controllers/user/user_controller.dart';
 import 'package:dentist_dashboard/views/brands/brand_view.dart';
 import 'package:dentist_dashboard/views/components/search_card.dart';
+import 'package:dentist_dashboard/views/users/user_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -63,12 +65,12 @@ class MySearchBar extends StatelessWidget {
       }
       if (type == "user") {
         return () {
-          //Get.put(BrandController(brand: obj));
-          // showDialog(
-          //   context: context,
-          //   barrierDismissible: false,
-          //   builder: (context) => BrandView(brand: obj),
-          // );
+          Get.put(UserController(user: obj));
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (context) => UserView(user: obj),
+          );
         };
       }
       return () {
@@ -81,7 +83,17 @@ class MySearchBar extends StatelessWidget {
         return obj.images[0].path;
       }
       if (type == "brand" || type == "category" || type == "user") {
-        return obj.image;
+        return obj.image ?? "storage/profile/default.jpg";
+      }
+      return "wtf";
+    }
+
+    String correctTitle(obj) {
+      if (type == "user") {
+        return obj.name;
+      }
+      if (type == "brand" || type == "category" || type == "product") {
+        return obj.title;
       }
       return "wtf";
     }
@@ -135,7 +147,7 @@ class MySearchBar extends StatelessWidget {
                         itemBuilder: (context, i) => Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: SearchCard(
-                            title: searchResult[i].title,
+                            title: correctTitle(searchResult[i]),
                             imagePath: correctImagePath(searchResult[i]),
                             onTap: onClickCard(searchResult[i]),
                           ),

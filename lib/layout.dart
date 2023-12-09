@@ -152,8 +152,8 @@ class Layout extends StatelessWidget {
                 const SizedBox(width: 16),
                 CircleAvatar(
                   radius: 20,
-                  foregroundImage: con.fetchedProfile && con.currentUser.image != null
-                      ? NetworkImage("$kHostIP/${con.currentUser.image}")
+                  foregroundImage: con.fetchedProfile
+                      ? NetworkImage("$kHostIP/${con.currentUser.image ?? "storage/profile/default.jpg"}")
                       : null,
                   backgroundColor: cs.secondary,
                   child: PopupMenuButton(
@@ -177,8 +177,8 @@ class Layout extends StatelessWidget {
                               leading: CircleAvatar(
                                 radius: 25,
                                 backgroundColor: cs.onSecondary,
-                                foregroundImage: con.fetchedProfile && con.currentUser.image != null
-                                    ? NetworkImage("$kHostIP/${con.currentUser.image}")
+                                foregroundImage: con.fetchedProfile
+                                    ? NetworkImage("$kHostIP/${con.currentUser.image ?? "storage/profile/default.jpg"}")
                                     : null,
                               ),
                               title: Text(

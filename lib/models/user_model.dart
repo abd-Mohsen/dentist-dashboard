@@ -13,6 +13,7 @@ class UserModel {
   final String? image;
   final String role;
   final bool isVerified;
+  final DateTime createdAt;
 
   UserModel({
     required this.id,
@@ -22,6 +23,7 @@ class UserModel {
     required this.image,
     required this.role,
     required this.isVerified,
+    required this.createdAt,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
@@ -32,6 +34,7 @@ class UserModel {
         image: json["image"],
         role: json["role"],
         isVerified: json["is_verified"],
+        createdAt: DateTime.parse(json["created_at"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -42,5 +45,6 @@ class UserModel {
         "image": image,
         "role": role,
         "is_verified": isVerified,
+        "created_at": createdAt,
       };
 }
