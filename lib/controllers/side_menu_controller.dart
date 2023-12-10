@@ -13,12 +13,12 @@ class SideMenuController extends GetxController {
   final List<MenuModel> sideMenuItems = [
     MenuModel(title: "Home".tr, icon: Icons.home_filled, isSelected: true, route: 'home', tab: 0),
     //MenuModel(title: "layout products".tr, icon: Icons.phone_android, isSelected: false, isHovered: false),
-    MenuModel(title: "Manage products".tr, icon: Icons.manage_search, isSelected: false, route: "products", tab: 1),
+    MenuModel(title: "products".tr, icon: Icons.manage_search, isSelected: false, route: "products", tab: 1),
     //MenuModel(title: "Manage categories".tr, icon: Icons.category_rounded, isSelected: false, route: "products"),
-    MenuModel(title: "Manage users".tr, icon: Icons.manage_accounts, isSelected: false, route: "users", tab: 2),
-    MenuModel(title: "Manage orders".tr, icon: Icons.checklist, isSelected: false, route: "orders", tab: 3),
+    MenuModel(title: "users".tr, icon: Icons.manage_accounts, isSelected: false, route: "users", tab: 2),
+    MenuModel(title: "orders".tr, icon: Icons.checklist, isSelected: false, route: "orders", tab: 3),
     MenuModel(title: "Analytics".tr, icon: Icons.analytics, isSelected: false, route: "analytics", tab: 4),
-    MenuModel(title: "Manage brands".tr, icon: Icons.tag, isSelected: false, route: "products", tab: 5),
+    MenuModel(title: "brands".tr, icon: Icons.tag, isSelected: false, route: "products", tab: 5),
   ];
 
   List<Widget> tabs = [
@@ -39,16 +39,10 @@ class SideMenuController extends GetxController {
     }
     item.isSelected = true;
     _selectedTab = item.tab;
-    //js.context.callMethod('alert', [item.route]);
-    //Get.toNamed('/${item.route}');
     update();
   }
 
-  // void onHover(MenuModel item) {
-  //   for (MenuModel model in sideMenuItems) {
-  //     model.isHovered = false;
-  //   }
-  //   item.isHovered = true;
-  //   update();
-  // }
+  bool topTab(int i) => i == _selectedTab - 1 && i >= 0 && i < sideMenuItems.length;
+
+  bool bottomTab(int i) => i == _selectedTab + 1 && i >= 0 && i < sideMenuItems.length;
 }

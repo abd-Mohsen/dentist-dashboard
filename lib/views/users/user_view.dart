@@ -65,16 +65,19 @@ class UserView extends StatelessWidget {
                           // todo: fix this (placeholder profile pic)
                           ),
                     ),
-                    Positioned(
-                      right: 17,
-                      bottom: 17,
-                      child: InkWell(
-                        onTap: () {
-                          con.pickImage();
-                        },
-                        child: CircleAvatar(
-                          backgroundColor: cs.primary,
-                          child: Icon(Icons.edit, color: cs.onPrimary),
+                    Visibility(
+                      visible: con.editingMode,
+                      child: Positioned(
+                        right: 17,
+                        bottom: 17,
+                        child: InkWell(
+                          onTap: () {
+                            con.pickImage();
+                          },
+                          child: CircleAvatar(
+                            backgroundColor: cs.primary,
+                            child: Icon(Icons.edit, color: cs.onPrimary),
+                          ),
                         ),
                       ),
                     ),

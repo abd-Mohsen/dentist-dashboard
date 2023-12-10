@@ -97,6 +97,7 @@ class MyThemes {
   );
 
   static ThemeData myDarkMode = ThemeData.dark().copyWith(
+    splashColor: Colors.transparent,
     colorScheme: const ColorScheme(
       brightness: Brightness.dark,
       primary: Color(0xff02979D),
@@ -205,6 +206,7 @@ class MyThemes {
   );
 
   static ThemeData myLightMode = ThemeData.light().copyWith(
+    splashColor: Colors.transparent,
     colorScheme: ColorScheme(
       brightness: Brightness.light,
       primary: const Color(0xff02979D),

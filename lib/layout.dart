@@ -151,11 +151,10 @@ class Layout extends StatelessWidget {
                   ),
                 const SizedBox(width: 16),
                 CircleAvatar(
-                  radius: 20,
+                  radius: 22,
                   foregroundImage: con.fetchedProfile
                       ? NetworkImage("$kHostIP/${con.currentUser.image ?? "storage/profile/default.jpg"}")
                       : null,
-                  backgroundColor: cs.secondary,
                   child: PopupMenuButton(
                     shape: RoundedRectangleBorder(
                       //side: const BorderSide(width: 0.5),
@@ -165,7 +164,6 @@ class Layout extends StatelessWidget {
                     icon: Icon(
                       Icons.person,
                       color: cs.onSurface,
-                      //semanticLabel: "notifications",
                     ),
                     position: PopupMenuPosition.under,
                     itemBuilder: (context) => [
