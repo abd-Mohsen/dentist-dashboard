@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:dentist_dashboard/constants.dart';
+import 'package:dentist_dashboard/models/category_model.dart';
 import 'package:http_parser/http_parser.dart';
 import 'dart:js' as js;
 import 'dart:typed_data';
@@ -401,7 +402,7 @@ class RemoteServices {
     }
   }
 
-  static Future<bool> createBrand(Uint8List imageBytes, String brandTitle) async {
+  static Future<bool> createBrand(Uint8List imageBytes, String title) async {
     var request = http.MultipartRequest("POST", Uri.parse("$_hostIP/brands"));
     Map<String, String> headers = {
       'Authorization': "Bearer $token",
@@ -412,7 +413,7 @@ class RemoteServices {
     request.headers.addAll(headers);
 
     request.fields.addAll({
-      'title': brandTitle,
+      'title': title,
     });
 
     var multipartFile = http.MultipartFile.fromBytes(
@@ -436,7 +437,7 @@ class RemoteServices {
     }
   }
 
-  static Future<bool> updateBrand(Uint8List? imageBytes, String brandTitle, int id) async {
+  static Future<bool> updateBrand(Uint8List? imageBytes, String title, int id) async {
     var request = http.MultipartRequest("POST", Uri.parse("$_hostIP/brands/$id?_method=PATCH"));
 
     Map<String, String> headers = {
@@ -448,7 +449,7 @@ class RemoteServices {
     request.headers.addAll(headers);
 
     request.fields.addAll({
-      'title': brandTitle,
+      'title': title,
     });
 
     if (imageBytes != null) {
@@ -631,6 +632,197 @@ class RemoteServices {
     } else {
       js.context.callMethod('alert', [jsonDecode(response.body)["message"]]);
       return null;
+    }
+  }
+
+  /// category requests
+
+  static Future<CategoryModel?> fetchACategory(int id) async {
+    var response = await client.get(
+      Uri.parse("$_hostIP/categories/$id"),
+      headers: {
+        'Content-Type': 'application/json',
+        "Accept": 'application/json',
+        "Authorization": "Bearer $token",
+      },
+    );
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return CategoryModel.fromJson(jsonDecode(response.body));
+    } else if (response.statusCode == 401 || response.statusCode == 403) {
+      return null;
+    } else {
+      js.context.callMethod('alert', [jsonDecode(response.body)["message"]]);
+      return null;
+    }
+  }
+
+  static Future<List<CategoryModel>?> fetchAllMainCategories() async {
+    var response = await client.get(
+      Uri.parse("$_hostIP/categories"),
+      headers: {
+        'Content-Type': 'application/json',
+        "Accept": 'application/json',
+        "Authorization": "Bearer $token",
+      },
+    );
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return categoryModelFromJson(response.body);
+    } else if (response.statusCode == 401 || response.statusCode == 403) {
+      return null;
+    } else {
+      js.context.callMethod('alert', [jsonDecode(response.body)["message"]]);
+      return null;
+    }
+  }
+
+  static Future<List<CategoryModel>?> fetchAllSubCategories() async {
+    var response = await client.get(
+      Uri.parse("$_hostIP/categories/all-children"),
+      headers: {
+        'Content-Type': 'application/json',
+        "Accept": 'application/json',
+        "Authorization": "Bearer $token",
+      },
+    );
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return categoryModelFromJson(response.body);
+    } else if (response.statusCode == 401 || response.statusCode == 403) {
+      return null;
+    } else {
+      js.context.callMethod('alert', [jsonDecode(response.body)["message"]]);
+      return null;
+    }
+  }
+
+  static Future<List?> fetchCategoryDetails(int id) async {
+    var response = await client.get(
+      Uri.parse("$_hostIP/category-details/$id"),
+      headers: {
+        'Content-Type': 'application/json',
+        "Accept": 'application/json',
+        "Authorization": "Bearer $token",
+      },
+    );
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return [jsonDecode(response.body)['products'], jsonDecode(response.body)['sub-categories']];
+    } else if (response.statusCode == 401 || response.statusCode == 403) {
+      return null;
+    } else {
+      js.context.callMethod('alert', [jsonDecode(response.body)["message"]]);
+      return null;
+    }
+  }
+
+  static Future<List<CategoryModel>?> searchCategories(String query) async {
+    var response = await client.get(
+      Uri.parse("$_hostIP/categories/search/$query"),
+      headers: {
+        'Content-Type': 'application/json',
+        "Accept": 'application/json',
+        "Authorization": "Bearer $token",
+      },
+    );
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return categoryModelFromJson(response.body);
+    } else if (response.statusCode == 401 || response.statusCode == 403) {
+      return null;
+    } else {
+      js.context.callMethod('alert', [jsonDecode(response.body)["message"]]);
+      return null;
+    }
+  }
+
+  static Future<bool> createCategory(Uint8List imageBytes, String title, String parent) async {
+    var request = http.MultipartRequest("POST", Uri.parse("$_hostIP/categories"));
+    Map<String, String> headers = {
+      'Authorization': "Bearer $token",
+      'Accept': 'Application/Json',
+      //'Content-Type': 'application/json; charset=utf-8',
+    };
+
+    request.headers.addAll(headers);
+
+    request.fields.addAll({
+      'title': title,
+      'parent': parent,
+    });
+
+    var multipartFile = http.MultipartFile.fromBytes(
+      'image',
+      imageBytes,
+      filename: 'image.jpg',
+      contentType: MediaType('application', 'json'),
+    );
+
+    request.files.add(multipartFile);
+
+    var response = await request.send();
+    var responseBody = await response.stream.bytesToString();
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return true;
+    } else {
+      js.context.callMethod('alert', [jsonDecode(responseBody)['message']]);
+      print('error message: $responseBody');
+      return false;
+    }
+  }
+
+  static Future<bool> updateCategory(Uint8List? imageBytes, String title, int id, String parent) async {
+    var request = http.MultipartRequest("POST", Uri.parse("$_hostIP/categories/$id?_method=PATCH"));
+
+    Map<String, String> headers = {
+      'Authorization': "Bearer $token",
+      'Accept': 'Application/Json',
+      //'Content-Type': 'application/json; charset=utf-8',
+    };
+
+    request.headers.addAll(headers);
+
+    request.fields.addAll({
+      'title': title,
+      //'parent': parent,
+    });
+
+    if (imageBytes != null) {
+      var multipartFile = http.MultipartFile.fromBytes(
+        'image',
+        imageBytes,
+        filename: 'image.jpg',
+        contentType: MediaType('application', 'json'), // Modify the content type based on your image format
+      );
+
+      request.files.add(multipartFile);
+    }
+
+    var response = await request.send();
+    var responseBody = await response.stream.bytesToString();
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return true;
+    } else {
+      js.context.callMethod('alert', [jsonDecode(responseBody)['message']]);
+      print('error message: ${jsonDecode(responseBody)}');
+      return false;
+    }
+  }
+
+  static Future<bool> deleteCategory(int id) async {
+    var response = await client.delete(
+      Uri.parse('$_hostIP/categories/$id'),
+      headers: {
+        'Content-Type': 'application/json',
+        "Accept": 'application/json',
+        "Authorization": "Bearer $token",
+      },
+    );
+    if (response.statusCode == 204) {
+      return true;
+    } else if (response.statusCode == 401 || response.statusCode == 403) {
+      return false;
+    } else {
+      js.context.callMethod('alert', [jsonDecode(response.body)["message"]]);
+      return false;
     }
   }
 }

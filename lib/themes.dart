@@ -100,7 +100,7 @@ class MyThemes {
     splashColor: Colors.transparent,
     colorScheme: const ColorScheme(
       brightness: Brightness.dark,
-      primary: Color(0xff02979D),
+      primary: Color(0xff02979D), // todo: choose a lighter version of this color
       onPrimary: Colors.black,
       secondary: Color(0xff03DAC6),
       onSecondary: Colors.black,

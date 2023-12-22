@@ -9,6 +9,7 @@ import 'package:dentist_dashboard/views/components/small_screen.dart';
 import 'package:dentist_dashboard/views/users/user_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:photo_view/photo_view.dart';
 
 import 'controllers/locale_controller.dart';
 
@@ -175,8 +176,12 @@ class Layout extends StatelessWidget {
                               leading: CircleAvatar(
                                 radius: 25,
                                 backgroundColor: cs.onSecondary,
-                                foregroundImage: con.fetchedProfile
-                                    ? NetworkImage("$kHostIP/${con.currentUser.image ?? "storage/profile/default.jpg"}")
+                                child: con.fetchedProfile
+                                    ? PhotoView(
+                                        imageProvider: NetworkImage(
+                                          "$kHostIP/${con.currentUser.image ?? "storage/profile/default.jpg"}",
+                                        ),
+                                      ) // todo : fix photo view
                                     : null,
                               ),
                               title: Text(

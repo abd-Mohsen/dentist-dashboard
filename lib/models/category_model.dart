@@ -9,7 +9,7 @@ class CategoryModel {
   final int id;
   final String title;
   final String image;
-  final String parent;
+  final String? parent;
   final int childrenCount;
 
   CategoryModel({

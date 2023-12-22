@@ -1,24 +1,20 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:dentist_dashboard/controllers/home_controller.dart';
-import 'package:dentist_dashboard/controllers/user/user_controller.dart';
-import 'package:dentist_dashboard/models/user_model.dart';
+import 'package:dentist_dashboard/controllers/category/category_controller.dart';
+import 'package:dentist_dashboard/models/category_model.dart';
 import 'package:dentist_dashboard/services/responsiveness.dart';
 import 'package:dentist_dashboard/views/components/custom_field.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../constants.dart';
 
-class UserView extends StatelessWidget {
-  const UserView({super.key, required this.user});
-  final UserModel user;
-
+class CategoryView extends StatelessWidget {
+  const CategoryView({super.key, required this.category});
+  final CategoryModel category;
   @override
   Widget build(BuildContext context) {
-    UserController uC = Get.put(UserController(user: user));
-    HomeController hC = Get.find();
+    CategoryController cC = Get.put(CategoryController(category: category));
     ColorScheme cs = Theme.of(context).colorScheme;
     TextTheme tt = Theme.of(context).textTheme;
-    final bool myProfile = hC.currentUser.id == user.id;
 
     topBar() => Row(
           mainAxisAlignment: MainAxisAlignment.end,
@@ -27,7 +23,7 @@ class UserView extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: InkWell(
                 onTap: () {
-                  Get.delete<UserController>();
+                  Get.delete<CategoryController>();
                   //pC.dispose();
                   Get.back();
                 },
@@ -42,57 +38,34 @@ class UserView extends StatelessWidget {
         );
 
     // todo: crop the pic to match the aspect ratio in backend
-    image() => GetBuilder<UserController>(
+    image() => GetBuilder<CategoryController>(
           builder: (con) => Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Stack(
-                  children: [
-                    // todo: make the clip always rounded, not oval
-                    SizedBox(
-                      height: 300,
-                      width: 300,
-                      child: ClipOval(
-                          child: con.isNewImgSelected
-                              ? Image.memory(con.newImg, fit: BoxFit.cover)
-                              : CachedNetworkImage(
-                                  imageUrl:
-                                      "$kHostIP/${Uri.encodeComponent(user.image ?? "storage/profile/default.jpg")}",
-                                  fit: BoxFit.fitWidth,
-                                )
-                          // todo: fix this (placeholder profile pic)
+                SizedBox(
+                  height: MediaQuery.sizeOf(context).height / 2,
+                  width: double.infinity,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(15),
+                    child: con.isNewImgSelected
+                        ? Image.memory(con.newImg)
+                        : CachedNetworkImage(
+                            imageUrl: "$kHostIP/${Uri.encodeComponent(category.image)}",
                           ),
-                    ),
-                    Visibility(
-                      visible: con.editingMode,
-                      child: Positioned(
-                        right: 17,
-                        bottom: 17,
-                        child: InkWell(
-                          onTap: () {
-                            con.pickImage();
-                          },
-                          child: CircleAvatar(
-                            backgroundColor: cs.primary,
-                            child: Icon(Icons.edit, color: cs.onPrimary),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
                 const SizedBox(height: 12),
                 Visibility(
-                  visible: myProfile && !con.editingMode && !con.editPassMode,
+                  visible: con.editingMode,
                   child: Padding(
                     padding: const EdgeInsets.only(bottom: 8.0),
                     child: ElevatedButton(
                       onPressed: () {
-                        con.toggleEditPassMode(true);
+                        con.pickImage();
                       },
-                      child: Text("change password".tr),
+                      child: Text("choose another".tr),
                     ),
                   ),
                 ),
@@ -102,97 +75,37 @@ class UserView extends StatelessWidget {
         );
 
     List<Widget> contents = [
-      GetBuilder<UserController>(
+      GetBuilder<CategoryController>(
         builder: (con) => Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
-            children: !con.editPassMode
-                ? [
-                    CustomField(
-                      controller: uC.name,
-                      title: "user name",
-                      enabled: con.editingMode,
-                      onChanged: (s) {
-                        if (con.buttonPressed) con.userFormKey.currentState!.validate();
-                      },
-                      iconData: Icons.person_2,
-                      validator: (s) {
-                        return validateInput(s!, 4, 50, "title");
-                      },
-                    ),
-                    CustomField(
-                      controller: uC.phone,
-                      title: "phone",
-                      enabled: con.editingMode,
-                      onChanged: (s) {
-                        if (con.buttonPressed) con.userFormKey.currentState!.validate();
-                      },
-                      iconData: Icons.phone_android,
-                      validator: (s) {
-                        return validateInput(s!, 4, 100, "phone");
-                      },
-                    ),
-                  ]
-                : [
-                    // todo: add 'show password' icon
-                    CustomField(
-                      controller: uC.currPassword,
-                      title: "current password",
-                      onChanged: (s) {
-                        if (con.buttonPressed) con.passwordFormKey.currentState!.validate();
-                      },
-                      hint: "write current password",
-                      obscure: true,
-                      iconData: Icons.lock_open,
-                      validator: (s) {
-                        return validateInput(s!, 8, 100, "password");
-                      },
-                    ),
-                    CustomField(
-                      controller: uC.password,
-                      title: "new password",
-                      onChanged: (s) {
-                        if (con.buttonPressed) con.passwordFormKey.currentState!.validate();
-                      },
-                      obscure: true,
-                      hint: "write a new password",
-                      iconData: Icons.lock_outline,
-                      validator: (s) {
-                        return validateInput(s!, 8, 100, "password");
-                      },
-                    ),
-                    CustomField(
-                      controller: uC.rePassword,
-                      title: "confirm password",
-                      onChanged: (s) {
-                        if (con.buttonPressed) con.passwordFormKey.currentState!.validate();
-                      },
-                      obscure: true,
-                      hint: "rewrite password",
-                      iconData: Icons.lock_reset,
-                      validator: (s) {
-                        return validateInput(
-                          s!,
-                          8,
-                          100,
-                          "password",
-                          pass: con.password.text,
-                          rePass: con.rePassword.text,
-                        );
-                      },
-                    ),
-                  ],
+            children: [
+              CustomField(
+                iconData: Icons.label,
+                controller: cC.title,
+                title: "title",
+                enabled: con.editingMode,
+                onChanged: (s) {
+                  if (con.buttonPressed) con.categoryFormKey.currentState!.validate();
+                },
+                validator: (s) {
+                  return validateInput(s!, 4, 100, "title");
+                },
+              ),
+              // todo: drop down search
+              // todo: show category details
+            ],
           ),
         ),
       )
     ];
 
-    bottomBar() => GetBuilder<UserController>(
+    bottomBar() => GetBuilder<CategoryController>(
           builder: (con) => Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Visibility(
-                visible: !con.editingMode && !con.editPassMode,
+                visible: !con.editingMode,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: InkWell(
@@ -203,7 +116,7 @@ class UserView extends StatelessWidget {
                         textConfirm: 'yes',
                         textCancel: 'no',
                         onConfirm: () {
-                          con.deleteUser();
+                          con.deleteCategory();
                           Get.back();
                         },
                       );
@@ -228,7 +141,7 @@ class UserView extends StatelessWidget {
                 ),
               ),
               Visibility(
-                visible: !con.editingMode && !con.editPassMode,
+                visible: !con.editingMode,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: InkWell(
@@ -260,7 +173,7 @@ class UserView extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 12),
                   child: InkWell(
                     onTap: () {
-                      Get.delete<UserController>();
+                      Get.delete<CategoryController>();
                       Get.back();
                     },
                     child: Container(
@@ -288,9 +201,7 @@ class UserView extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 12),
                   child: InkWell(
                     onTap: () {
-                      con.editProfile();
-                      con.editProfileImage();
-                      hC.refreshCurrentUser();
+                      con.editCategory();
                     },
                     child: Container(
                       decoration: BoxDecoration(
@@ -311,48 +222,21 @@ class UserView extends StatelessWidget {
                   ),
                 ),
               ),
-              Visibility(
-                visible: con.editPassMode,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 12),
-                  child: InkWell(
-                    onTap: () {
-                      con.editPassword();
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.lightGreenAccent,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          children: [
-                            Text("change password".tr, style: tt.titleMedium!.copyWith(color: cs.onPrimary)),
-                            const SizedBox(width: 8),
-                            Icon(Icons.check, color: cs.onPrimary),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
             ],
           ),
         );
 
     return WillPopScope(
       onWillPop: () async {
-        Get.delete<UserController>();
+        Get.delete<CategoryController>();
         //pC.dispose();
         return true;
       },
       child: Dialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
-        child: GetBuilder<UserController>(
+        child: GetBuilder<CategoryController>(
           builder: (con) => Form(
-            key: con.editPassMode ? con.passwordFormKey : con.userFormKey,
+            key: con.categoryFormKey,
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 12),
               child: SizedBox(
@@ -363,10 +247,7 @@ class UserView extends StatelessWidget {
                         //padding: const EdgeInsets.symmetric(horizontal: 12.0),
                         children: [
                           topBar(),
-                          Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: image(),
-                          ),
+                          image(),
                           Divider(
                             indent: 15,
                             endIndent: 15,
@@ -381,7 +262,9 @@ class UserView extends StatelessWidget {
                     : Row(
                         children: [
                           const SizedBox(width: 18),
-                          image(),
+                          Expanded(
+                            child: image(),
+                          ),
                           VerticalDivider(
                             indent: 30,
                             endIndent: 30,

@@ -1,6 +1,8 @@
 import 'package:dentist_dashboard/controllers/brand/brand_controller.dart';
+import 'package:dentist_dashboard/controllers/category/category_controller.dart';
 import 'package:dentist_dashboard/controllers/user/user_controller.dart';
 import 'package:dentist_dashboard/views/brands/brand_view.dart';
+import 'package:dentist_dashboard/views/categories/category_view.dart';
 import 'package:dentist_dashboard/views/components/search_card.dart';
 import 'package:dentist_dashboard/views/users/user_view.dart';
 import 'package:flutter/material.dart';
@@ -70,6 +72,16 @@ class MySearchBar extends StatelessWidget {
             context: context,
             barrierDismissible: false,
             builder: (context) => UserView(user: obj),
+          );
+        };
+      }
+      if (type == "category") {
+        return () {
+          Get.put(CategoryController(category: obj));
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (context) => CategoryView(category: obj),
           );
         };
       }
