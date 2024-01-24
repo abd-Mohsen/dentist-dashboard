@@ -38,6 +38,7 @@ dependencies:
   extended_image: any
   flutter_native_splash: ^2.3.6
   dotted_border: ^2.1.0
+  search_page: ^2.3.0
 
 
 dev_dependencies:

@@ -1,12 +1,16 @@
 import 'package:dentist_dashboard/controllers/category/add_category_controller.dart';
+import 'package:dentist_dashboard/models/category_model.dart';
 import 'package:dentist_dashboard/services/responsiveness.dart';
+import 'package:dentist_dashboard/views/components/custom_button.dart';
 import 'package:dentist_dashboard/views/components/custom_field.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class AddBrandView extends StatelessWidget {
-  const AddBrandView({super.key});
+import '../components/selection_field.dart';
+
+class AddCategoryView extends StatelessWidget {
+  const AddCategoryView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -112,7 +116,12 @@ class AddBrandView extends StatelessWidget {
                   return validateInput(s!, 4, 100, "title");
                 },
               ),
-              //todo: drop down search
+              SelectionField<CategoryModel>(
+                title: "parent (main category)".tr,
+                iconData: Icons.account_tree,
+                onTap: () {},
+                items: con.childCategories,
+              ),
             ],
           ),
         ),
@@ -123,29 +132,15 @@ class AddBrandView extends StatelessWidget {
           builder: (con) => Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: InkWell(
-                  onTap: () {
-                    con.addCategory();
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: cs.primary,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 12),
-                      child: Row(
-                        children: [
-                          Text("save".tr, style: tt.titleMedium!.copyWith(color: cs.onPrimary)),
-                          const SizedBox(width: 8),
-                          Icon(Icons.add, color: cs.onPrimary),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
+              CustomButton(
+                onTap: () {
+                  con.addCategory();
+                },
+                color: cs.primary,
+                title: "save".tr,
+                textColor: cs.onPrimary,
+                iconData: Icons.add,
+                iconColor: cs.onPrimary,
               ),
             ],
           ),

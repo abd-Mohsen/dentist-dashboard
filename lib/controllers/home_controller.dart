@@ -6,10 +6,13 @@ import 'package:dentist_dashboard/models/user_model.dart';
 import 'package:dentist_dashboard/services/remote_services.dart';
 import 'package:get/get.dart';
 
+import '../models/brand_model.dart';
+
 class HomeController extends GetxController {
   @override
   void onInit() {
     getCurrentUser();
+    //testtest();
     super.onInit();
   }
 
@@ -65,4 +68,10 @@ class HomeController extends GetxController {
       print("${e.toString()}================");
     }
   }
+
+  // List<BrandModel> test = [];
+  //
+  // void testtest() async {
+  //   test = (await RemoteServices.fetchAllBrands())!;
+  // }
 }

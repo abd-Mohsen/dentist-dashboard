@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:typed_data';
 import 'dart:js' as js;
+import 'package:dentist_dashboard/models/category_model.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -11,11 +12,14 @@ import '../../services/remote_services.dart';
 class AddCategoryController extends GetxController {
   GlobalKey<FormState> addCategoryFormKey = GlobalKey<FormState>();
   bool buttonPressed = false;
+
   final TextEditingController title = TextEditingController();
-  //todo: select parent (dropdown search)
+  CategoryModel? mainCategory;
 
   Uint8List newImg = Uint8List(8);
   bool isNewImgSelected = false;
+
+  List<CategoryModel> childCategories = [];
 
   Future<void> pickImage() async {
     XFile? image = await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -24,6 +28,10 @@ class AddCategoryController extends GetxController {
       isNewImgSelected = true;
       update();
     }
+  }
+
+  Future<void> getSubCategories() async {
+    childCategories.addAll((await RemoteServices.fetchAllSubCategories())!);
   }
 
   Future<void> addCategory() async {

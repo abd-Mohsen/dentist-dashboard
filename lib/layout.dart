@@ -3,6 +3,8 @@ import 'package:dentist_dashboard/controllers/home_controller.dart';
 import 'package:dentist_dashboard/controllers/side_menu_controller.dart';
 import 'package:dentist_dashboard/controllers/theme_controller.dart';
 import 'package:dentist_dashboard/controllers/user/user_controller.dart';
+import 'package:dentist_dashboard/models/brand_model.dart';
+import 'package:dentist_dashboard/models/product_model.dart';
 import 'package:dentist_dashboard/services/responsiveness.dart';
 import 'package:dentist_dashboard/views/components/large_screen.dart';
 import 'package:dentist_dashboard/views/components/small_screen.dart';
@@ -10,6 +12,7 @@ import 'package:dentist_dashboard/views/users/user_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:photo_view/photo_view.dart';
+import 'package:search_page/search_page.dart';
 
 import 'controllers/locale_controller.dart';
 
@@ -249,6 +252,33 @@ class Layout extends StatelessWidget {
               ],
             );
           }),
+          // IconButton(
+          //   onPressed: () {
+          //     showSearch(
+          //       context: context,
+          //       delegate: SearchPage<BrandModel>(
+          //         items: hC.test, // هون حطي المصفوفة يلي فيها كل المنتجات
+          //         searchLabel: 'Search medicines',
+          //         suggestion: Center(
+          //           child: Text('search medicin by its name'),
+          //         ),
+          //         failure: Center(
+          //           child: Text('No medicine found'),
+          //         ),
+          //         filter: (product) => [
+          //           product.title,
+          //           //product.sciname,
+          //         ],
+          //         builder: (product) => ListTile(
+          //           title: Text(product.title),
+          //           //subtitle: Text(product.price.toString()),
+          //           trailing: Text(''),
+          //         ),
+          //       ),
+          //     );
+          //   },
+          //   icon: Icon(Icons.search),
+          // )
         ],
         leading: ResponsiveWidget.isSmall(context)
             ? Builder(

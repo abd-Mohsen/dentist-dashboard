@@ -1,6 +1,7 @@
 import 'package:dentist_dashboard/controllers/category/add_category_controller.dart';
 import 'package:dentist_dashboard/controllers/category/categories_tab_controller.dart';
 import 'package:dentist_dashboard/views/brands/add_brand_view.dart';
+import 'package:dentist_dashboard/views/categories/add_category_view.dart';
 import 'package:dentist_dashboard/views/components/my_search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -31,7 +32,7 @@ class CategoriesTab extends StatelessWidget {
                         showDialog(
                           context: context,
                           //barrierDismissible: false,
-                          builder: (context) => const AddBrandView(),
+                          builder: (context) => const AddCategoryView(),
                         );
                       },
                       mouseCursor: MaterialStateMouseCursor.clickable,
