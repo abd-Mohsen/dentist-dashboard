@@ -13,6 +13,12 @@ class AddCategoryController extends GetxController {
   GlobalKey<FormState> addCategoryFormKey = GlobalKey<FormState>();
   bool buttonPressed = false;
 
+  @override
+  void onInit() {
+    getMainCategories();
+    super.onInit();
+  }
+
   final TextEditingController title = TextEditingController();
   CategoryModel? mainCategory;
 
@@ -30,8 +36,13 @@ class AddCategoryController extends GetxController {
     }
   }
 
-  Future<void> getSubCategories() async {
-    childCategories.addAll((await RemoteServices.fetchAllSubCategories())!);
+  void setMainCategory(CategoryModel category) {
+    mainCategory = category;
+    update();
+  }
+
+  Future<void> getMainCategories() async {
+    childCategories.addAll((await RemoteServices.fetchAllMainCategories())!);
   }
 
   Future<void> addCategory() async {
@@ -45,9 +56,10 @@ class AddCategoryController extends GetxController {
     bool success = false;
     try {
       print("before");
-      success = (await RemoteServices.createBrand(
+      success = (await RemoteServices.createCategory(
         newImg,
         title.text,
+        mainCategory?.title,
       ).timeout(kTimeOutDuration));
       print("after");
     } on TimeoutException {

@@ -28,7 +28,7 @@ class CustomField extends StatelessWidget {
     ColorScheme cs = Theme.of(context).colorScheme;
     TextTheme tt = Theme.of(context).textTheme;
     return Padding(
-      padding: const EdgeInsets.only(right: 16, bottom: 28),
+      padding: const EdgeInsets.only(right: 16, bottom: 24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

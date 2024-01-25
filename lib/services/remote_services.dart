@@ -732,7 +732,7 @@ class RemoteServices {
     }
   }
 
-  static Future<bool> createCategory(Uint8List imageBytes, String title, String parent) async {
+  static Future<bool> createCategory(Uint8List imageBytes, String title, String? parent) async {
     var request = http.MultipartRequest("POST", Uri.parse("$_hostIP/categories"));
     Map<String, String> headers = {
       'Authorization': "Bearer $token",
@@ -744,7 +744,7 @@ class RemoteServices {
 
     request.fields.addAll({
       'title': title,
-      'parent': parent,
+      if (parent != null) 'parent': parent,
     });
 
     var multipartFile = http.MultipartFile.fromBytes(

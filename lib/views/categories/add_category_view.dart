@@ -117,11 +117,50 @@ class AddCategoryView extends StatelessWidget {
                 },
               ),
               SelectionField<CategoryModel>(
-                title: "parent (main category)".tr,
-                iconData: Icons.account_tree,
-                onTap: () {},
+                title: "main category".tr,
+                iconData: Icons.category,
                 items: con.childCategories,
-              ),
+                onSelect: (CategoryModel? category) {
+                  con.setMainCategory(category!);
+                },
+                itemAsString: (CategoryModel category) => category.title,
+                label: "select main category (if exists)".tr,
+              )
+              // DropdownSearch<CategoryModel>(
+              //   popupProps: PopupProps.menu(
+              //     showSearchBox: true,
+              //     searchFieldProps: TextFieldProps(
+              //       decoration: InputDecoration(
+              //         fillColor: Colors.white70,
+              //         hintText: "search".tr,
+              //         prefix: Padding(
+              //           padding: const EdgeInsets.all(4),
+              //           child: Icon(Icons.search, color: cs.onSurface),
+              //         ),
+              //       ),
+              //     ),
+              //   ),
+              //   dropdownDecoratorProps: DropDownDecoratorProps(
+              //     dropdownSearchDecoration: InputDecoration(
+              //       labelText: "select main category (if exists)".tr,
+              //       //labelStyle: tt.bodyLarge!,
+              //       hintText: "choose a category".tr,
+              //       prefixIcon: const Padding(
+              //         padding: EdgeInsets.only(right: 12, left: 8),
+              //         child: Icon(Icons.category, size: 30),
+              //       ),
+              //       border: OutlineInputBorder(
+              //         borderRadius: BorderRadius.circular(10),
+              //       ),
+              //     ),
+              //     baseStyle: tt.bodyLarge!.copyWith(color: cs.onSurface),
+              //   ),
+              //   items: con.childCategories,
+              //   itemAsString: (CategoryModel category) => category.title,
+              //   onChanged: (CategoryModel? category) {
+              //     con.setMainCategory(category!);
+              //   },
+              // ),
             ],
           ),
         ),

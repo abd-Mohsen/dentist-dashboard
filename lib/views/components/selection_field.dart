@@ -1,4 +1,3 @@
-import 'package:dentist_dashboard/views/components/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:dropdown_search/dropdown_search.dart';
@@ -9,47 +8,63 @@ class SelectionField<T> extends StatelessWidget {
     required this.title,
     required this.iconData,
     this.hint,
-    required this.onTap,
     required this.items,
+    required this.onSelect,
+    this.itemAsString,
+    required this.label,
   });
 
   final String title;
+  final String label;
   final String? hint;
   final IconData iconData;
   final List<T> items;
-  final void Function() onTap;
+  final void Function(T?) onSelect;
+  final String Function(T)? itemAsString;
 
   @override
   Widget build(BuildContext context) {
     ColorScheme cs = Theme.of(context).colorScheme;
     TextTheme tt = Theme.of(context).textTheme;
     return Padding(
-      padding: const EdgeInsets.only(right: 16, bottom: 28),
+      padding: const EdgeInsets.only(right: 16, bottom: 24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(" $title ", style: tt.titleLarge!.copyWith(color: cs.onSurface)),
-          Row(
-            children: [
-              DropdownSearch<T>(
-                popupProps: PopupProps.menu(
-                  showSelectedItems: true,
-                ),
-                items: items,
-                dropdownDecoratorProps: DropDownDecoratorProps(
-                  dropdownSearchDecoration: InputDecoration(
-                    labelText: "Menu mode",
-                    hintText: "country in menu mode",
+          DropdownSearch<T>(
+            popupProps: PopupProps.menu(
+              showSearchBox: true,
+              searchFieldProps: TextFieldProps(
+                decoration: InputDecoration(
+                  fillColor: Colors.white70,
+                  hintText: "search".tr,
+                  prefix: Padding(
+                    padding: const EdgeInsets.all(4),
+                    child: Icon(Icons.search, color: cs.onSurface),
                   ),
                 ),
               ),
-              CustomButton(
-                onTap: onTap,
-                color: cs.primary,
-                title: "add".tr,
-                textColor: cs.onPrimary,
-              )
-            ],
+            ),
+            dropdownDecoratorProps: DropDownDecoratorProps(
+              dropdownSearchDecoration: InputDecoration(
+                labelText: label,
+                //labelStyle: tt.bodyLarge!,
+                //hintText: "choose a category".tr,
+                floatingLabelBehavior: FloatingLabelBehavior.never,
+                prefixIcon: const Padding(
+                  padding: EdgeInsets.only(right: 12, left: 8),
+                  child: Icon(Icons.category, size: 30),
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              baseStyle: tt.bodyLarge!.copyWith(color: cs.onSurface),
+            ),
+            items: items,
+            itemAsString: itemAsString,
+            onChanged: onSelect,
           ),
         ],
       ),
