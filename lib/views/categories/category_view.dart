@@ -92,8 +92,19 @@ class CategoryView extends StatelessWidget {
                   return validateInput(s!, 4, 100, "title");
                 },
               ),
-              // todo: drop down search
-              // todo: show category details
+              //todo: implement parent changing here and in backend
+              CustomField(
+                iconData: Icons.category,
+                controller: cC.parent,
+                title: "main category".tr,
+                enabled: false,
+                onChanged: (s) {
+                  if (con.buttonPressed) con.categoryFormKey.currentState!.validate();
+                },
+                validator: (s) {
+                  return validateInput(s!, 4, 100, "title");
+                },
+              ),
             ],
           ),
         ),

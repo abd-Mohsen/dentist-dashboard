@@ -23,10 +23,12 @@ class CategoryController extends GetxController {
   @override
   void onInit() {
     title.text = category.title;
+    parent.text = category.parent ?? "";
     super.onInit();
   }
 
   final TextEditingController title = TextEditingController();
+  final TextEditingController parent = TextEditingController();
 
   GlobalKey<FormState> categoryFormKey = GlobalKey<FormState>();
   bool buttonPressed = false;
@@ -54,7 +56,7 @@ class CategoryController extends GetxController {
         isNewImgSelected ? newImg : null,
         title.text,
         category.id,
-        "parent",
+        parent.text,
       ).timeout(kTimeOutDuration));
       print("after");
     } on TimeoutException {

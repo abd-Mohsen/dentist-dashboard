@@ -781,7 +781,7 @@ class RemoteServices {
 
     request.fields.addAll({
       'title': title,
-      //'parent': parent,
+      if (parent.isNotEmpty) 'parent': parent,
     });
 
     if (imageBytes != null) {
