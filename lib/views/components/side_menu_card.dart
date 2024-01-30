@@ -6,8 +6,6 @@ class SideMenuCard extends StatefulWidget {
   final String title;
   final IconData icon;
   final bool isSelected;
-  final bool isTop; // is this card above the selected card
-  final bool isBottom; // is this card below the selected card
 
   const SideMenuCard({
     super.key,
@@ -15,8 +13,6 @@ class SideMenuCard extends StatefulWidget {
     required this.title,
     required this.icon,
     required this.isSelected,
-    required this.isTop,
-    required this.isBottom,
   });
 
   @override
@@ -30,26 +26,7 @@ class _SideMenuCardState extends State<SideMenuCard> {
   Widget build(BuildContext context) {
     ColorScheme cs = Theme.of(context).colorScheme;
     TextTheme tt = Theme.of(context).textTheme;
-    TextDirection td = Directionality.of(context);
-
-    icon() => Icon(
-          widget.icon,
-          size: widget.isSelected ? 30 : 25,
-          color: widget.isSelected ? cs.primary : cs.onPrimary.withOpacity(0.8),
-        );
-
-    text() => Text(
-          widget.title,
-          style: tt.titleMedium!.copyWith(
-            color: widget.isSelected ? cs.primary : cs.onPrimary,
-            fontWeight: widget.isSelected ? FontWeight.bold : FontWeight.w500,
-          ),
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-        );
-
     return InkWell(
-      enableFeedback: false,
       onTap: widget.onTap,
       onHover: (bool val) {
         setState(() {
@@ -57,51 +34,82 @@ class _SideMenuCardState extends State<SideMenuCard> {
         });
       },
       mouseCursor: MaterialStateMouseCursor.clickable,
-      child: Container(
-        height: ResponsiveWidget.isLarge(context) ? 60 : 90,
-        padding: const EdgeInsets.symmetric(vertical: 12),
-        decoration: BoxDecoration(
-          color: widget.isSelected
-              ? cs.background
-              : isHovered
-                  ? cs.primary.withOpacity(0.8)
-                  : cs.primary,
-          borderRadius: BorderRadius.only(
-            bottomLeft: widget.isTop && td == TextDirection.rtl ? const Radius.circular(20) : Radius.zero,
-            topLeft: widget.isBottom && td == TextDirection.rtl ? const Radius.circular(20) : Radius.zero,
-            bottomRight: widget.isTop && td == TextDirection.ltr ? const Radius.circular(20) : Radius.zero,
-            topRight: widget.isBottom && td == TextDirection.ltr ? const Radius.circular(20) : Radius.zero,
-          ),
-        ),
-        child: ResponsiveWidget.isLarge(context)
-            ? SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const SizedBox(width: 12),
-                    icon(),
-                    const SizedBox(width: 20),
-                    text(),
-                  ],
-                ),
-              )
-            : Row(
-                //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: Column(
+      child: SizedBox(
+        height: ResponsiveWidget.isLarge(context) ? 50 : 90,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 4),
+          child: Container(
+            color: isHovered ? Colors.grey[200]!.withOpacity(0.3) : null,
+            child: ResponsiveWidget.isLarge(context)
+                ? SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const SizedBox(width: 16),
-                        icon(),
-                        text(),
+                        Visibility(
+                          visible: widget.isSelected,
+                          child: Container(
+                            color: Colors.red,
+                            width: 4,
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Icon(
+                          widget.icon,
+                          size: 25,
+                          color: cs.onPrimary.withOpacity(0.8),
+                        ),
+                        const SizedBox(width: 20),
+                        Text(
+                          widget.title,
+                          style: tt.titleMedium!.copyWith(
+                            color: cs.onPrimary,
+                            fontWeight: widget.isSelected ? FontWeight.bold : FontWeight.w500,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ],
                     ),
+                  )
+                : Row(
+                    //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Visibility(
+                        visible: widget.isSelected,
+                        child: Container(
+                          color: Colors.red,
+                          width: 4,
+                        ),
+                      ),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const SizedBox(width: 16),
+                            Icon(
+                              widget.icon,
+                              size: 25,
+                              color: cs.onPrimary.withOpacity(0.8),
+                            ),
+                            //const SizedBox(width: 8),
+                            Text(
+                              widget.title,
+                              style: tt.titleMedium!.copyWith(
+                                color: cs.onPrimary,
+                                fontWeight: widget.isSelected ? FontWeight.bold : FontWeight.w500,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+          ),
+        ),
       ),
     );
   }

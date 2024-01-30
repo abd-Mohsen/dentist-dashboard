@@ -16,36 +16,40 @@ class LargeScreen extends StatelessWidget {
         Expanded(
           flex: 1,
           child: GetBuilder<SideMenuController>(
-            builder: (con) => Column(
-              children: [
-                Container(
-                  //todo: empty card, and round border when first is selected
-                  decoration: BoxDecoration(),
-                ),
-                Expanded(
-                  child: ListView.builder(
-                    //padding: const EdgeInsets.only(top: 8),
-                    itemCount: con.sideMenuItems.length,
-                    itemBuilder: (context, i) => SideMenuCard(
-                      onTap: () {
-                        con.toggleActiveItem(con.sideMenuItems[i]);
-                        // print(Get.currentRoute.contains("${con.sideMenuItems[i].route}"));
-                        // print(con.sideMenuItems[i].route);
-                        // print(Get.currentRoute);
-                      },
-                      title: con.sideMenuItems[i].title,
-                      icon: con.sideMenuItems[i].icon,
-                      isSelected: con.sideMenuItems[i].isSelected, isTop: con.topTab(i), isBottom: con.bottomTab(i),
-                      //&& Get.currentRoute.contains("${con.sideMenuItems[i].route}"),
+            builder: (con) => Material(
+              color: cs.primary,
+              child: Column(
+                children: [
+                  Container(
+                    //todo: empty card, and round border when first is selected
+                    decoration: BoxDecoration(),
+                  ),
+                  Expanded(
+                    child: ListView.builder(
+                      //padding: const EdgeInsets.only(top: 8),
+                      itemCount: con.sideMenuItems.length,
+                      itemBuilder: (context, i) => SideMenuCard(
+                        onTap: () {
+                          con.toggleActiveItem(con.sideMenuItems[i]);
+                          // print(Get.currentRoute.contains("${con.sideMenuItems[i].route}"));
+                          // print(con.sideMenuItems[i].route);
+                          // print(Get.currentRoute);
+                        },
+                        title: con.sideMenuItems[i].title,
+                        icon: con.sideMenuItems[i].icon,
+                        isSelected: con.sideMenuItems[i].isSelected,
+                        //isTop: con.topTab(i), isBottom: con.bottomTab(i),
+                        //&& Get.currentRoute.contains("${con.sideMenuItems[i].route}"),
+                      ),
                     ),
                   ),
-                ),
-                Container(
-                  //todo: empty card, and round border when last is selected,
-                  //todo: elso expand it when contents are less than screen space
-                  decoration: BoxDecoration(),
-                ),
-              ],
+                  Container(
+                    //todo: empty card, and round border when last is selected,
+                    //todo: elso expand it when contents are less than screen space
+                    decoration: BoxDecoration(),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

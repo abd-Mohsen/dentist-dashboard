@@ -12,6 +12,7 @@ class SelectionField<T> extends StatelessWidget {
     required this.onSelect,
     this.itemAsString,
     required this.label,
+    this.tileBuilder,
   });
 
   final String title;
@@ -21,6 +22,7 @@ class SelectionField<T> extends StatelessWidget {
   final List<T> items;
   final void Function(T?) onSelect;
   final String Function(T)? itemAsString;
+  final Widget Function(BuildContext, T?)? tileBuilder;
 
   @override
   Widget build(BuildContext context) {
@@ -49,12 +51,10 @@ class SelectionField<T> extends StatelessWidget {
             dropdownDecoratorProps: DropDownDecoratorProps(
               dropdownSearchDecoration: InputDecoration(
                 labelText: label,
-                //labelStyle: tt.bodyLarge!,
-                //hintText: "choose a category".tr,
                 floatingLabelBehavior: FloatingLabelBehavior.never,
-                prefixIcon: const Padding(
-                  padding: EdgeInsets.only(right: 12, left: 8),
-                  child: Icon(Icons.category, size: 30),
+                prefixIcon: Padding(
+                  padding: const EdgeInsets.only(right: 12, left: 8),
+                  child: Icon(iconData, size: 30),
                 ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
@@ -65,6 +65,7 @@ class SelectionField<T> extends StatelessWidget {
             items: items,
             itemAsString: itemAsString,
             onChanged: onSelect,
+            dropdownBuilder: tileBuilder,
           ),
         ],
       ),
