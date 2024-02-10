@@ -123,7 +123,7 @@ class CategoryView extends StatelessWidget {
                     onTap: () {
                       Get.defaultDialog(
                         title: 'warning'.tr,
-                        middleText: 'do you wanna delete this brand?'.tr,
+                        middleText: 'do you wanna delete this category?'.tr,
                         textConfirm: 'yes',
                         textCancel: 'no',
                         onConfirm: () {

@@ -35,7 +35,7 @@ class _SideMenuCardState extends State<SideMenuCard> {
       },
       mouseCursor: MaterialStateMouseCursor.clickable,
       child: SizedBox(
-        height: ResponsiveWidget.isLarge(context) ? 50 : 90,
+        height: ResponsiveWidget.isLarge(context) ? 55 : 90,
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 4),
           child: Container(

@@ -498,64 +498,45 @@ class RemoteServices {
 
   //todo: products rows
   //todo: product body
-  // static Future<bool> createProduct(List<File?> imageFile, String brandTitle) async {
-  //   var request = http.MultipartRequest("POST", Uri.parse("$_hostIP/products"));
-  //   request.headers['Authorization'] = "Bearer $token";
-  //   request.headers['Accept'] = 'application/json';
-  //   var stream = http.ByteStream(imageFile!.openRead());
-  //   var length = await imageFile.length();
-  //   var multipartFile = http.MultipartFile(
-  //     'image',
-  //     stream,
-  //     length,
-  //     filename: basename(imageFile.path),
-  //   );
-  //   request.fields.addAll({
-  //     'title': brandTitle,
-  //   });
-  //   request.files.add(multipartFile);
-  //
-  //   var response = await request.send();
-  //   var responseBody = await response.stream.bytesToString();
-  //
-  //   if (response.statusCode == 200 || response.statusCode == 201) {
-  //     return true;
-  //   } else {
-  //     js.context.callMethod('alert', [jsonDecode(responseBody)]);
-  //     print('error message: $responseBody');
-  //     return false;
-  //   }
-  // }
-  //
-  // static Future<bool> updateProduct(List<File?> imageFile, String brandTitle) async {
-  //   // todo: check what happens when null is sent
-  //   var request = http.MultipartRequest("PATCH", Uri.parse("$_hostIP/products"));
-  //   request.headers['Authorization'] = "Bearer $token";
-  //   request.headers['Accept'] = 'application/json';
-  //   var stream = http.ByteStream(imageFile!.openRead());
-  //   var length = await imageFile.length();
-  //   var multipartFile = http.MultipartFile(
-  //     'image',
-  //     stream,
-  //     length,
-  //     filename: basename(imageFile.path),
-  //   );
-  //   request.fields.addAll({
-  //     'title': brandTitle,
-  //   });
-  //   request.files.add(multipartFile);
-  //
-  //   var response = await request.send();
-  //   var responseBody = await response.stream.bytesToString();
-  //
-  //   if (response.statusCode == 200 || response.statusCode == 201) {
-  //     return true;
-  //   } else {
-  //     js.context.callMethod('alert', [jsonDecode(responseBody)]);
-  //     print('error message: $responseBody');
-  //     return false;
-  //   }
-  // }
+
+  static Future<bool> createProduct(
+    Uint8List imageBytes,
+    String title,
+    String? parent,
+  ) async {
+    var request = http.MultipartRequest("POST", Uri.parse("$_hostIP/products"));
+    Map<String, String> headers = {
+      'Authorization': "Bearer $token",
+      'Accept': 'Application/Json',
+    };
+
+    request.headers.addAll(headers);
+
+    request.fields.addAll({
+      'title': title,
+      //
+    });
+
+    var multipartFile = http.MultipartFile.fromBytes(
+      'image',
+      imageBytes,
+      filename: 'image.jpg',
+      contentType: MediaType('application', 'json'),
+    );
+
+    request.files.add(multipartFile);
+
+    var response = await request.send();
+    var responseBody = await response.stream.bytesToString();
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return true;
+    } else {
+      js.context.callMethod('alert', [jsonDecode(responseBody)['message']]);
+      print('error message: $responseBody');
+      return false;
+    }
+  }
 
   static Future<List<ProductModel>?> fetchAllProducts() async {
     var response = await client.get(

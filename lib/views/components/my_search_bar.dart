@@ -47,7 +47,7 @@ class MySearchBar extends StatelessWidget {
     void Function() onClickCard(obj) {
       if (type == "product") {
         return () {
-          Get.put(ProductController());
+          Get.put(ProductController(product: obj));
           showDialog(
             context: context,
             barrierDismissible: false,

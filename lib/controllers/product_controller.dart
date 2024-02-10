@@ -1,7 +1,23 @@
+import 'package:dentist_dashboard/models/product_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 class ProductController extends GetxController {
+  ProductController({required this.product});
+  final ProductModel product;
+
+  @override
+  void onInit() {
+    title.text = product.title;
+    description.text = product.description;
+    price.text = product.price.toString();
+    super.onInit();
+  }
+
+  final TextEditingController title = TextEditingController();
+  final TextEditingController description = TextEditingController();
+  final TextEditingController price = TextEditingController(); // add validation
+
   int _imageIndex = 0;
   int get imageIndex => _imageIndex;
 
@@ -30,4 +46,5 @@ class ProductController extends GetxController {
   }
 
   GlobalKey<FormState> productFormKey = GlobalKey<FormState>();
+  bool buttonPressed = false;
 }

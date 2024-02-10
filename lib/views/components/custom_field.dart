@@ -83,6 +83,9 @@ String? validateInput(String val, int min, int max, String type, {String pass = 
   if (type == "phone") {
     if (!GetUtils.isPhoneNumber(val)) return "not a valid phone";
   }
+  if (type == "number") {
+    if (!GetUtils.isNum(val)) return "not a valid value";
+  }
   if (val.length < min) return "value cant be smaller than $min characters";
 
   if (val.length > max) return "value cant be greater than $max characters";
