@@ -1,3 +1,4 @@
+import 'package:barcode_widget/barcode_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dentist_dashboard/controllers/product_controller.dart';
@@ -93,6 +94,7 @@ class ProductView extends StatelessWidget {
             ],
           ),
         );
+
     topBar() => Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
@@ -157,6 +159,7 @@ class ProductView extends StatelessWidget {
                   return validateInput(s!, 4, 100, "number");
                 },
               ),
+              BarcodeWidget(data: product.upc, barcode: Barcode.code128()),
             ],
           ),
         ),
