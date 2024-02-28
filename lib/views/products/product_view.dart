@@ -31,9 +31,12 @@ class ProductView extends StatelessWidget {
                     items: [
                       ...product.images
                           .map(
-                            (image) => CachedNetworkImage(
-                              imageUrl: "$kHostIP/${Uri.encodeComponent(image.path)}",
-                              //height: 350,
+                            (image) => ClipRRect(
+                              borderRadius: BorderRadius.circular(15),
+                              child: CachedNetworkImage(
+                                imageUrl: "$kHostIP/${Uri.encodeComponent(image.path)}",
+                                //height: 350,
+                              ),
                             ),
                           )
                           .toList(),
@@ -134,9 +137,8 @@ class ProductView extends StatelessWidget {
                   return validateInput(s!, 4, 100, "title");
                 },
               ),
-              // todo: make description a text area
               CustomField(
-                iconData: Icons.description,
+                //iconData: Icons.description,
                 controller: pC.description,
                 title: "description".tr,
                 enabled: con.editingMode,
@@ -146,6 +148,7 @@ class ProductView extends StatelessWidget {
                 validator: (s) {
                   return validateInput(s!, 4, 100, "");
                 },
+                maxLines: 5,
               ),
               CustomField(
                 iconData: Icons.monetization_on,
@@ -159,7 +162,70 @@ class ProductView extends StatelessWidget {
                   return validateInput(s!, 4, 100, "number");
                 },
               ),
-              BarcodeWidget(data: product.upc, barcode: Barcode.code128()),
+              Row(
+                children: [
+                  Expanded(
+                      child: CustomField(
+                    controller: pC.length,
+                    title: "length (m)".tr,
+                    enabled: con.editingMode,
+                    onChanged: (s) {
+                      if (con.buttonPressed) con.productFormKey.currentState!.validate();
+                    },
+                    validator: (s) {
+                      return validateInput(s!, 4, 100, "number");
+                    },
+                  )),
+                  Expanded(
+                      child: CustomField(
+                    controller: pC.width,
+                    title: "width (m)".tr,
+                    enabled: con.editingMode,
+                    onChanged: (s) {
+                      if (con.buttonPressed) con.productFormKey.currentState!.validate();
+                    },
+                    validator: (s) {
+                      return validateInput(s!, 4, 100, "number");
+                    },
+                  )),
+                ],
+              ),
+              Row(
+                children: [
+                  Expanded(
+                      child: CustomField(
+                    controller: pC.height,
+                    title: "height (m)".tr,
+                    enabled: con.editingMode,
+                    onChanged: (s) {
+                      if (con.buttonPressed) con.productFormKey.currentState!.validate();
+                    },
+                    validator: (s) {
+                      return validateInput(s!, 4, 100, "number");
+                    },
+                  )),
+                  Expanded(
+                      child: CustomField(
+                    controller: pC.weight,
+                    title: "weight (g)".tr,
+                    enabled: con.editingMode,
+                    onChanged: (s) {
+                      if (con.buttonPressed) con.productFormKey.currentState!.validate();
+                    },
+                    validator: (s) {
+                      return validateInput(s!, 4, 100, "number");
+                    },
+                  )),
+                ],
+              ),
+              BarcodeWidget(
+                data: product.upc,
+                barcode: Barcode.code128(),
+                backgroundColor: Colors.white,
+                color: Colors.black,
+                margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 4),
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              ),
             ],
           ),
         ),
@@ -292,6 +358,7 @@ class ProductView extends StatelessWidget {
           ),
         );
 
+    // todo: extract the dialog into new widget
     return WillPopScope(
       onWillPop: () async {
         Get.delete<ProductController>();

@@ -86,7 +86,7 @@ class MySearchBar extends StatelessWidget {
         };
       }
       return () {
-        print("not a product, a user,a category or a brand?");
+        print("wtfff");
       };
     }
 

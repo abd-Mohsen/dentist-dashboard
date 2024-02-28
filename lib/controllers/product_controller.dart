@@ -11,12 +11,20 @@ class ProductController extends GetxController {
     title.text = product.title;
     description.text = product.description;
     price.text = product.price.toString();
+    weight.text = product.weight.toString();
+    length.text = product.length.toString();
+    width.text = product.width.toString();
+    height.text = product.height.toString();
     super.onInit();
   }
 
   final TextEditingController title = TextEditingController();
   final TextEditingController description = TextEditingController();
   final TextEditingController price = TextEditingController(); // add validation
+  final TextEditingController height = TextEditingController();
+  final TextEditingController length = TextEditingController();
+  final TextEditingController width = TextEditingController();
+  final TextEditingController weight = TextEditingController();
 
   int _imageIndex = 0;
   int get imageIndex => _imageIndex;

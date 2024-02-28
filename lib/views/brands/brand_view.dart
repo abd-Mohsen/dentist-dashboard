@@ -47,6 +47,7 @@ class BrandView extends StatelessWidget {
                 SizedBox(
                   height: MediaQuery.sizeOf(context).height / 2,
                   width: double.infinity,
+                  // todo: why borders arent round
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(15),
                     child: con.isNewImgSelected

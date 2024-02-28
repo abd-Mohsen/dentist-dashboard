@@ -5,23 +5,25 @@ class CustomField extends StatelessWidget {
   const CustomField({
     super.key,
     required this.title,
-    required this.iconData,
+    this.iconData,
     this.obscure,
     this.enabled,
     this.onChanged,
     this.validator,
     required this.controller,
     this.hint,
+    this.maxLines,
   });
 
   final String title;
   final String? hint;
   final bool? enabled;
   final bool? obscure;
-  final IconData iconData;
+  final IconData? iconData;
   final void Function(String)? onChanged;
   final String? Function(String?)? validator;
   final TextEditingController controller;
+  final int? maxLines;
 
   @override
   Widget build(BuildContext context) {
@@ -37,13 +39,16 @@ class CustomField extends StatelessWidget {
             controller: controller,
             enabled: enabled ?? true,
             obscureText: obscure ?? false,
+            maxLines: maxLines ?? 1,
             //initialValue: initVal,
             decoration: InputDecoration(
               hintText: hint,
-              prefixIcon: Padding(
-                padding: const EdgeInsets.only(right: 12, left: 8),
-                child: Icon(iconData, size: 30),
-              ),
+              prefixIcon: iconData == null
+                  ? null
+                  : Padding(
+                      padding: const EdgeInsets.only(right: 12, left: 8),
+                      child: Icon(iconData, size: 30),
+                    ),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
